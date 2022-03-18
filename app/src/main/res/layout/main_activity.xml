@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
+	tools:context=".MainActivity"
 >
-    <TextView
-		android:id="@+id/sample_text"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="Sample text TextView"
-	/>
+
 	<Button
-		android:id="@+id/sample_button"
+		android:id="@+id/buttonGPS"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Sample text Button"
+		android:layout_centerInParent="true"
+		android:text="Enable GPS."
+		android:textSize="16sp"
+		android:textStyle="bold"
 	/>
-</LinearLayout>
+
+</RelativeLayout>

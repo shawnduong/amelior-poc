@@ -25,6 +25,12 @@
 			</intent-filter>
 		</activity>
 
+		<service
+			android:name=".GPS"
+			android:enabled="true"
+			android:exported="true"
+		/>
+
 	</application>
 
 </manifest>
