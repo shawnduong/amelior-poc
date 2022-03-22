@@ -8,8 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity: AppCompatActivity()
 {
-	fun onCreate()
+	/** LIFECYCLE CALLBACKS **/
+	override fun onCreate(savedInstanceState: Bundle?)
 	{
+		// Recover UI state if this activity was killed
+		// See https://developer.android.com/guide/components/activities/activity-lifecycle#instance-state
+		super.onCreate(savedInstanceState)
+
 		setContentView(R.layout.main_activity)
 	}
 }
