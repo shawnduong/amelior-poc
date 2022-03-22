@@ -1,6 +1,7 @@
 <resources>
     <!-- General -->
     <string name="app_name">Amelior</string>
+    <string name="placeholder_short">Lorem Ipsum</string>
 
     <!-- Step Counter Components -->
 </resources>
