@@ -22,8 +22,8 @@ class StepTracker : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        TODO("Implement startService in clients")
-        TODO("Implement stop conditions!" +
+        TODO(reason = "Implement startService in clients")
+        TODO(reason = "Implement stop conditions!" +
                 "Either stopSelf() locally" +
                 "Or stopService() in clients")
         return super.onStartCommand(intent, flags, startId)
@@ -35,7 +35,7 @@ class StepTracker : Service() {
 
     /** BINDING CALLBACKS **/
     override fun onBind(p0: Intent?): IBinder? {
-        TODO("Implement onServiceConnected() in clients")
+        TODO(reason = "Implement onServiceConnected() in clients")
         return binding
     }
 

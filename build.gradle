@@ -6,6 +6,16 @@ plugins
 	id 'org.jetbrains.kotlin.android' version '1.5.30' apply false
 }
 
+dependencies
+{
+	val fragment_version = "1.4.1"
+
+	// Java language implementation
+	implementation("androidx.fragment:fragment:$fragment_version")
+	// Kotlin
+	implementation("androidx.fragment:fragment-ktx:$fragment_version")
+}
+
 task clean(type: Delete)
 {
 	delete rootProject.buildDir

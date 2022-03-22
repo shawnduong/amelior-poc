@@ -27,7 +27,7 @@
 
 		<service android:name=".StepTracker"
 			android:exported="false">
-			<!-- TODO(Implement intent filter) -->
+			<!-- TODO(reason = "Implement intent filter") -->
 			<intent-filter></intent-filter>
 		</service>
 
