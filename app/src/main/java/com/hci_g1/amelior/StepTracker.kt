@@ -37,10 +37,6 @@ class StepTracker : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        TODO(reason = "Implement startService in clients")
-        TODO(reason = "Implement stop conditions!" +
-                "Either stopSelf() locally" +
-                "Or stopService() in clients")
         return super.onStartCommand(intent, flags, startId)
 
         status += "Started StepTracker (request: $startId)\n"

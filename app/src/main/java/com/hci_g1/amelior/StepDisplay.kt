@@ -27,6 +27,7 @@ class StepDisplay: Fragment(R.layout.step_display) {
 
     /** CONNECTING TO THE STEP TRACKER SERVICE **/
     private var STStatus: String? = null
+    private var running: Boolean = false
     private var STBound: Boolean = false
 
     private val STConn = object : ServiceConnection {
@@ -45,11 +46,12 @@ class StepDisplay: Fragment(R.layout.step_display) {
     private val STIntent = Intent(this@StepDisplay.context, StepTracker::class.java)
 
     private fun startST() {
-        this@StepDisplay.context?.startService(STIntent)
+        running = (this@StepDisplay.context?.startService(STIntent) != null)
     }
 
     private fun stopST() {
         this@StepDisplay.context?.stopService(STIntent)
+        running = false
     }
 
     private fun bindST() {
@@ -63,5 +65,9 @@ class StepDisplay: Fragment(R.layout.step_display) {
             this@StepDisplay.context?.unbindService(STConn)
             STBound = false
         }
+    }
+
+    fun buttonFunc(){
+        TODO(reason = "Implement UI controlled start/stop and bind/unbind to StepTacker")
     }
 }
