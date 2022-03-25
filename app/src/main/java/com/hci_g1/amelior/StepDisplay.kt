@@ -1,6 +1,7 @@
 package com.hci_g1.amelior
 
 import android.content.ComponentName
+import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
@@ -38,4 +39,8 @@ class StepDisplay: Fragment(R.layout.step_display) {
             readout("StepTracker Killed or Disconnected!")
         }
     }
+
+    private val STBindIntent = Intent(this@StepDisplay.context, StepTracker::class.java)
+
+
 }
