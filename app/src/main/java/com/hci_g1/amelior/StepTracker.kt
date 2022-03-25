@@ -51,6 +51,9 @@ class StepTracker : Service() {
             our service getting killed while starting.
             Come back around after main functionality is done.
          */
+
+        // We want the Step Tracking to continue ASAP if it gets killed w/o a manual stop
+        return START_REDELIVER_INTENT
     }
 
     override fun onDestroy() {
@@ -62,7 +65,6 @@ class StepTracker : Service() {
         demand++
         status += "New Client\nNow bound to $demand clients\n"
 
-        TODO(reason = "Implement onServiceConnected() in clients")
         return binding
     }
 

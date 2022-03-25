@@ -10,9 +10,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 
 class StepDisplay: Fragment(R.layout.step_display) {
-    /** UI METHODS **/
+    /** SELF REFERENCE MEMBERS **/
     private var fragView: View? = null
 
+    /** UI METHODS **/
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fragView = view
@@ -24,7 +25,7 @@ class StepDisplay: Fragment(R.layout.step_display) {
         ro?.text = str
     }
 
-    /** BINDING THE STEP TRACKER SERVICE **/
+    /** CONNECTING TO THE STEP TRACKER SERVICE **/
     private var STStatus: String? = null
     private var STBound: Boolean = false
 
@@ -36,11 +37,31 @@ class StepDisplay: Fragment(R.layout.step_display) {
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
+            STBound = false
             readout("StepTracker Killed or Disconnected!")
         }
     }
 
-    private val STBindIntent = Intent(this@StepDisplay.context, StepTracker::class.java)
+    private val STIntent = Intent(this@StepDisplay.context, StepTracker::class.java)
 
+    private fun startST() {
+        this@StepDisplay.context?.startService(STIntent)
+    }
 
+    private fun stopST() {
+        this@StepDisplay.context?.stopService(STIntent)
+    }
+
+    private fun bindST() {
+        if(!STBound) {
+            this@StepDisplay.context?.bindService(STIntent, STConn, 0)
+        }
+    }
+
+    private fun unbindST() {
+        if(STBound) {
+            this@StepDisplay.context?.unbindService(STConn)
+            STBound = false
+        }
+    }
 }
