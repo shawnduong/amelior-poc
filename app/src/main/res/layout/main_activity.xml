@@ -10,7 +10,7 @@
 
 	<androidx.fragment.app.FragmentContainerView
 			android:id="@+id/step_display_container_view"
-			android:name="com.hci_g1.amelior.StepDisplay"
+
 			android:layout_width="350dp"
 			android:layout_height="450dp"
 			app:layout_constraintBottom_toBottomOf="parent"
