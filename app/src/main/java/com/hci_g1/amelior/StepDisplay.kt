@@ -32,10 +32,17 @@ class StepDisplay: Fragment(R.layout.step_display) {
                 toggleStartST()
             }
         })
+
+        val bindButton: Button = fragView.findViewById<Button>(R.id.toggle_button_bind_step_tracker)
+        bindButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                toggleBindST()
+            }
+        })
     }
 
     /** UI METHODS **/
-    fun readout(str: String) {
+    fun readout(str: String?) {
         val ro = fragView.findViewById<TextView>(R.id.readout)
         ro.text = str
     }
@@ -49,8 +56,9 @@ class StepDisplay: Fragment(R.layout.step_display) {
     private val STConn = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             val binding = service as StepTracker.STBinding
-            STStatus = binding.getStepTracker()
+            STStatus = binding.getStepTracker() as String
             STBound = true
+            readout(STStatus)
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
@@ -61,7 +69,6 @@ class StepDisplay: Fragment(R.layout.step_display) {
 
     // Setting the intent as a global var tries to access context before it exists!
     //private val STIntent = Intent(fragContext, StepTracker::class.java)
-
 
     private fun getSTIntent(): Intent = Intent(fragContext, StepTracker::class.java)
 
