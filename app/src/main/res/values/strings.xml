@@ -4,4 +4,8 @@
     <string name="placeholder_short">Lorem Ipsum</string>
 
     <!-- Step Counter Components -->
+    <string name="start_step_tracker">START STEP-TRACKER</string>
+    <string name="stop_step_tracker">STOP STEP-TRACKER</string>
+    <string name="bind_step_tracker">BIND STEP-TRACKER</string>
+    <string name="unbind_step_tracker">UNBIND STEP-TRACKER</string>
 </resources>
