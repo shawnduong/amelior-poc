@@ -14,7 +14,11 @@ import androidx.fragment.app.Fragment
 class StepDisplay: Fragment(R.layout.step_display) {
     /** SELF REFERENCE MEMBERS **/
     private lateinit var fragView: View
-    private lateinit var fragContext: Context
+    //private lateinit var fragContext: Context
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     /** UI METHODS **/
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -24,10 +28,11 @@ class StepDisplay: Fragment(R.layout.step_display) {
 
     fun readout(str: String) {
         val ro = fragView.findViewById<TextView>(R.id.readout)
-        ro?.text = str
+        ro.text = str
     }
 
     /** CONNECTING TO THE STEP TRACKER SERVICE **/
+
     private var STStatus: String? = null
     private var STRunning: Boolean = false
     private var STBound: Boolean = false
@@ -44,31 +49,32 @@ class StepDisplay: Fragment(R.layout.step_display) {
             readout("StepTracker Killed or Disconnected!")
         }
     }
-
-    private val STIntent = Intent(this@StepDisplay.context, StepTracker::class.java)
+    /*
+    private val STIntent = Intent(requireContext(), StepTracker::class.java)
 
     private fun startST() {
-        STRunning = (this@StepDisplay.context?.startService(STIntent) != null)
+        STRunning = (requireContext().startService(STIntent) != null)
     }
 
     private fun stopST() {
-        this@StepDisplay.context?.stopService(STIntent)
+        requireContext().stopService(STIntent)
         STRunning = false
     }
 
     private fun bindST() {
         if(!STBound) {
-            this@StepDisplay.context?.bindService(STIntent, STConn, 0)
+            requireContext().bindService(STIntent, STConn, 0)
         }
     }
 
     private fun unbindST() {
         if(STBound) {
-            this@StepDisplay.context?.unbindService(STConn)
+            requireContext().unbindService(STConn)
             STBound = false
         }
     }
-
+    */
+    /*
     /** BUTTON FUNCTIONS **/
     fun toggleStartST(view: View) {
         //TODO(reason = "Implement UI controlled start/stop and bind/unbind to StepTacker")
@@ -96,4 +102,5 @@ class StepDisplay: Fragment(R.layout.step_display) {
             }
         }
     }
+     */
 }

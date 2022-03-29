@@ -13,12 +13,11 @@
         android:textAlignment="center"
         android:textColor="@color/design_default_color_primary"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/toggle_button_bind_step_tracker"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
+    <!--
     <Button
         android:id="@+id/toggle_button_start_step_tracker"
         android:layout_width="wrap_content"
@@ -45,5 +44,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
+        -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
