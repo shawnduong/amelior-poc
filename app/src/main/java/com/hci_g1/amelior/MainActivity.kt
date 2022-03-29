@@ -20,7 +20,6 @@ class MainActivity: AppCompatActivity()
 		setContentView(R.layout.main_activity)
 
 		// Host the StepDisplay fragment whenever we instantiate this activity
-		// NOTE: If we don't
 		if(savedInstanceState == null)
 		{
 			supportFragmentManager.commit {

@@ -25,6 +25,13 @@ class StepDisplay: Fragment(R.layout.step_display) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fragView = view
+
+        val startButton: Button = fragView.findViewById<Button>(R.id.toggle_button_start_step_tracker)
+        startButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                toggleStartST()
+            }
+        })
     }
 
     /** UI METHODS **/
@@ -81,7 +88,7 @@ class StepDisplay: Fragment(R.layout.step_display) {
     }
 
     /** BUTTON FUNCTIONS **/
-    fun toggleStartST(view: View) {
+    fun toggleStartST() {
         //TODO(reason = "Implement UI controlled start/stop and bind/unbind to StepTacker")
         val startButton = fragView
             .findViewById<Button>(R.id.toggle_button_start_step_tracker)
@@ -94,7 +101,7 @@ class StepDisplay: Fragment(R.layout.step_display) {
         }
     }
 
-    fun toggleBindST(view: View) {
+    fun toggleBindST() {
         val bindButton = fragView
             .findViewById<Button>(R.id.toggle_button_bind_step_tracker)
         if(STRunning) {
