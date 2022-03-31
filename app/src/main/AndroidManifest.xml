@@ -2,9 +2,10 @@
 
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.hci_g1.amelior"
-	>
+	package="com.hci_g1.amelior">
 
+	<!-- ACTIVITY RECON PERMISSION-->
+	<uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
 	<!-- TODO(reason = "Implement Permissions") -->
 
 	<application
