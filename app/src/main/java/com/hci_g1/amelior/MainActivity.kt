@@ -25,7 +25,7 @@ class MainActivity: AppCompatActivity()
 	{
 		override fun onServiceConnected(name: ComponentName, service: IBinder)
 		{
-			val binder = service as GPS.LocalBinder
+			val binder = service as GPS._Binder
 			ServiceGPS = binder.get_service()
 			Log.d(TAG, "Service connected.")
 		}

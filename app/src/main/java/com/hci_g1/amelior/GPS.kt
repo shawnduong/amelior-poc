@@ -19,8 +19,8 @@ class GPS: Service()
 	private lateinit var locationCallback: LocationCallback
 	private lateinit var locationRequest: LocationRequest
 
-	private val binder = LocalBinder()
-	inner class LocalBinder: Binder()
+	private val binder = _Binder()
+	inner class _Binder: Binder()
 	{
 		fun get_service(): GPS = this@GPS
 	}
