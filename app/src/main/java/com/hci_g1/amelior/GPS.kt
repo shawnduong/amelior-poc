@@ -67,7 +67,24 @@ class GPS: Service()
 		}
 		catch (unlikely: SecurityException)
 		{
-			Log.d(TAG, "Error in subscribe()")
+			Log.e(TAG, "Error in subscribe()")
+		}
+
+		return false
+	}
+
+	/* Unsubscribe to the GPS. */
+	fun unsubscribe(): Boolean
+	{
+		try
+		{
+			fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+			Log.d(TAG, "Unsubscribed from GPS updates.")
+			return true
+		}
+		catch (unlikely: SecurityException)
+		{
+			Log.e(TAG, "Error in subscribe()")
 		}
 
 		return false

@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat
 class MainActivity: AppCompatActivity()
 {
 	private var ServiceGPS: GPS? = null
+	private var ServiceGPSSubscribed: Boolean = false
 
 	private lateinit var buttonGPS: Button
 
@@ -45,7 +46,21 @@ class MainActivity: AppCompatActivity()
 		buttonGPS = findViewById(R.id.buttonGPS)
 
 		/* UI logic. */
-		buttonGPS.setOnClickListener { if (ServiceGPS != null) ServiceGPS?.subscribe() }
+		buttonGPS.setOnClickListener {
+			if (ServiceGPS != null)
+			{
+				if ((ServiceGPSSubscribed == false) && (ServiceGPS?.subscribe() == true))
+				{
+					ServiceGPSSubscribed = true
+					buttonGPS.text = "Disable GPS."
+				}
+				else if ((ServiceGPSSubscribed == true) && (ServiceGPS?.unsubscribe() == true))
+				{
+					ServiceGPSSubscribed = false
+					buttonGPS.text = "Enable GPS."
+				}
+			}
+		}
 
 		request_permissions()
 	}
