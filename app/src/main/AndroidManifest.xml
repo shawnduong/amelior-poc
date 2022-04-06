@@ -29,10 +29,12 @@
 			android:name=".GPS"
 			android:enabled="true"
 			android:exported="true"
+			android:foregroundServiceType="location"
 		/>
 
 	</application>
 
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>

@@ -1,25 +1,80 @@
 package com.hci_g1.amelior
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
+import android.os.Binder
 import android.os.IBinder
-import android.widget.Toast
+import android.os.Looper
+import android.util.Log
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 
 class GPS: Service()
 {
-	override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int
-	{
-		Toast.makeText(
-			applicationContext,
-			"GPS onStartCommand() called.",
-			Toast.LENGTH_SHORT
-		).show()
+	private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+	private lateinit var locationCallback: LocationCallback
+	private lateinit var locationRequest: LocationRequest
 
-		return START_STICKY;
+	private val binder = LocalBinder()
+	inner class LocalBinder: Binder()
+	{
+		fun get_service(): GPS = this@GPS
 	}
 
-	override fun onBind(intent: Intent): IBinder?
+	override fun onBind(intent: Intent): IBinder
 	{
-		throw UnsupportedOperationException("Not yet implemented")
+		return binder
+	}
+
+	override fun onCreate()
+	{
+		fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
+		locationCallback = object: LocationCallback()
+		{
+			/* Save the location to a DB. */
+			override fun onLocationResult(locationResult: LocationResult)
+			{
+				super.onLocationResult(locationResult)
+
+				/* TODO: Integreate this with Crystal's DB code. */
+				var location = locationResult.lastLocation
+				Log.d(TAG, "Location acquired! It is: " + location.toString())
+			}
+		}
+
+		locationRequest = LocationRequest.create().apply {
+			priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+			interval = 5000  // milliseconds
+		}
+	}
+
+	/* Subscribe to the GPS. */
+	fun subscribe(): Boolean
+	{
+		try
+		{
+			fusedLocationProviderClient.requestLocationUpdates(
+				locationRequest, locationCallback, Looper.getMainLooper()
+			)
+
+			Log.d(TAG, "Subscribed to GPS updates.")
+			return true
+		}
+		catch (unlikely: SecurityException)
+		{
+			Log.d(TAG, "Error in subscribe()")
+		}
+
+		return false
+	}
+
+	companion object
+	{
+		private const val TAG = "GPS"
 	}
 }
