@@ -71,8 +71,8 @@ class StepDisplay: Fragment(R.layout.step_display) {
 
     /** CONNECTING TO THE STEP TRACKER SERVICE **/
     private var STStatus: String? = null
-    private var STRunning: Boolean = false
-    private var STBound: Boolean = false
+    private var stepTrackerRunning: Boolean = false
+    private var stepTrackerBound: Boolean = false
     //private var steps: Float = 0f
 
     private fun readSteps(s:Float): Float {
@@ -86,12 +86,12 @@ class StepDisplay: Fragment(R.layout.step_display) {
             val binding = service as StepTracker.STBinding
             //STStatus = binding.getStepTrackerStatus() as String
             binding.stepTrackerCallback(::readSteps) // NOTE: this callback works even after unbinding.
-            STBound = true
+            stepTrackerBound = true
             //readout(STStatus)
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            STBound = false
+            stepTrackerBound = false
             readout("StepTracker Killed or Disconnected!")
         }
     }
@@ -102,24 +102,24 @@ class StepDisplay: Fragment(R.layout.step_display) {
     private fun getSTIntent(): Intent = Intent(fragContext, StepTracker::class.java)
 
     private fun startST() {
-        STRunning = (fragContext.startService(getSTIntent()) != null)
+        stepTrackerRunning = (fragContext.startService(getSTIntent()) != null)
     }
 
     private fun stopST() {
         fragContext.stopService(getSTIntent())
-        STRunning = false
+        stepTrackerRunning = false
     }
 
     private fun bindST() {
-        if(!STBound) {
+        if(!stepTrackerBound) {
             fragContext.bindService(getSTIntent(), STConn, 0)
         }
     }
 
     private fun unbindST() {
-        if(STBound) {
+        if(stepTrackerBound) {
             fragContext.unbindService(STConn)
-            STBound = false
+            stepTrackerBound = false
         }
     }
 
@@ -127,7 +127,7 @@ class StepDisplay: Fragment(R.layout.step_display) {
     fun toggleStartST() {
         val startButton = fragView
             .findViewById<Button>(R.id.toggle_button_start_step_tracker)
-        if(STRunning) {
+        if(stepTrackerRunning) {
             stopST()
             startButton.text = getString(R.string.start_step_tracker)
         } else {
@@ -139,8 +139,8 @@ class StepDisplay: Fragment(R.layout.step_display) {
     fun toggleBindST() {
         val bindButton = fragView
             .findViewById<Button>(R.id.toggle_button_bind_step_tracker)
-        if(STRunning) {
-            if(STBound) {
+        if(stepTrackerRunning) {
+            if(stepTrackerBound) {
                 unbindST()
                 readout("Unbound.")
                 bindButton.text = getString(R.string.bind_step_tracker)
