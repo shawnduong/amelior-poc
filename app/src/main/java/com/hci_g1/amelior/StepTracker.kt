@@ -51,31 +51,30 @@ class StepTracker : Service(), SensorEventListener {
     /** LIFECYCLE CALLBACKS **/
     override fun onCreate() {
         super.onCreate()
-        //status = "Created new StepTracker\n"
-
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
         // Runtime Permissions
         val permission = ContextCompat.checkSelfPermission(this,
             Manifest.permission.ACTIVITY_RECOGNITION)
         if(permission == PackageManager.PERMISSION_DENIED) {
-            //requestPermissions(getActivity(), arrayOf(Manifest.permission.ACTIVITY_RECOGNITION), 1)
-            //TODO(reason = "Improve Permission Denial Handling")
-            Log.d("StepTracker", "PERMISSION DENIED!!!")
+            stepTrackerOk = false
+            Log.d("StepTracker", "got PERMISSION DENIED")
+        } else {
+            stepTrackerOk = true
         }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
-        //status += "Started StepTracker (request: $startId)\n"
-
         // Step Tracker Listener
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
         if (stepSensor == null) {
-            //status = "No Sensor"
+            Log.d("StepTracker", "could not find a Step Sensor")
+            stepTrackerOk = false
         } else {
+            Log.d("StepTracker", "found a Step Sensor")
             sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_FASTEST)
             sensorRunning = true
+            stepTrackerOk = stepTrackerOk && true
         }
 
         return super.onStartCommand(intent, flags, startId)
@@ -87,24 +86,14 @@ class StepTracker : Service(), SensorEventListener {
 
     /** BINDING CALLBACKS **/
     override fun onBind(intent: Intent?): IBinder? {
-        //demand++
-        //status += "New Client\nNow bound to $demand clients\n"
-
         return binding
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
-        //demand--
-        //status += "Client Unbound\nNow bound to $demand clients\n"
-
-        //return super.onUnbind(intent)
         return true
     }
 
     override fun onRebind(intent: Intent?) {
-        //demand++
-        //status += "Client Rebound\nNow bound to $demand clients\n"
-
         super.onRebind(intent)
     }
 
@@ -124,7 +113,6 @@ class StepTracker : Service(), SensorEventListener {
             }
 
             Log.d("StepTracker", "$totalSteps")
-            //val currentSteps: Int = totalSteps.toInt() - previousTotalSteps.toInt()
         }
     }
 }

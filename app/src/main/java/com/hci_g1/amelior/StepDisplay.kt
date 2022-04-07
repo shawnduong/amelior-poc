@@ -84,8 +84,8 @@ class StepDisplay: Fragment(R.layout.step_display) {
     private val STConn = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             val binding = service as StepTracker.STBinding
-            STStatus = binding.getStepTrackerStatus() as String
-            binding.stepTrackerCallback(::readSteps)
+            //STStatus = binding.getStepTrackerStatus() as String
+            binding.stepTrackerCallback(::readSteps) // NOTE: this callback works even after unbinding.
             STBound = true
             //readout(STStatus)
         }
