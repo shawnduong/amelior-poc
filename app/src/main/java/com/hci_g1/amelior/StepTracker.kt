@@ -31,6 +31,7 @@ class StepTracker : Service(), SensorEventListener {
     private var demand: Int = 0
     private var totalSteps: Float = 0f
     private var previousTotalSteps: Float = 0f
+    private var baseline: Boolean = false
 
     private fun getStatus(): String
     {
@@ -39,7 +40,7 @@ class StepTracker : Service(), SensorEventListener {
 
     /** INTERFACE **/
     // Provide the status string to clients
-    private lateinit var readSteps : (Float) -> Float
+    private var readSteps : (Float) -> Float = {0f}
 
     inner class STBinding : Binder()
     {
@@ -79,7 +80,7 @@ class StepTracker : Service(), SensorEventListener {
         if (stepSensor == null) {
             status = "No Sensor"
         } else {
-            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
+            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_FASTEST)
             sensorRunning = true
         }
 
@@ -119,9 +120,16 @@ class StepTracker : Service(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?) {
         if (sensorRunning) {
-            totalSteps = event!!.values[0]
-            readSteps(totalSteps)
-            Log.d("StepTracker", "Sensor heard an event!")
+            if (!baseline) {
+                previousTotalSteps = event!!.values[0]
+                baseline = true
+            }
+            else{
+                totalSteps = event!!.values[0] - previousTotalSteps
+                readSteps(totalSteps)
+            }
+
+            Log.d("StepTracker", "$totalSteps")
             //val currentSteps: Int = totalSteps.toInt() - previousTotalSteps.toInt()
         }
     }
