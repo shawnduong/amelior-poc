@@ -23,7 +23,6 @@ class MainActivity: AppCompatActivity()
 	private var ServiceGPS: GPS? = null
 	private var ServiceGPSSubscribed: Boolean = false
 
-//	private lateinit var buttonGPS: Button
 	private lateinit var button: Button
 
 	private val ConnectionGPS = object: ServiceConnection
@@ -47,33 +46,16 @@ class MainActivity: AppCompatActivity()
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.main_activity)
 
-//		/* Initialize widgets. */
-//		buttonGPS = findViewById(R.id.buttonGPS)
+		/* Initialize widgets. */
+		button = findViewById(R.id.questionBtn)
 
 		/* UI logic. */
-		//next button
-		button = findViewById(R.id.questionBtn)
 		button.setOnClickListener {
 			val intent = Intent(this, QuestionActivity::class.java)
 			startActivity(intent)
 		}
 
-//		buttonGPS.setOnClickListener {
-//			if (ServiceGPS != null)
-//			{
-//				if ((ServiceGPSSubscribed == false) && (ServiceGPS?.subscribe() == true))
-//				{
-//					ServiceGPSSubscribed = true
-//					buttonGPS.text = "Disable GPS."
-//				}
-//				else if ((ServiceGPSSubscribed == true) && (ServiceGPS?.unsubscribe() == true))
-//				{
-//					ServiceGPSSubscribed = false
-//					buttonGPS.text = "Enable GPS."
-//				}
-//			}
-//		}
-
+		// TODO DELETE SAMPLE DAO CODE
 		val dao = UserDatabase.getInstance(this).userDao
 
 		val healths = listOf (
