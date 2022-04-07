@@ -61,13 +61,13 @@ class RecycleViewAdapter: RecyclerView.Adapter<RecycleViewAdapter.ViewHolder>() 
         holder.itemView.setOnClickListener {
         v: View -> Toast.makeText(v.context, "Clicked on $position the item", Toast.LENGTH_SHORT).show()
 
-//            object : View.OnClickListener {
-//                override fun onClick(p0: View?) {
-//                    val activity = p0!!.context as AppCompatActivity
-//                    val stepCountFragment = StepCountFragment()
-//                    activity.supportFragmentManager.beginTransaction().replace(R.id.recycleView,stepCountFragment).addToBackStack(null).commit()
-//                }
-//            }
+            object : View.OnClickListener {
+                override fun onClick(p0: View?) {
+                    val activity = p0!!.context as AppCompatActivity
+                    val stepCountFragment = StepCountFragment()
+                    activity.supportFragmentManager.beginTransaction().replace(R.id.recycleView,stepCountFragment).addToBackStack(null).commit()
+                }
+            }
 
         }
     }
