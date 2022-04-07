@@ -8,8 +8,7 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
-import android.widget.Button
-import android.widget.TextView
+import android.widget.*
 import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -24,7 +23,8 @@ class MainActivity: AppCompatActivity()
 	private var ServiceGPS: GPS? = null
 	private var ServiceGPSSubscribed: Boolean = false
 
-	private lateinit var buttonGPS: Button
+//	private lateinit var buttonGPS: Button
+	private lateinit var button: Button
 
 	private val ConnectionGPS = object: ServiceConnection
 	{
@@ -47,25 +47,32 @@ class MainActivity: AppCompatActivity()
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.main_activity)
 
-		/* Initialize widgets. */
-		buttonGPS = findViewById(R.id.buttonGPS)
+//		/* Initialize widgets. */
+//		buttonGPS = findViewById(R.id.buttonGPS)
 
 		/* UI logic. */
-		buttonGPS.setOnClickListener {
-			if (ServiceGPS != null)
-			{
-				if ((ServiceGPSSubscribed == false) && (ServiceGPS?.subscribe() == true))
-				{
-					ServiceGPSSubscribed = true
-					buttonGPS.text = "Disable GPS."
-				}
-				else if ((ServiceGPSSubscribed == true) && (ServiceGPS?.unsubscribe() == true))
-				{
-					ServiceGPSSubscribed = false
-					buttonGPS.text = "Enable GPS."
-				}
-			}
+		//next button
+		button = findViewById(R.id.questionBtn)
+		button.setOnClickListener {
+			val intent = Intent(this, QuestionActivity::class.java)
+			startActivity(intent)
 		}
+
+//		buttonGPS.setOnClickListener {
+//			if (ServiceGPS != null)
+//			{
+//				if ((ServiceGPSSubscribed == false) && (ServiceGPS?.subscribe() == true))
+//				{
+//					ServiceGPSSubscribed = true
+//					buttonGPS.text = "Disable GPS."
+//				}
+//				else if ((ServiceGPSSubscribed == true) && (ServiceGPS?.unsubscribe() == true))
+//				{
+//					ServiceGPSSubscribed = false
+//					buttonGPS.text = "Enable GPS."
+//				}
+//			}
+//		}
 
 		val dao = UserDatabase.getInstance(this).userDao
 
@@ -126,3 +133,4 @@ class MainActivity: AppCompatActivity()
 		private const val TAG = "MainActivity"
 	}
 }
+
