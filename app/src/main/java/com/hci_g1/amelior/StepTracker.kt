@@ -30,8 +30,8 @@ class StepTracker : Service(), SensorEventListener {
     private var status: String = "Lorem Ipsum"
     private var demand: Int = 0
     private var totalSteps: Float = 0f
-    private var previousTotalSteps: Float = 0f
-    private var baseline: Boolean = false
+    private var stepBaseline: Float = 0f
+    private var stepBaselineEstablished: Boolean = false
 
     private fun getStatus(): String
     {
@@ -120,12 +120,12 @@ class StepTracker : Service(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?) {
         if (sensorRunning) {
-            if (!baseline) {
-                previousTotalSteps = event!!.values[0]
-                baseline = true
+            if (!stepBaselineEstablished) {
+                stepBaseline = event!!.values[0]
+                stepBaselineEstablished = true
             }
             else{
-                totalSteps = event!!.values[0] - previousTotalSteps
+                totalSteps = event!!.values[0] - stepBaseline
                 readSteps(totalSteps)
             }
 
