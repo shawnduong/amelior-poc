@@ -1,25 +1,47 @@
 package com.hci_g1.amelior
 
+import android.Manifest
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.pm.PackageManager
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 
 class StepDisplay: Fragment(R.layout.step_display) {
     /** SELF REFERENCE MEMBERS **/
+    private lateinit var fragParentContext: Context
     private lateinit var fragContext: Context
     private lateinit var fragView: View
 
     /** LIFECYCLE CALLBACKS **/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        fragParentContext = requireActivity()
         fragContext = requireContext()
+
+        // Runtime Permissions
+        Log.d("StepDisplay", "Checking Permissions")
+        val permission = ContextCompat.checkSelfPermission(fragParentContext,
+            Manifest.permission.ACTIVITY_RECOGNITION)
+        if(permission == PackageManager.PERMISSION_DENIED) {
+            Log.d("StepDisplay", "Requesting Permissions")
+            ActivityCompat.requestPermissions(
+                fragParentContext as FragmentActivity,
+                arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
+                1
+            )
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,17 +70,24 @@ class StepDisplay: Fragment(R.layout.step_display) {
     }
 
     /** CONNECTING TO THE STEP TRACKER SERVICE **/
-
     private var STStatus: String? = null
     private var STRunning: Boolean = false
     private var STBound: Boolean = false
+    //private var steps: Float = 0f
+
+    private fun readSteps(s:Float): Float {
+        Log.d("StepDisplay", "steps read")
+        readout("$s")
+        return s
+    }
 
     private val STConn = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             val binding = service as StepTracker.STBinding
-            STStatus = binding.getStepTracker() as String
+            STStatus = binding.getStepTrackerStatus() as String
+            binding.stepTrackerCallback(::readSteps)
             STBound = true
-            readout(STStatus)
+            //readout(STStatus)
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
@@ -96,7 +125,6 @@ class StepDisplay: Fragment(R.layout.step_display) {
 
     /** BUTTON FUNCTIONS **/
     fun toggleStartST() {
-        //TODO(reason = "Implement UI controlled start/stop and bind/unbind to StepTacker")
         val startButton = fragView
             .findViewById<Button>(R.id.toggle_button_start_step_tracker)
         if(STRunning) {
@@ -114,9 +142,11 @@ class StepDisplay: Fragment(R.layout.step_display) {
         if(STRunning) {
             if(STBound) {
                 unbindST()
+                readout("Unbound.")
                 bindButton.text = getString(R.string.bind_step_tracker)
             } else {
                 bindST()
+                readout("Binding . . .")
                 bindButton.text = getString(R.string.unbind_step_tracker)
             }
         }
