@@ -22,29 +22,23 @@ import androidx.core.content.ContextCompat
 */
 
 class StepTracker : Service(), SensorEventListener {
-    /** STEP SENSOR **/
+    /** STEP TRACKER CONTROL **/
     private var sensorManager: SensorManager? = null
     private var sensorRunning: Boolean = false
+    private var stepTrackerOk: Boolean = false
+    private fun isOk(): Boolean = stepTrackerOk
 
-    /** DATA **/
-    private var status: String = "Lorem Ipsum"
-    private var demand: Int = 0
+    /** STEP TRACKER DATA **/
     private var totalSteps: Float = 0f
     private var stepBaseline: Float = 0f
     private var stepBaselineEstablished: Boolean = false
 
-    private fun getStatus(): String
-    {
-        return status
-    }
-
     /** INTERFACE **/
-    // Provide the status string to clients
     private var readSteps : (Float) -> Float = {0f}
 
     inner class STBinding : Binder()
     {
-        fun getStepTrackerStatus() : String { return this@StepTracker.getStatus() }
+        fun isOk() : Boolean { return this@StepTracker.isOk() }
         fun stepTrackerCallback(cb: (Float)->Float) : Unit {
             readSteps = cb
             return
@@ -57,7 +51,7 @@ class StepTracker : Service(), SensorEventListener {
     /** LIFECYCLE CALLBACKS **/
     override fun onCreate() {
         super.onCreate()
-        status = "Created new StepTracker\n"
+        //status = "Created new StepTracker\n"
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
@@ -73,12 +67,12 @@ class StepTracker : Service(), SensorEventListener {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        status += "Started StepTracker (request: $startId)\n"
+        //status += "Started StepTracker (request: $startId)\n"
 
         // Step Tracker Listener
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
         if (stepSensor == null) {
-            status = "No Sensor"
+            //status = "No Sensor"
         } else {
             sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_FASTEST)
             sensorRunning = true
@@ -93,23 +87,23 @@ class StepTracker : Service(), SensorEventListener {
 
     /** BINDING CALLBACKS **/
     override fun onBind(intent: Intent?): IBinder? {
-        demand++
-        status += "New Client\nNow bound to $demand clients\n"
+        //demand++
+        //status += "New Client\nNow bound to $demand clients\n"
 
         return binding
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
-        demand--
-        status += "Client Unbound\nNow bound to $demand clients\n"
+        //demand--
+        //status += "Client Unbound\nNow bound to $demand clients\n"
 
         //return super.onUnbind(intent)
         return true
     }
 
     override fun onRebind(intent: Intent?) {
-        demand++
-        status += "Client Rebound\nNow bound to $demand clients\n"
+        //demand++
+        //status += "Client Rebound\nNow bound to $demand clients\n"
 
         super.onRebind(intent)
     }
