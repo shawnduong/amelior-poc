@@ -67,7 +67,7 @@ class MainActivity: AppCompatActivity()
 			}
 		}
 
-    val dao = UserDatabase.getInstance(this).userDao
+		val dao = UserDatabase.getInstance(this).userDao
 
 		val healths = listOf (
 			Health(1, 300, 400, 120.27),
