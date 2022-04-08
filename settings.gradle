@@ -1,3 +1,5 @@
+/* Project-wide Gradle library/project settings. */
+
 pluginManagement
 {
 	repositories
