@@ -12,21 +12,8 @@
 		android:supportsRtl="true"
 		android:theme="@style/Theme.Amelior"
 	>
-		<activity
-			android:name=".HomeActivity"
-			android:exported="false"
-		/>
-		<activity
-			android:name=".MainMenuActivity"
-			android:exported="false"
-		/>
-		<activity
-			android:name=".QuestionActivity"
-			android:exported="false"
-		/>
-		<activity
-			android:name=".MainActivity"
-		/>
+
+		<!-- Splash screen. -->
 		<activity
 			android:name=".SplashScreen.SplashScreen"
 			android:exported="true"
@@ -36,8 +23,32 @@
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
+
 		</activity>
 
+		<!-- Welcome screen. -->
+		<activity
+			android:name=".MainActivity"
+			android:exported="false"
+		/>
+
+		<!-- Primary screen holding fragments and settings. -->
+		<activity
+			android:name=".MainMenuActivity"
+			android:exported="false"
+		/>
+
+		<activity
+			android:name=".HomeActivity"
+			android:exported="false"
+		/>
+
+		<activity
+			android:name=".QuestionActivity"
+			android:exported="false"
+		/>
+
+		<!-- GPS service. -->
 		<service
 			android:name=".GPS"
 			android:enabled="true"
@@ -45,15 +56,16 @@
 			android:foregroundServiceType="location"
 		/>
 
+		<!-- Step tracking service. -->
 		<service
 			android:name=".StepTracker"
-			android:exported="false">
-		</service>
+			android:exported="false"
+		/>
 
 	</application>
 
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+	<uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 
 </manifest>
