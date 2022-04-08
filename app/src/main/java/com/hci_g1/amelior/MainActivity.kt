@@ -27,8 +27,8 @@ import kotlinx.coroutines.launch
 
 class MainActivity: AppCompatActivity()
 {
-	private var ServiceGPS: GPS? = null
-	private var ServiceGPSSubscribed: Boolean = false
+	private var ServiceGps: Gps? = null
+	private var ServiceGpsSubscribed: Boolean = false
 
 	/**Step Counter Global Variables**/
 	private var sensorManager: SensorManager? = null
@@ -38,18 +38,18 @@ class MainActivity: AppCompatActivity()
 
 	private lateinit var button: Button
 
-	private val ConnectionGPS = object: ServiceConnection
+	private val ConnectionGps = object: ServiceConnection
 	{
 		override fun onServiceConnected(name: ComponentName, service: IBinder)
 		{
-			val binder = service as GPS._Binder
-			ServiceGPS = binder.get_service()
+			val binder = service as Gps._Binder
+			ServiceGps = binder.get_service()
 			Log.d(TAG, "GPS service connected.")
 		}
 
 		override fun onServiceDisconnected(name: ComponentName)
 		{
-			ServiceGPS = null
+			ServiceGps = null
 			Log.d(TAG, "GPS service disconnected.")
 		}
 	}
@@ -110,8 +110,8 @@ class MainActivity: AppCompatActivity()
 		super.onStart()
 
 		/* Bind to the GPS service. */
-		Intent(this, GPS::class.java).also { intent ->
-			bindService(intent, ConnectionGPS, Context.BIND_AUTO_CREATE)
+		Intent(this, Gps::class.java).also { intent ->
+			bindService(intent, ConnectionGps, Context.BIND_AUTO_CREATE)
 		}
 	}
 
