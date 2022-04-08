@@ -5,6 +5,10 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
@@ -12,16 +16,25 @@ import android.widget.*
 import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import com.hci_g1.amelior.entities.relations.UserHealthCrossRef
 import com.hci_g1.amelior.entities.User
 import com.hci_g1.amelior.entities.Health
+import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.launch
 
 class MainActivity: AppCompatActivity()
 {
 	private var ServiceGPS: GPS? = null
 	private var ServiceGPSSubscribed: Boolean = false
+
+	/**Step Counter Global Variables**/
+	private var sensorManager: SensorManager? = null
+	private var running = false
+	private var totalSteps = 0f
+	private var previousTotalSteps = 0f
 
 	private lateinit var button: Button
 
@@ -31,13 +44,13 @@ class MainActivity: AppCompatActivity()
 		{
 			val binder = service as GPS._Binder
 			ServiceGPS = binder.get_service()
-			Log.d(TAG, "Service connected.")
+			Log.d(TAG, "GPS service connected.")
 		}
 
 		override fun onServiceDisconnected(name: ComponentName)
 		{
 			ServiceGPS = null
-			Log.d(TAG, "Service disconnected.")
+			Log.d(TAG, "GPS service disconnected.")
 		}
 	}
 
@@ -55,7 +68,7 @@ class MainActivity: AppCompatActivity()
 			startActivity(intent)
 		}
 
-		// TODO DELETE SAMPLE DAO CODE
+		// TODO REFACTOR SAMPLE DAO CODE
 		val dao = UserDatabase.getInstance(this).userDao
 
 		val healths = listOf (
@@ -79,6 +92,16 @@ class MainActivity: AppCompatActivity()
 			userHealthRelations.forEach { dao.insertUserHealthCrossRef(it) }
 		}
     
+//		// TODO REFACTOR SAMPLE StepCounter CODE
+//		// Host the StepDisplay fragment whenever we instantiate this activity
+//		if(savedInstanceState == null)
+//		{
+//			supportFragmentManager.commit {
+//				setReorderingAllowed(true)
+//				add<StepDisplay>(R.id.step_display_container_view)
+//			}
+//		}
+
 		request_permissions()
 	}
 
