@@ -24,7 +24,8 @@ class MainActivity: AppCompatActivity()
 
 	private val ACTIVITY_RECOGNITION_REQUEST_CODE: Int = 93
 	private var stepTrackerRunning: Boolean = false
-	private var stepTrackerBound: Boolean = false
+	private var stepTrackerSubscribed: Boolean = false
+	private fun onStepUpdate(s: Float): Unit {/* Copy the value of s to a local step count */}
 
 	/* Widgets. */
 	private lateinit var welcomeNextButton: Button
@@ -46,20 +47,21 @@ class MainActivity: AppCompatActivity()
 		}
 	}
 
-	/* Step Tacker service connection */
+	/* Step Tracker service connection */
 	private val ConnStepTracker = object : ServiceConnection
 	{
 		override fun onServiceConnected(name: ComponentName, service: IBinder)
 		{
 			val binding = service as StepTracker.STBinding
-			binding.stepTrackerCallback(::readSteps) // NOTE: this callback works even after unbinding.
-			stepTrackerBound = true
+			binding.injectOnStepUpdate(::onStepUpdate)
+			stepTrackerSubscribed = true
+			Log.d(TAG,"Step Tracker service connected.")
 		}
 
 		override fun onServiceDisconnected(name: ComponentName)
 		{
-			stepTrackerBound = false
-			readout("StepTracker Killed or Disconnected!")
+			stepTrackerSubscribed = false
+			Log.d(TAG,"Step Tracker service killed or disconnected.")
 		}
 	}
 

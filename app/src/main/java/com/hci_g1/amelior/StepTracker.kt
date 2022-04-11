@@ -32,16 +32,14 @@ class StepTracker : Service(), SensorEventListener {
     private var totalSteps: Float = 0f
     private var stepBaseline: Float = 0f
     private var stepBaselineEstablished: Boolean = false
+    private var updateSteps : (Float) -> Unit = {}
 
     /** INTERFACE **/
-    private var readSteps : (Float) -> Float = {0f}
-
     inner class STBinding : Binder()
     {
         fun isOk() : Boolean { return this@StepTracker.isOk() }
-        fun stepTrackerCallback(cb: (Float)->Float) : Unit {
-            readSteps = cb
-            return
+        fun injectOnStepUpdate(onStepUpdate: (Float)->Unit) : Unit {
+            updateSteps = onStepUpdate
         }
     }
 
@@ -90,6 +88,7 @@ class StepTracker : Service(), SensorEventListener {
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
+        //updateSteps = {} // Eject the callback that was injected from calling bind().
         return true
     }
 
@@ -101,15 +100,19 @@ class StepTracker : Service(), SensorEventListener {
         // Must be implemented for SensorEventListener Interface.
     }
 
-    override fun onSensorChanged(event: SensorEvent?) {
-        if (sensorRunning) {
-            if (!stepBaselineEstablished) {
+    override fun onSensorChanged(event: SensorEvent?)
+    {
+        if (sensorRunning)
+        {
+            if (!stepBaselineEstablished)
+            {
                 stepBaseline = event!!.values[0]
                 stepBaselineEstablished = true
             }
-            else{
+            else
+            {
                 totalSteps = event!!.values[0] - stepBaseline
-                readSteps(totalSteps)
+                updateSteps(totalSteps)
             }
 
             Log.d("StepTracker", "$totalSteps")
