@@ -13,6 +13,8 @@ import android.widget.*
 import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 
 class MainActivity: AppCompatActivity()
 {
@@ -20,15 +22,9 @@ class MainActivity: AppCompatActivity()
 	private var ServiceGps: Gps? = null
 	private var ServiceGpsSubscribed: Boolean = false
 
-	/* TODO: Handle these when refactoring step counter.
-	 * "Those variables don't need to be there because they're in StepTracker.kt"
-	 * - Charison
-	 */
-	/**Step Counter Global Variables**/
-	private var sensorManager: SensorManager? = null
-	private var running = false
-	private var totalSteps = 0f
-	private var previousTotalSteps = 0f
+	private val ACTIVITY_RECOGNITION_REQUEST_CODE: Int = 93
+	private var stepTrackerRunning: Boolean = false
+	private var stepTrackerBound: Boolean = false
 
 	/* Widgets. */
 	private lateinit var welcomeNextButton: Button
@@ -47,6 +43,23 @@ class MainActivity: AppCompatActivity()
 		{
 			ServiceGps = null
 			Log.d(TAG, "GPS service disconnected.")
+		}
+	}
+
+	/* Step Tacker service connection */
+	private val ConnStepTracker = object : ServiceConnection
+	{
+		override fun onServiceConnected(name: ComponentName, service: IBinder)
+		{
+			val binding = service as StepTracker.STBinding
+			binding.stepTrackerCallback(::readSteps) // NOTE: this callback works even after unbinding.
+			stepTrackerBound = true
+		}
+
+		override fun onServiceDisconnected(name: ComponentName)
+		{
+			stepTrackerBound = false
+			readout("StepTracker Killed or Disconnected!")
 		}
 	}
 
@@ -77,6 +90,8 @@ class MainActivity: AppCompatActivity()
 		}
 	}
 
+	private fun getSTIntent(): Intent = Intent(this, StepTracker::class.java)
+
 	private fun request_permissions(): Boolean
 	{
 		/* Request LOCATION permissions only if they haven't been granted already. */
@@ -89,8 +104,21 @@ class MainActivity: AppCompatActivity()
 				34  /* Foreground only permissions request code */
 			)
 
-			return true
+			//return true
 		}
+
+		/* Request ACTIVITY_RECOGNITION permissions iff they're not already granted */
+		val permissionAR = ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)
+		if(permissionAR != PackageManager.PERMISSION_GRANTED)
+		{
+			ActivityCompat.requestPermissions(
+				this,
+				arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
+				ACTIVITY_RECOGNITION_REQUEST_CODE
+			)
+		}
+
+		//return true
 
 		return false
 	}
