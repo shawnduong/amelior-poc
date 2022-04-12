@@ -17,7 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 
 class MainActivity: AppCompatActivity()
-{
+{/*
 	/* Services. */
 	private val LOCATION_REQUEST_CODE: Int = 34 // Foreground only permissions request code
 	private var ServiceGps: Gps? = null
@@ -166,4 +166,4 @@ class MainActivity: AppCompatActivity()
 	{
 		private const val TAG = "MainActivity"
 	}
-}
+*/}
