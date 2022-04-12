@@ -15,7 +15,7 @@
 
 		<!-- Splash screen. -->
 		<activity
-			android:name=".SplashScreen.SplashScreen"
+			android:name=".SplashScreen"
 			android:exported="true"
 			android:theme="@style/Theme.AppCompat.Light.NoActionBar"
 		>
@@ -29,6 +29,10 @@
 		<!-- Welcome screen. -->
 		<activity
 			android:name=".MainActivity"
+			android:exported="false"
+		/>
+		<activity
+			android:name=".FirstTimeSetup"
 			android:exported="false"
 		/>
 
