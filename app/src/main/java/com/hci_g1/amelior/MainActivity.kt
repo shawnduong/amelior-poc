@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentActivity
 class MainActivity: AppCompatActivity()
 {
 	/* Services. */
+	private val LOCATION_REQUEST_CODE: Int = 34 // Foreground only permissions request code
 	private var ServiceGps: Gps? = null
 	private var ServiceGpsSubscribed: Boolean = false
 
@@ -92,8 +93,10 @@ class MainActivity: AppCompatActivity()
 		}
 
 		Intent(this, StepTracker::class.java).also { intent ->  
+			// Try to start the Step Tracker.
 			stepTrackerRunning = (startService(intent) != null)
 
+			// Try to bind the Step Tracker, or report a failure if it couldn't start.
 			if(stepTrackerRunning)
 				bindService(intent, ConnStepTracker, Context.BIND_AUTO_CREATE)
 			else
@@ -101,38 +104,62 @@ class MainActivity: AppCompatActivity()
 		}
 	}
 
-	private fun request_permissions(): Boolean
+	private fun request_location_permissions(): Boolean
 	{
 		/* Request LOCATION permissions only if they haven't been granted already. */
-		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-			!= PackageManager.PERMISSION_GRANTED)
+		val existingPermission = ActivityCompat.checkSelfPermission(
+			this,
+			Manifest.permission.ACCESS_FINE_LOCATION
+		)
+
+		if (existingPermission != PackageManager.PERMISSION_GRANTED)
 		{
 			ActivityCompat.requestPermissions(
 				this,
 				arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-				34  /* Foreground only permissions request code */
+				LOCATION_REQUEST_CODE
 			)
 
-			//return true
+			return true
 		}
 
+		Log.e(TAG, "Location permissions denied.")
+		return false
+	}
+
+	private fun request_activity_recognition_permissions(): Boolean
+	{
 		/* Request ACTIVITY_RECOGNITION permissions iff they're not already granted */
-		val permissionAR = ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)
-		if(permissionAR != PackageManager.PERMISSION_GRANTED)
+		val existingPermission = ContextCompat.checkSelfPermission(
+			this,
+			Manifest.permission.ACTIVITY_RECOGNITION
+		)
+
+		if(existingPermission != PackageManager.PERMISSION_GRANTED)
 		{
 			ActivityCompat.requestPermissions(
 				this,
 				arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
 				ACTIVITY_RECOGNITION_REQUEST_CODE
 			)
+
+			return true
 		}
 
-		//TODO(reason =
-		// Move each permission block to dedicated routines,
-		// Call all permission routines from an aggregation method)
-		//return true
-
+		Log.e(TAG, "Activity Recognition permissions denied.")
 		return false
+	}
+
+	private fun request_permissions(): Boolean
+	{
+		var allPermissionsGranted: Boolean = true
+		allPermissionsGranted = allPermissionsGranted && request_location_permissions()
+		allPermissionsGranted = allPermissionsGranted && request_activity_recognition_permissions()
+
+		if(!allPermissionsGranted)
+			Log.e(TAG, "One or more permissions were denied.")
+
+		return allPermissionsGranted
 	}
 
 	companion object
