@@ -54,7 +54,8 @@ class SplashScreen: AppCompatActivity()
 				startActivity(Intent(this, FirstTimeSetup::class.java))
 				finish()
 			},
-			3000  // milliseconds
+//			3000  // milliseconds
+			1000  // milliseconds
 		)
 
 		request_all_permissions()
