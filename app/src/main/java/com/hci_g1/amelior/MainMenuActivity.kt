@@ -14,13 +14,11 @@ class MainMenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_menu_activity)
 
-
         //******************action bar*****************
         val actionbar = supportActionBar
         //set actionbar title
         actionbar!!.title = "Amelior"
         //set back button
-        actionbar.setDisplayHomeAsUpEnabled(true)
         actionbar.setDisplayHomeAsUpEnabled(true)
 
         //***********************fragment*********************
@@ -29,7 +27,6 @@ class MainMenuActivity : AppCompatActivity() {
         val settingFragment = SettingFragment()
 
         makeCurrentFragment(homeFragment)
-//        bottom_navigation.setOnNavigationItemSelectedListener {
         findViewById<BottomNavigationView>(R.id.bottom_navigation)
             .setOnNavigationItemSelectedListener {
                 when(it.itemId) {
