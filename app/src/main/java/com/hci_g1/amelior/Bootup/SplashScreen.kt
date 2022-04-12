@@ -64,7 +64,7 @@ class SplashScreen: AppCompatActivity()
 	{
 		super.onStart()
 
-		TODO(reason = "Switch to starting the GPS service only, rather than binding.")
+		// TODO(reason = "Switch to starting the GPS service only, rather than binding.")
 		/* Bind to the GPS service. */
 		Intent(this, Gps::class.java).also { intent ->
 			bindService(intent, ConnectionGps, Context.BIND_AUTO_CREATE)
