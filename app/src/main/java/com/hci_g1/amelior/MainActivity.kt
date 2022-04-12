@@ -61,7 +61,7 @@ class MainActivity: AppCompatActivity()
 		override fun onServiceDisconnected(name: ComponentName)
 		{
 			stepTrackerSubscribed = false
-			Log.d(TAG,"Step Tracker service killed or disconnected.")
+			Log.d(TAG,"Step Tracker service was killed or disconnected.")
 		}
 	}
 
@@ -90,6 +90,8 @@ class MainActivity: AppCompatActivity()
 		Intent(this, Gps::class.java).also { intent ->
 			bindService(intent, ConnectionGps, Context.BIND_AUTO_CREATE)
 		}
+
+		//TODO(reason = "Start and Bind the step tracker ASAP")
 	}
 
 	private fun getSTIntent(): Intent = Intent(this, StepTracker::class.java)
@@ -120,6 +122,9 @@ class MainActivity: AppCompatActivity()
 			)
 		}
 
+		//TODO(reason =
+		// Move each permission block to dedicated routines,
+		// Call all permission routines from an aggregation method)
 		//return true
 
 		return false

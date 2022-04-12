@@ -38,9 +38,7 @@ class StepTracker : Service(), SensorEventListener {
     inner class STBinding : Binder()
     {
         fun isOk() : Boolean { return this@StepTracker.isOk() }
-        fun injectOnStepUpdate(onStepUpdate: (Float)->Unit) : Unit {
-            updateSteps = onStepUpdate
-        }
+        fun injectOnStepUpdate(onStepUpdate: (Float)->Unit) : Unit { updateSteps = onStepUpdate }
     }
 
     // Instantiate the interface to return it to clients
@@ -51,6 +49,7 @@ class StepTracker : Service(), SensorEventListener {
         super.onCreate()
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
+        // TODO(reason = Cleanup secondary permission check)
         // Runtime Permissions
         val permission = ContextCompat.checkSelfPermission(this,
             Manifest.permission.ACTIVITY_RECOGNITION)
@@ -62,13 +61,17 @@ class StepTracker : Service(), SensorEventListener {
         }
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int
+    {
         // Step Tracker Listener
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-        if (stepSensor == null) {
+        if (stepSensor == null)
+        {
             Log.d("StepTracker", "could not find a Step Sensor")
             stepTrackerOk = false
-        } else {
+        }
+        else
+        {
             Log.d("StepTracker", "found a Step Sensor")
             sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_FASTEST)
             sensorRunning = true
@@ -78,25 +81,31 @@ class StepTracker : Service(), SensorEventListener {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    override fun onDestroy() {
+    override fun onDestroy()
+    {
         super.onDestroy()
     }
 
     /** BINDING CALLBACKS **/
-    override fun onBind(intent: Intent?): IBinder? {
+    override fun onBind(intent: Intent?): IBinder?
+    {
         return binding
     }
 
-    override fun onUnbind(intent: Intent?): Boolean {
+    override fun onUnbind(intent: Intent?): Boolean
+    {
+        //TODO(reason = Test a reset of the injected callback on unbind/rebind)
         //updateSteps = {} // Eject the callback that was injected from calling bind().
         return true
     }
 
-    override fun onRebind(intent: Intent?) {
+    override fun onRebind(intent: Intent?)
+    {
         super.onRebind(intent)
     }
 
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int)
+    {
         // Must be implemented for SensorEventListener Interface.
     }
 
