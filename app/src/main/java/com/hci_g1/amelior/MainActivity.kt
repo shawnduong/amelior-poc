@@ -91,10 +91,15 @@ class MainActivity: AppCompatActivity()
 			bindService(intent, ConnectionGps, Context.BIND_AUTO_CREATE)
 		}
 
-		//TODO(reason = "Start and Bind the step tracker ASAP")
-	}
+		Intent(this, StepTracker::class.java).also { intent ->  
+			stepTrackerRunning = (startService(intent) != null)
 
-	private fun getSTIntent(): Intent = Intent(this, StepTracker::class.java)
+			if(stepTrackerRunning)
+				bindService(intent, ConnStepTracker, Context.BIND_AUTO_CREATE)
+			else
+				Log.e(TAG, "Step Tracker service fail to start.")
+		}
+	}
 
 	private fun request_permissions(): Boolean
 	{
