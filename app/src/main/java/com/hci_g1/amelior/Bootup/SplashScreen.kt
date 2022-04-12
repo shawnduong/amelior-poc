@@ -21,11 +21,9 @@ class SplashScreen: AppCompatActivity()
 	/* Services. */
 	private val LOCATION_REQUEST_CODE: Int = 34 // Foreground only permissions request code
 	private var ServiceGps: Gps? = null
-	private var ServiceGpsSubscribed: Boolean = false
 
 	private val ACTIVITY_RECOGNITION_REQUEST_CODE: Int = 93
 	private var stepTrackerRunning: Boolean = false
-	private var stepTrackerSubscribed: Boolean = false
 
 	/* GPS service connection. */
 	private val ConnectionGps = object: ServiceConnection
