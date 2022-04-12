@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import android.widget.*
@@ -14,24 +15,11 @@ import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 
-class FirstTimeSetup: AppCompatActivity()
+class SplashScreen: AppCompatActivity()
 {
 	/* Services. */
 	private var ServiceGps: Gps? = null
 	private var ServiceGpsSubscribed: Boolean = false
-
-	/* TODO: Handle these when refactoring step counter.
-	 * "Those variables don't need to be there because they're in StepTracker.kt"
-	 * - Charison
-	 */
-	/**Step Counter Global Variables**/
-	private var sensorManager: SensorManager? = null
-	private var running = false
-	private var totalSteps = 0f
-	private var previousTotalSteps = 0f
-
-	/* Widgets. */
-	private lateinit var welcomeNextButton: Button
 
 	/* GPS service connection. */
 	private val ConnectionGps = object: ServiceConnection
@@ -53,18 +41,17 @@ class FirstTimeSetup: AppCompatActivity()
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
 		super.onCreate(savedInstanceState)
-		setContentView(R.layout.main_activity)
+		setContentView(R.layout.splash_screen)
 
-		/* Initialize widgets. */
-		welcomeNextButton = findViewById(R.id.welcomeNextButton)
-
-		/* UI logic. */
-		welcomeNextButton.setOnClickListener {
-			val intent = Intent(this, QuestionActivity::class.java)
-			startActivity(intent)
-		}
-
-		request_permissions()
+		/* Wait 3000 milliseconds before moving to the next screen. */
+		Handler().postDelayed(
+			{
+				/* TODO: Only do first time setup the first time. */
+				startActivity(Intent(this, FirstTimeSetup::class.java))
+				finish()
+			},
+			3000  // milliseconds
+		)
 	}
 
 	override fun onStart()
@@ -97,6 +84,6 @@ class FirstTimeSetup: AppCompatActivity()
 
 	companion object
 	{
-		private const val TAG = "MainActivity"
+		private const val TAG = "SplashScreen"
 	}
 }
