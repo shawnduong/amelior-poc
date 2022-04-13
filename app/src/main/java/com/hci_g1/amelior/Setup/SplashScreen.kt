@@ -18,7 +18,7 @@ import androidx.core.content.ContextCompat
 class SplashScreen: AppCompatActivity()
 {
 	/* Services. */
-	private val LOCATION_REQUEST_CODE: Int = 34 // Foreground only permissions request code
+	private val LOCATION_REQUEST_CODE: Int = 34
 	private var ServiceGps: Gps? = null
 
 	private val ACTIVITY_RECOGNITION_REQUEST_CODE: Int = 93
@@ -81,7 +81,7 @@ class SplashScreen: AppCompatActivity()
 
 	private fun request_location_permissions(): Boolean
 	{
-		/* Request LOCATION permissions only if they haven't been granted already. */
+		/* Request LOCATION permissions only iff they haven't been granted already. */
 		val existingPermission = ActivityCompat.checkSelfPermission(
 			this,
 			Manifest.permission.ACCESS_FINE_LOCATION
@@ -110,7 +110,7 @@ class SplashScreen: AppCompatActivity()
 			Manifest.permission.ACTIVITY_RECOGNITION
 		)
 
-		if(existingPermission != PackageManager.PERMISSION_GRANTED)
+		if (existingPermission != PackageManager.PERMISSION_GRANTED)
 		{
 			ActivityCompat.requestPermissions(
 				this,
@@ -131,7 +131,7 @@ class SplashScreen: AppCompatActivity()
 		allPermissionsGranted = allPermissionsGranted && request_location_permissions()
 		allPermissionsGranted = allPermissionsGranted && request_activity_recognition_permissions()
 
-		if(!allPermissionsGranted)
+		if (!allPermissionsGranted)
 			Log.e(TAG, "One or more permissions were denied.")
 
 		return allPermissionsGranted
