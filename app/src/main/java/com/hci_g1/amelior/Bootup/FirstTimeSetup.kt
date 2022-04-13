@@ -9,9 +9,11 @@ import android.content.ServiceConnection
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.IBinder
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
@@ -39,10 +41,20 @@ class FirstTimeSetup: AppCompatActivity()
 		nameInputField.setOnKeyListener(
 			View.OnKeyListener { v, key, event ->
 
+				/* Upon finishing typing in the name, move the form field up. */
 				if (key == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP)
 				{
-					/* TODO: This is not a solution. It will not scale. */
-					ObjectAnimator.ofFloat(nameForm, "translationY", -500f).apply {
+					val displayMetrics = DisplayMetrics()
+					windowManager.defaultDisplay.getMetrics(displayMetrics)
+
+					val height = displayMetrics.heightPixels.toFloat()
+
+					ObjectAnimator.ofFloat(nameForm, "translationY", height * -0.33f).apply {
+						duration = 500  // milliseconds
+						start()
+					}
+
+					ObjectAnimator.ofFloat(nameForm, "alpha", 0.25f).apply {
 						duration = 500  // milliseconds
 						start()
 					}
