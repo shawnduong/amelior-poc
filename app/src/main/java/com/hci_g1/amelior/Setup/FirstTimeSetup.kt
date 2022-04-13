@@ -1,6 +1,7 @@
 package com.hci_g1.amelior
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 class FirstTimeSetup: AppCompatActivity()
 {
+	private lateinit var buttonSplashProceed: Button
 	private lateinit var editTextNameInputField: EditText
 	private lateinit var imageViewMoodGraphic: ImageView
 	private lateinit var linearLayoutMoodForm: LinearLayout
@@ -25,6 +27,7 @@ class FirstTimeSetup: AppCompatActivity()
 		setContentView(R.layout.first_time_setup)
 
 		/* Initialize widgets. */
+		buttonSplashProceed      = findViewById(R.id.splashProceed)
 		editTextNameInputField   = findViewById(R.id.nameInputField)
 		imageViewMoodGraphic     = findViewById(R.id.moodGraphic)
 		linearLayoutMoodForm     = findViewById(R.id.moodForm)
@@ -67,7 +70,8 @@ class FirstTimeSetup: AppCompatActivity()
 					/* Make next form visible, but still 0.00 opacity until animated to 1.00. */
 					linearLayoutMoodForm.visibility = View.VISIBLE
 
-					/* Wait 300 milliseconds fading in the next prompt. */
+					/* Wait 300 milliseconds fading in the next prompt. This gives it time for the previous
+					   prompt to move up and fade out first. */
 					Handler().postDelayed(
 						{
 							ObjectAnimator.ofFloat(linearLayoutMoodForm, "alpha", 1.00f).apply {
@@ -90,6 +94,17 @@ class FirstTimeSetup: AppCompatActivity()
 			{ 
 				override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean)
 				{
+					/* Make the proceed button visible and fade it in. */
+					if (buttonSplashProceed.visibility == View.INVISIBLE)
+					{
+						buttonSplashProceed.visibility = View.VISIBLE
+
+						ObjectAnimator.ofFloat(buttonSplashProceed, "alpha", 1.00f).apply {
+							duration = 300  // milliseconds
+							start()
+						}
+					}
+
 					if (progress < 20)
 					{
 						imageViewMoodGraphic.setImageResource(R.drawable.flower_level_01)
@@ -121,6 +136,12 @@ class FirstTimeSetup: AppCompatActivity()
 				override fun onStopTrackingTouch(seekBar: SeekBar) {}
 			}
 		)
+
+		/* Upon clicking the proceed button, save input to database and go to orientation. */
+		buttonSplashProceed.setOnClickListener {
+			startActivity(Intent(this, FirstTimeOrientation::class.java))
+			finish()
+		}
 	}
 
 	companion object

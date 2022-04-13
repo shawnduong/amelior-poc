@@ -23,7 +23,6 @@
 			android:layout_centerInParent="true"
 			android:orientation="horizontal"
 			android:gravity="center"
-			app:layout_constraintVertical_bias="0.50"
 		>
 
 			<TextView
@@ -54,7 +53,6 @@
 			android:orientation="horizontal"
 			android:alpha="0.00"
 			android:visibility="invisible"
-			app:layout_constraintVertical_bias="0.50"
 		>
 
 			<LinearLayout
@@ -101,6 +99,18 @@
 			/>
 
 		</LinearLayout>
+
+		<Button
+			android:id="@+id/splashProceed"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/moodForm"
+			android:layout_centerInParent="true"
+			android:layout_marginTop="32dp"
+			android:text="Proceed"
+			android:alpha="0.00"
+			android:visibility="invisible"
+		/>
 
 	</RelativeLayout>
 

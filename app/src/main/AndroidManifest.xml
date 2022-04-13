@@ -26,13 +26,16 @@
 
 		</activity>
 
-		<!-- Welcome screen. -->
-		<activity
-			android:name=".MainActivity"
-			android:exported="false"
-		/>
+		<!-- Setup screen. -->
 		<activity
 			android:name=".FirstTimeSetup"
+			android:exported="false"
+			android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+		/>
+
+		<!-- Orientation screen. -->
+		<activity
+			android:name=".FirstTimeOrientation"
 			android:exported="false"
 			android:theme="@style/Theme.AppCompat.Light.NoActionBar"
 		/>
@@ -40,6 +43,11 @@
 		<!-- Primary screen holding fragments and settings. -->
 		<activity
 			android:name=".MainMenuActivity"
+			android:exported="false"
+		/>
+
+		<activity
+			android:name=".MainActivity"
 			android:exported="false"
 		/>
 
