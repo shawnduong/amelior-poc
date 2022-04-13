@@ -15,6 +15,7 @@
         android:orientation="vertical"
 	>
 
+		<!-- User name entry form -->
 		<LinearLayout
 			android:id="@+id/nameForm"
 			android:layout_width="wrap_content"
@@ -44,14 +45,53 @@
 
 		</LinearLayout>
 
+		<!-- User first mood entry form -->
 		<LinearLayout
-			android:id="@+id/heightForm"
+			android:id="@+id/moodForm"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_below="@+id/nameForm"
+			android:layout_centerInParent="true"
 			android:orientation="horizontal"
+			android:alpha="0.00"
 			android:visibility="invisible"
+			app:layout_constraintVertical_bias="0.50"
 		>
+
+			<LinearLayout
+				android:id="@+id/moodGraphicContainer"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="32dp"
+				android:layout_marginLeft="48dp"
+				android:orientation="vertical"
+			>
+
+				<TextView
+					android:id="@+id/moodLabel"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_horizontal"
+					android:text="Today, I'm feeling"
+					android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+				/>
+
+				<ImageView
+					android:id="@+id/moodGraphic"
+					android:layout_width="150dp"
+					android:layout_height="150dp"
+					android:src="@drawable/flower_level_03"
+				/>
+
+				<TextView
+					android:id="@+id/moodDescription"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_horizontal"
+					android:text="Alright"
+					android:textAppearance="@style/TextAppearance.AppCompat.Small"
+				/>
+
+			</LinearLayout>
 
 			<SeekBar
 				android:id="@+id/moodBar"
@@ -61,62 +101,6 @@
 			/>
 
 		</LinearLayout>
-
-<!--
-		<LinearLayout
-			android:id="@+id/heightForm"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_centerInParent="true"
-			android:layout_below="@+id/nameForm"
-			android:orientation="horizontal"
-			android:gravity="center"
-		>
-
-			<TextView
-				android:id="@+id/heightPrompt"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="You're "
-				android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-			/>
-
-			<EditText
-				android:id="@+id/heightInputFeet"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:ems="2"
-				android:hint="5"
-				android:inputType="number"
-			/>
-
-			<TextView
-				android:id="@+id/heightFeet"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="ft."
-				android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-			/>
-
-			<EditText
-				android:id="@+id/heightInputInches"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:ems="2"
-				android:hint="8"
-				android:inputType="number"
-			/>
-
-			<TextView
-				android:id="@+id/heightInches"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="in."
-				android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-			/>
-
-		</LinearLayout>
--->
 
 	</RelativeLayout>
 
