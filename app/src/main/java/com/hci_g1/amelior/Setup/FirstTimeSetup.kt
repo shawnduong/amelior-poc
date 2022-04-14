@@ -107,27 +107,27 @@ class FirstTimeSetup: AppCompatActivity()
 
 					if (progress < 20)
 					{
-						imageViewMoodGraphic.setImageResource(R.drawable.flower_level_01)
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_01)
 						textViewMoodDescription.text = "Not too great!"
 					}
 					else if (progress < 40)
 					{
-						imageViewMoodGraphic.setImageResource(R.drawable.flower_level_02)
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_02)
 						textViewMoodDescription.text = "A little down"
 					}
 					else if (progress < 60)
 					{
-						imageViewMoodGraphic.setImageResource(R.drawable.flower_level_03)
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_03)
 						textViewMoodDescription.text = "Alright"
 					}
 					else if (progress < 80)
 					{
-						imageViewMoodGraphic.setImageResource(R.drawable.flower_level_04)
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_04)
 						textViewMoodDescription.text = "Good"
 					}
 					else
 					{
-						imageViewMoodGraphic.setImageResource(R.drawable.flower_level_05)
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_05)
 						textViewMoodDescription.text = "Great!"
 					}
 				}
