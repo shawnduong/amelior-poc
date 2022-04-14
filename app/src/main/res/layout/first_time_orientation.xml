@@ -9,12 +9,61 @@
 	tools:context=".FirstTimeOrientation"
 >
 
-	<TextView
-		android:id="@+id/orientationGreeting"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="Hello world!"
-		android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-	/>
+    <LinearLayout
+        android:id="@+id/orientation"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+		android:layout_centerInParent="true"
+		android:orientation="vertical"
+		android:gravity="center"
+	>
+
+		<TextView
+			android:id="@+id/orientationHello01"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Welcome to Amelior!"
+			android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+			android:translationY="64dp"
+			android:alpha="0.00"
+			android:visibility="invisible"
+		/>
+
+		<TextView
+			android:id="@+id/orientationHello02"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Amelior! helps you reach your health goals,\nboth mental and physical."
+			android:textAppearance="@style/TextAppearance.AppCompat.Small"
+			android:translationY="64dp"
+			android:alpha="0.00"
+			android:visibility="invisible"
+			android:textAlignment="center"
+		/>
+
+		<TextView
+			android:id="@+id/orientationHello03"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="In order to do this, we need a few permissions."
+			android:textAppearance="@style/TextAppearance.AppCompat.Small"
+			android:translationY="64dp"
+			android:alpha="0.00"
+			android:visibility="invisible"
+			android:textAlignment="center"
+		/>
+
+		<Button
+			android:id="@+id/permissionsButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/moodForm"
+			android:layout_centerInParent="true"
+			android:text="Grant Permissions"
+			android:alpha="0.00"
+			android:visibility="invisible"
+		/>
+
+	</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
