@@ -64,6 +64,21 @@
 			android:visibility="invisible"
 		/>
 
+		<!-- TODO: We probably want a better background color (backgroundTint). -->
+		<Button
+			android:id="@+id/continueButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/moodForm"
+			android:layout_centerInParent="true"
+			android:translationY="64dp"
+			android:text="Continue"
+			android:textColor="#FFFFFF"
+			android:backgroundTint="#819C81"
+			android:alpha="0.00"
+			android:visibility="invisible"
+		/>
+
 	</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
