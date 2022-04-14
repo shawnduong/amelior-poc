@@ -18,11 +18,11 @@ import androidx.core.content.ContextCompat
 class SplashScreen: AppCompatActivity()
 {
 	/* Services. */
-	private val LOCATION_REQUEST_CODE: Int = 34
 	private var ServiceGps: Gps? = null
+	private val LOCATION_REQUEST_CODE: Int = 10
 
-	private val ACTIVITY_RECOGNITION_REQUEST_CODE: Int = 93
 	private var stepTrackerRunning: Boolean = false
+	private val ACTIVITY_RECOGNITION_REQUEST_CODE: Int = 20
 
 	/* GPS service connection. */
 	private val ConnectionGps = object: ServiceConnection
@@ -46,17 +46,20 @@ class SplashScreen: AppCompatActivity()
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.splash_screen)
 
-		/* Wait 3000 milliseconds before moving to the next screen. */
+		/* TODO: We should actually do this at orientation and in the settings. */
+		/* Request all permissions before moving to the next activity. */
+		request_all_permissions()
+
+		/* Wait 1000 milliseconds before moving to the next screen. */
 		Handler().postDelayed(
 			{
 				/* TODO: Only do first time setup the first time. */
+				Log.d(TAG, "Moving to FirstTimeSetup.")
 				startActivity(Intent(this, FirstTimeSetup::class.java))
 				finish()
 			},
 			1000  // milliseconds
 		)
-
-		request_all_permissions()
 	}
 
 	override fun onStart()
@@ -79,62 +82,70 @@ class SplashScreen: AppCompatActivity()
 		}
 	}
 
-	private fun request_location_permissions(): Boolean
+	/* Request permissions and return true if the user either already has it or
+	   if the user accepts the permissions request prompt. Else, return false. */
+	private fun request_permissions(description: String, permission: String, code: Int): Boolean
 	{
-		/* Request LOCATION permissions only iff they haven't been granted already. */
-		val existingPermission = ActivityCompat.checkSelfPermission(
-			this,
-			Manifest.permission.ACCESS_FINE_LOCATION
-		)
-
-		if (existingPermission != PackageManager.PERMISSION_GRANTED)
+		/* Return true if permissions have already been granted. */
+		if (has_permissions(permission))
 		{
+			Log.d(TAG, "User has already accepted ${description} permissions.")
+			return true
+		}
+		/* Ask the user for permissions. */
+		else
+		{
+			Log.d(TAG, "User has not accepted ${description} permissions. Asking now.")
+
 			ActivityCompat.requestPermissions(
 				this,
 				arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-				LOCATION_REQUEST_CODE
+				code
 			)
 
-			return true
+			if (has_permissions(permission) == false)
+			{
+				Log.d(TAG, "User denied ${description} permissions.")
+				return false
+			}
+			else
+			{
+				return true
+			}
 		}
-
-		Log.e(TAG, "Location permissions denied.")
-		return false
 	}
 
-	private fun request_activity_recognition_permissions(): Boolean
+	/* Returns true if the permission is granted already. */
+	private fun has_permissions(permission: String): Boolean
 	{
-		/* Request ACTIVITY_RECOGNITION permissions iff they're not already granted */
-		val existingPermission = ContextCompat.checkSelfPermission(
-			this,
-			Manifest.permission.ACTIVITY_RECOGNITION
-		)
-
-		if (existingPermission != PackageManager.PERMISSION_GRANTED)
-		{
-			ActivityCompat.requestPermissions(
-				this,
-				arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
-				ACTIVITY_RECOGNITION_REQUEST_CODE
-			)
-
-			return true
-		}
-
-		Log.e(TAG, "Activity Recognition permissions denied.")
-		return false
+		return (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED)
 	}
 
+	/* Request all permissions and return true if all permissions are satisfied. */
 	private fun request_all_permissions(): Boolean
 	{
 		var allPermissionsGranted: Boolean = true
-		allPermissionsGranted = allPermissionsGranted && request_location_permissions()
-		allPermissionsGranted = allPermissionsGranted && request_activity_recognition_permissions()
 
-		if (!allPermissionsGranted)
-			Log.e(TAG, "One or more permissions were denied.")
+		allPermissionsGranted = allPermissionsGranted && request_permissions(
+			"location",
+			Manifest.permission.ACCESS_FINE_LOCATION,
+			LOCATION_REQUEST_CODE
+		)
 
-		return allPermissionsGranted
+		allPermissionsGranted = allPermissionsGranted && request_permissions(
+			"activity recognition",
+			Manifest.permission.ACTIVITY_RECOGNITION,
+			ACTIVITY_RECOGNITION_REQUEST_CODE
+		)
+
+		if (allPermissionsGranted == true)
+		{
+			Log.e(TAG, "All permissions are accepted.")
+			return true
+		}
+
+		Log.e(TAG, "One or more permissions were denied.")
+		return false
 	}
 
 	companion object
