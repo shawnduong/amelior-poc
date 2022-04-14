@@ -50,54 +50,65 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
-			android:orientation="horizontal"
+			android:orientation="vertical"
 			android:alpha="0.00"
 			android:visibility="invisible"
 		>
 
-			<LinearLayout
-				android:id="@+id/moodGraphicContainer"
+			<TextView
+				android:id="@+id/moodLabel"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="32dp"
-				android:layout_marginLeft="64dp"
-				android:orientation="vertical"
+				android:layout_gravity="center_horizontal"
+				android:text="Today, I'm feeling"
+				android:textAppearance="@style/TextAppearance.AppCompat.Large"
+			/>
+
+			<LinearLayout
+				android:id="@+id/moodFormInnerContainer"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:orientation="horizontal"
 			>
 
-				<TextView
-					android:id="@+id/moodLabel"
+				<LinearLayout
+					android:id="@+id/moodGraphicContainer"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_gravity="center_horizontal"
-					android:text="Today, I'm feeling"
-					android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-				/>
+					android:layout_marginTop="32dp"
+					android:layout_marginLeft="96dp"
+					android:orientation="vertical"
+				>
 
-				<ImageView
-					android:id="@+id/moodGraphic"
-					android:layout_width="128dp"
-					android:layout_height="128dp"
-					android:src="@drawable/emoji_level_03"
-				/>
+					<ImageView
+						android:id="@+id/moodGraphic"
+						android:layout_width="128dp"
+						android:layout_height="128dp"
+						android:src="@drawable/emoji_level_03"
+					/>
 
-				<TextView
-					android:id="@+id/moodDescription"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center_horizontal"
-					android:text="Alright"
-					android:textAppearance="@style/TextAppearance.AppCompat.Small"
+					<TextView
+						android:id="@+id/moodDescription"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="center_horizontal"
+						android:text="Alright"
+						android:textAppearance="@style/TextAppearance.AppCompat.Small"
+					/>
+
+				</LinearLayout>
+
+				<SeekBar
+					android:id="@+id/moodBar"
+					android:layout_width="210dp"
+					android:layout_height="210dp"
+					android:layout_marginTop="16dp"
+					android:rotation="270"
+					android:translationX="-64dp"
 				/>
 
 			</LinearLayout>
-
-			<SeekBar
-				android:id="@+id/moodBar"
-				android:layout_width="250dp"
-				android:layout_height="250dp"
-				android:rotation="270"
-				android:translationX="-32dp"
-			/>
 
 		</LinearLayout>
 
