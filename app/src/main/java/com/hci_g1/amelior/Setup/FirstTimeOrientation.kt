@@ -31,6 +31,14 @@ class FirstTimeOrientation: AppCompatActivity()
 		textViewOrientationHello02 = findViewById(R.id.orientationHello02)
 		textViewOrientationHello03 = findViewById(R.id.orientationHello03)
 
+		/* UI logic. */
+
+		/* Upon clicking the permissions button, ask the user for permissions.
+		   Then, change it from permissions to proceed. */
+		buttonPermissionsButton.setOnClickListener {
+			Permissions.request_all_permissions(this)
+		}
+
 		/* Get the screen metrics. */
 		windowManager.defaultDisplay.getMetrics(displayMetrics)
 		screenHeight = displayMetrics.heightPixels.toFloat()
@@ -105,12 +113,18 @@ class FirstTimeOrientation: AppCompatActivity()
 		/* Give the user 3000 milliseconds to view "In order to..." */
 		Handler().postDelayed(
 			{
-				/* Bring the third text up and fade it out. */
+				/* Bring the third text up. */
 				ObjectAnimator.ofFloat(textViewOrientationHello03, "translationY", screenHeight * -0.18f).apply {
 					duration = 1000  // milliseconds
 					start()
 				}
-				ObjectAnimator.ofFloat(textViewOrientationHello03, "alpha", 0.25f).apply {
+
+				/* Bring all texts full opacity. */
+				ObjectAnimator.ofFloat(textViewOrientationHello01, "alpha", 1.00f).apply {
+					duration = 1000  // milliseconds
+					start()
+				}
+				ObjectAnimator.ofFloat(textViewOrientationHello02, "alpha", 1.00f).apply {
 					duration = 1000  // milliseconds
 					start()
 				}
