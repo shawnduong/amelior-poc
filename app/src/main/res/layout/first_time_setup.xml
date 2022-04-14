@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".FirstTimeSetup"
+>
+
+    <RelativeLayout
+        android:id="@+id/setupForm"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+	>
+
+		<!-- User name entry form -->
+		<LinearLayout
+			android:id="@+id/nameForm"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:orientation="horizontal"
+			android:gravity="center"
+		>
+
+			<TextView
+				android:id="@+id/nameLabel"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Hi, I'm "
+				android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+			/>
+
+			<EditText
+				android:id="@+id/nameInputField"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:ems="10"
+				android:hint="John Doe"
+				android:inputType="textPersonName|textCapWords"
+			/>
+
+		</LinearLayout>
+
+		<!-- User first mood entry form -->
+		<LinearLayout
+			android:id="@+id/moodForm"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:orientation="vertical"
+			android:alpha="0.00"
+			android:visibility="invisible"
+		>
+
+			<TextView
+				android:id="@+id/moodLabel"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:text="Today, I'm feeling"
+				android:textAppearance="@style/TextAppearance.AppCompat.Large"
+			/>
+
+			<LinearLayout
+				android:id="@+id/moodFormInnerContainer"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:orientation="horizontal"
+			>
+
+				<LinearLayout
+					android:id="@+id/moodGraphicContainer"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="32dp"
+					android:layout_marginLeft="96dp"
+					android:orientation="vertical"
+				>
+
+					<ImageView
+						android:id="@+id/moodGraphic"
+						android:layout_width="128dp"
+						android:layout_height="128dp"
+						android:src="@drawable/emoji_level_03"
+					/>
+
+					<TextView
+						android:id="@+id/moodDescription"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="center_horizontal"
+						android:text="Alright"
+						android:textAppearance="@style/TextAppearance.AppCompat.Small"
+					/>
+
+				</LinearLayout>
+
+				<SeekBar
+					android:id="@+id/moodBar"
+					android:layout_width="210dp"
+					android:layout_height="210dp"
+					android:layout_marginTop="16dp"
+					android:rotation="270"
+					android:translationX="-64dp"
+				/>
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+		<Button
+			android:id="@+id/splashProceed"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/moodForm"
+			android:layout_centerInParent="true"
+			android:layout_marginTop="32dp"
+			android:text="Proceed"
+			android:alpha="0.00"
+			android:visibility="invisible"
+		/>
+
+	</RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
