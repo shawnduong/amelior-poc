@@ -9,6 +9,11 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+
+import com.hci_g1.amelior.entities.Mood
+import com.hci_g1.amelior.entities.User
 
 class FirstTimeOrientation: AppCompatActivity()
 {
@@ -153,6 +158,17 @@ class FirstTimeOrientation: AppCompatActivity()
 
 		/* Upon clicking the continue button, go to the main page. */
 		buttonContinueButton.setOnClickListener {
+
+			val moodDao = UserDatabase.getInstance(this).moodDao
+			val userDao = UserDatabase.getInstance(this).userDao
+
+			/* For debugging purposes, log the user input. */
+			lifecycleScope.launch {
+				val mood = moodDao.get_mood(0)
+				val user = userDao.get_user("user")
+				Log.d(TAG, "User input: name=${user.name}; mood=${mood.value} (t=${mood.timestamp})")
+			}
+
 			startActivity(Intent(this, MainMenuActivity::class.java))
 			finish()
 		}

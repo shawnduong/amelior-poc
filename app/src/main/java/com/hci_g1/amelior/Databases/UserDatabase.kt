@@ -3,11 +3,13 @@ package com.hci_g1.amelior
 import android.content.Context
 import androidx.room.*
 
+import com.hci_g1.amelior.entities.Mood
 import com.hci_g1.amelior.entities.User
 
 @Database
 (
 	entities = [
+		Mood::class,
 		User::class,
 	],
 	version = 1
@@ -15,6 +17,7 @@ import com.hci_g1.amelior.entities.User
 
 abstract class UserDatabase: RoomDatabase()
 {
+	abstract val moodDao: MoodDao
 	abstract val userDao: UserDao
 
 	companion object
