@@ -10,9 +10,16 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+
+import com.hci_g1.amelior.entities.User
 
 class FirstTimeSetup: AppCompatActivity()
 {
+	private var user: User = User("user", "sample", false)
+
+	private lateinit var dao: UserDao
 	private lateinit var buttonSplashProceed: Button
 	private lateinit var editTextNameInputField: EditText
 	private lateinit var imageViewMoodGraphic: ImageView
@@ -25,6 +32,9 @@ class FirstTimeSetup: AppCompatActivity()
 	{
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.first_time_setup)
+
+		/* Initialize variables. */
+		dao = UserDatabase.getInstance(this).userDao
 
 		/* Initialize widgets. */
 		buttonSplashProceed      = findViewById(R.id.splashProceed)
@@ -139,6 +149,12 @@ class FirstTimeSetup: AppCompatActivity()
 
 		/* Upon clicking the proceed button, save input to database and go to orientation. */
 		buttonSplashProceed.setOnClickListener {
+
+			val name: String = editTextNameInputField.text.toString()
+			lifecycleScope.launch {
+				dao.insert_user(User("user", name, true))
+			}
+
 			startActivity(Intent(this, FirstTimeOrientation::class.java))
 			finish()
 		}
