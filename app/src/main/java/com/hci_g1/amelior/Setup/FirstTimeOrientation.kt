@@ -18,8 +18,8 @@ import com.hci_g1.amelior.entities.User
 class FirstTimeOrientation: AppCompatActivity()
 {
 	private val displayMetrics = DisplayMetrics()
-
 	private var screenHeight: Float = 0f
+
 	private lateinit var buttonContinueButton: Button
 	private lateinit var buttonPermissionsButton: Button
 	private lateinit var textViewOrientationHello01: TextView
@@ -159,6 +159,8 @@ class FirstTimeOrientation: AppCompatActivity()
 		/* Upon clicking the continue button, go to the main page. */
 		buttonContinueButton.setOnClickListener {
 
+			/* Since these are here only for debugging, they're local to this scope
+			   and are not used anywhere else. */
 			val moodDao = UserDatabase.getInstance(this).moodDao
 			val userDao = UserDatabase.getInstance(this).userDao
 
