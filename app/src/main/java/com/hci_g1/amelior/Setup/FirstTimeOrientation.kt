@@ -9,12 +9,17 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+
+import com.hci_g1.amelior.entities.Mood
+import com.hci_g1.amelior.entities.User
 
 class FirstTimeOrientation: AppCompatActivity()
 {
 	private val displayMetrics = DisplayMetrics()
-
 	private var screenHeight: Float = 0f
+
 	private lateinit var buttonContinueButton: Button
 	private lateinit var buttonPermissionsButton: Button
 	private lateinit var textViewOrientationHello01: TextView
@@ -153,6 +158,19 @@ class FirstTimeOrientation: AppCompatActivity()
 
 		/* Upon clicking the continue button, go to the main page. */
 		buttonContinueButton.setOnClickListener {
+
+			/* Since these are here only for debugging, they're local to this scope
+			   and are not used anywhere else. */
+			val moodDao = UserDatabase.getInstance(this).moodDao
+			val userDao = UserDatabase.getInstance(this).userDao
+
+			/* For debugging purposes, log the user input. */
+			lifecycleScope.launch {
+				val mood = moodDao.get_mood(0)
+				val user = userDao.get_user("user")
+				Log.d(TAG, "User input: name=${user.name}; mood=${mood.value} (t=${mood.timestamp})")
+			}
+
 			startActivity(Intent(this, MainMenuActivity::class.java))
 			finish()
 		}
