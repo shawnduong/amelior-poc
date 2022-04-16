@@ -10,8 +10,6 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
 
 import com.hci_g1.amelior.entities.Mood
 import com.hci_g1.amelior.entities.User
@@ -155,10 +153,8 @@ class FirstTimeSetup: AppCompatActivity()
 			val name: String = editTextNameInputField.text.toString()
 			val mood: Int = seekBarMoodBar.getProgress()
 
-			lifecycleScope.launch {
-				moodDao.insert_mood(Mood(0, System.currentTimeMillis(), mood))
-				userDao.insert_user(User("user", name, true))
-			}
+			moodDao.insert_mood_now(Mood(0, System.currentTimeMillis(), mood))
+			userDao.insert_user_now(User("user", name))
 
 			startActivity(Intent(this, FirstTimeOrientation::class.java))
 			finish()

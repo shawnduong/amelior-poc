@@ -37,6 +37,8 @@ abstract class UserDatabase: RoomDatabase()
 					UserDatabase::class.java,
 					"user_db"
 				)
+				/* Allow synchronous SQL queries. */
+				.allowMainThreadQueries()
 				/* Uses .also because we want to update our INSTANCE. */
 				.build().also {
 					INSTANCE = it

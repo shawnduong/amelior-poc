@@ -9,5 +9,4 @@ data class User
 	@PrimaryKey(autoGenerate=false)
 	val key: String,
 	val name: String,
-	val setup: Boolean,
 )

@@ -11,12 +11,16 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
+import com.hci_g1.amelior.entities.User
+
 class SplashScreen: AppCompatActivity()
 {
 	/* Services. */
 	private var ServiceGps: Gps? = null
 
 	private var stepTrackerRunning: Boolean = false
+
+	private lateinit var userDao: UserDao
 
 	/* GPS service connection. */
 	private val ConnectionGps = object: ServiceConnection
@@ -40,12 +44,23 @@ class SplashScreen: AppCompatActivity()
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.splash_screen)
 
+		/* Initialize variables. */
+		userDao = UserDatabase.getInstance(this).userDao
+
 		/* Wait 1000 milliseconds before moving to the next screen. */
 		Handler().postDelayed(
 			{
-				/* TODO: Only do first time setup the first time. */
-				Log.d(TAG, "Moving to FirstTimeSetup.")
-				startActivity(Intent(this, FirstTimeSetup::class.java))
+				if (userDao.is_setup() == false)
+				{
+					Log.d(TAG, "Moving to FirstTimeSetup.")
+					startActivity(Intent(this, FirstTimeSetup::class.java))
+				}
+				else
+				{
+					Log.d(TAG, "Moving to MainMenuActivity.")
+					startActivity(Intent(this, MainMenuActivity::class.java))
+				}
+
 				finish()
 			},
 			1000  // milliseconds
