@@ -9,11 +9,12 @@ import com.hci_g1.amelior.Fragment.HomeFragment
 import com.hci_g1.amelior.Fragment.SettingFragment
 
 class MainMenuActivity : AppCompatActivity() {
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.main_menu_activity)
-//
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.main_menu_activity)
+    }
+
 //        //******************action bar*****************
 //        val actionbar = supportActionBar
 //        //set actionbar title

@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph">
+    android:id="@+id/nav_graph"
+	app:startDestination="@id/favoriteFragment">
 
+	<fragment
+		android:id="@+id/settingFragment"
+		android:name="com.hci_g1.amelior.Fragment.SettingFragment"
+		android:label="SettingFragment" >
+		<action
+			android:id="@+id/from_settingFragment_to_favoriteFragment"
+			app:destination="@id/favoriteFragment" />
+	</fragment>
+	<fragment
+		android:id="@+id/favoriteFragment"
+		android:name="com.hci_g1.amelior.Fragment.FavoriteFragment"
+		android:label="FavoriteFragment" >
+		<action
+			android:id="@+id/from_favoriteFragment_to_settingFragment"
+			app:destination="@id/settingFragment" />
+	</fragment>
 </navigation>
