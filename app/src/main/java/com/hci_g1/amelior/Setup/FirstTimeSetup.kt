@@ -11,8 +11,14 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
+import com.hci_g1.amelior.entities.Mood
+import com.hci_g1.amelior.entities.User
+
 class FirstTimeSetup: AppCompatActivity()
 {
+	private lateinit var moodDao: MoodDao
+	private lateinit var userDao: UserDao
+
 	private lateinit var buttonSplashProceed: Button
 	private lateinit var editTextNameInputField: EditText
 	private lateinit var imageViewMoodGraphic: ImageView
@@ -25,6 +31,10 @@ class FirstTimeSetup: AppCompatActivity()
 	{
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.first_time_setup)
+
+		/* Initialize variables. */
+		moodDao = UserDatabase.getInstance(this).moodDao
+		userDao = UserDatabase.getInstance(this).userDao
 
 		/* Initialize widgets. */
 		buttonSplashProceed      = findViewById(R.id.splashProceed)
@@ -139,6 +149,13 @@ class FirstTimeSetup: AppCompatActivity()
 
 		/* Upon clicking the proceed button, save input to database and go to orientation. */
 		buttonSplashProceed.setOnClickListener {
+
+			val name: String = editTextNameInputField.text.toString()
+			val mood: Int = seekBarMoodBar.getProgress()
+
+			moodDao.insert_mood_now(Mood(0, System.currentTimeMillis(), mood))
+			userDao.insert_user_now(User("user", name))
+
 			startActivity(Intent(this, FirstTimeOrientation::class.java))
 			finish()
 		}
