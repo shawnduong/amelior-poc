@@ -2,22 +2,18 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-	app:startDestination="@id/favoriteFragment">
+	app:startDestination="@id/homeFragment">
 
 	<fragment
 		android:id="@+id/settingFragment"
 		android:name="com.hci_g1.amelior.Fragment.SettingFragment"
-		android:label="SettingFragment" >
-		<action
-			android:id="@+id/from_settingFragment_to_favoriteFragment"
-			app:destination="@id/favoriteFragment" />
-	</fragment>
+		android:label="SettingFragment" />
 	<fragment
 		android:id="@+id/favoriteFragment"
 		android:name="com.hci_g1.amelior.Fragment.FavoriteFragment"
-		android:label="FavoriteFragment" >
-		<action
-			android:id="@+id/from_favoriteFragment_to_settingFragment"
-			app:destination="@id/settingFragment" />
-	</fragment>
+		android:label="FavoriteFragment" />
+	<fragment
+		android:id="@+id/homeFragment"
+		android:name="com.hci_g1.amelior.Fragment.HomeFragment"
+		android:label="HomeFragment" />
 </navigation>

@@ -16,11 +16,6 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite){
         savedInstanceState: Bundle?
     ): View? {
         val favoriteView = inflater.inflate(R.layout.fragment_favorite, container, false)
-
-        favoriteView.favorite_label.setOnClickListener {
-            favoriteView.findNavController().navigate(R.id.from_favoriteFragment_to_settingFragment)
-        }
-
         return favoriteView
     }
 }

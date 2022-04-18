@@ -17,11 +17,6 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         savedInstanceState: Bundle?
     ): View? {
         val settingView = inflater.inflate(R.layout.fragment_setting, container, false)
-
-        settingView.setting_label.setOnClickListener {
-            settingView.findNavController().navigate(R.id.from_settingFragment_to_favoriteFragment)
-        }
-
         return settingView
     }
 
