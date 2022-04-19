@@ -171,6 +171,7 @@ class FirstTimeOrientation: AppCompatActivity()
 				Log.d(TAG, "User input: name=${user.name}; mood=${mood.value} (t=${mood.timestamp})")
 			}
 
+			Log.d(TAG, "Moving to MainMenuActivity.")
 			startActivity(Intent(this, MainMenuActivity::class.java))
 			finish()
 		}

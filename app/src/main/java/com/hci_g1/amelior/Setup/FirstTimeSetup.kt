@@ -156,6 +156,7 @@ class FirstTimeSetup: AppCompatActivity()
 			moodDao.insert_mood_now(Mood(0, System.currentTimeMillis(), mood))
 			userDao.insert_user_now(User("user", name))
 
+			Log.d(TAG, "Moving to FirstTimeOrientation.")
 			startActivity(Intent(this, FirstTimeOrientation::class.java))
 			finish()
 		}
