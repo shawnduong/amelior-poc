@@ -30,5 +30,7 @@ class HomeFragment: Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = RecycleViewAdapter()
         }
+
+        // TODO: Implement onClickListeners inside recycleview that use the navHost provided in MainMenuActivity.kt
     }
 }
