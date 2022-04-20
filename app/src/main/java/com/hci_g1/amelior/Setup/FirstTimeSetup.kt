@@ -158,6 +158,7 @@ class FirstTimeSetup: AppCompatActivity()
 
 			Log.d(TAG, "Moving to FirstTimeOrientation.")
 			startActivity(Intent(this, FirstTimeOrientation::class.java))
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
 			finish()
 		}
 	}
