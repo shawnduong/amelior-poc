@@ -42,7 +42,7 @@
 
 		<!-- Primary screen holding fragments and settings. -->
 		<activity
-			android:name=".MainMenuActivity"
+			android:name=".Dashboard"
 			android:exported="false"
 		/>
 

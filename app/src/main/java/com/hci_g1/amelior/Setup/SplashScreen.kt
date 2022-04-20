@@ -57,8 +57,8 @@ class SplashScreen: AppCompatActivity()
 				}
 				else
 				{
-					Log.d(TAG, "Moving to MainMenuActivity.")
-					startActivity(Intent(this, MainMenuActivity::class.java))
+					Log.d(TAG, "Moving to Dashboard.")
+					startActivity(Intent(this, Dashboard::class.java))
 				}
 
 				finish()

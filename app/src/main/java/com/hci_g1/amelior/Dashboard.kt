@@ -8,12 +8,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainMenuActivity : AppCompatActivity() {
-
+class Dashboard: AppCompatActivity()
+{
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_menu_activity)
+        setContentView(R.layout.dashboard)
 
         /*
             Get the NavController from the NavHost this activity contains
@@ -28,8 +28,3 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 }
-
-
-
-
-
