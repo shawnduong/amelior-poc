@@ -4,76 +4,28 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".MainMenuActivity">
+	tools:context=".MainMenuActivity"
+>
 
-<!--	The Navigation Host Fragment:
-			A type of fragment defined in the navigation component library.
-			Serves as the display for the screens outlined in its given navGraph attribute.
--->
+	<!-- Navigation host serves as display for screens in its navGraph. -->
 	<androidx.fragment.app.FragmentContainerView
 		android:id="@+id/NavigationHostFragment"
 		android:name="androidx.navigation.fragment.NavHostFragment"
-		app:defaultNavHost="true"
-		app:navGraph="@navigation/nav_graph"
 		android:layout_height="match_parent"
 		android:layout_width="match_parent"
+		app:defaultNavHost="true"
+		app:navGraph="@navigation/nav_graph"
 	/>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+	<com.google.android.material.bottomnavigation.BottomNavigationView
 		android:id="@+id/bottom_navigation_bar"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		app:itemBackground="@color/teal_700"
-
 		app:itemIconTint="#fff"
 		app:itemTextColor="#fff"
 		app:menu="@menu/bottom_navigation_menu"
 	/>
-<!--    <FrameLayout
-		android:id="@+id/fl_wrapper"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent" />-->
-	<!--        android:layout_above="@+id/bottom_navigation" />-->
 
-
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recycleView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="16dp"-->
-<!--        android:layout_marginStart=""-->
-<!--        android:layout_marginTop=""-->
-<!--        android:layout_marginEnd=""-->
-<!--        android:layout_marginBottom=""-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
 </RelativeLayout>
-
-	<!--fragment as a two button -->
-	<!--    <androidx.fragment.app.FragmentContainerView-->
-	<!--        android:id="@+id/fragmentContainer"-->
-	<!--        android:layout_width="match_parent"-->
-	<!--        android:layout_height="650dp" />-->
-
-	<!--    <Button-->
-	<!--        android:id="@+id/stepCountBtn"-->
-	<!--        android:layout_width="150dp"-->
-	<!--        android:layout_height="60dp"-->
-	<!--        android:layout_alignParentBottom="true"-->
-	<!--        android:layout_marginStart="30dp"-->
-	<!--        android:layout_marginBottom="10dp"-->
-	<!--        android:backgroundTint="@color/teal_700"-->
-	<!--        android:text="Step Count" />-->
-
-	<!--    <Button-->
-	<!--        android:id="@+id/distanceCountBtn"-->
-	<!--        android:layout_width="150dp"-->
-	<!--        android:layout_height="60dp"-->
-	<!--        android:layout_alignParentRight="true"-->
-	<!--        android:layout_alignParentBottom="true"-->
-	<!--        android:layout_marginEnd="30dp"-->
-	<!--        android:layout_marginBottom="10dp"-->
-	<!--        android:backgroundTint="@color/teal_700"-->
-	<!--        android:text="Distance Count" />-->
-
