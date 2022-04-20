@@ -22,6 +22,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
+		android:background="@color/teal_700"
 		app:itemBackground="@color/teal_700"
 		app:itemIconTint="#fff"
 		app:itemTextColor="#fff"
