@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph"
-	app:startDestination="@id/homeFragment">
+<navigation
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/nav_graph"
+	app:startDestination="@id/homeFragment"
+>
 
 	<fragment
 		android:id="@+id/settingFragment"
 		android:name="com.hci_g1.amelior.Fragment.SettingFragment"
-		android:label="SettingFragment" />
-	<fragment
-		android:id="@+id/favoriteFragment"
-		android:name="com.hci_g1.amelior.Fragment.FavoriteFragment"
-		android:label="FavoriteFragment" />
+		android:label="SettingFragment"
+	/>
+
 	<fragment
 		android:id="@+id/homeFragment"
 		android:name="com.hci_g1.amelior.Fragment.HomeFragment"
-		android:label="HomeFragment" />
+		android:label="HomeFragment"
+	/>
+
 </navigation>

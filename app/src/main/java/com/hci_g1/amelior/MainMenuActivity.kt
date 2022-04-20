@@ -7,9 +7,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.hci_g1.amelior.Fragment.FavoriteFragment
-import com.hci_g1.amelior.Fragment.HomeFragment
-import com.hci_g1.amelior.Fragment.SettingFragment
 
 class MainMenuActivity : AppCompatActivity() {
 
@@ -24,7 +21,7 @@ class MainMenuActivity : AppCompatActivity() {
         */
         val navHost = supportFragmentManager.findFragmentById(R.id.NavigationHostFragment)
         val navController = navHost?.findNavController()
-        val bottomNavBar = findViewById<BottomNavigationView>(R.id.bottom_navigation_bar)
+        val bottomNavBar = findViewById<BottomNavigationView>(R.id.navbar)
         if (navController != null)
         {
             NavigationUI.setupWithNavController(bottomNavBar, navController)
