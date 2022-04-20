@@ -46,21 +46,6 @@
 			android:exported="false"
 		/>
 
-		<activity
-			android:name=".MainActivity"
-			android:exported="false"
-		/>
-
-		<activity
-			android:name=".HomeActivity"
-			android:exported="false"
-		/>
-
-		<activity
-			android:name=".QuestionActivity"
-			android:exported="false"
-		/>
-
 		<!-- GPS service. -->
 		<service
 			android:name=".Gps"
@@ -72,6 +57,7 @@
 		<!-- Step tracking service. -->
 		<service
 			android:name=".StepTracker"
+			android:enabled="true"
 			android:exported="false"
 		/>
 
