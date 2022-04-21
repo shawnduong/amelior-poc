@@ -23,4 +23,9 @@
 		<item name="android:windowFullscreen">true</item>
     </style>
 
+	<!-- Hide the bars on a number picker. -->
+	<style name="Theme.Amelior.NumberPicker">
+		<item name="colorControlNormal">#00000000</item>
+	</style>
+
 </resources>

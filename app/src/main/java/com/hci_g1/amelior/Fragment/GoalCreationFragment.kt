@@ -20,7 +20,10 @@ class GoalCreationFragment: Fragment()
 
 	private lateinit var userDao: UserDao
 
+	private lateinit var linearLayoutPromptActionContainer: LinearLayout
+	private lateinit var numberPickerPickAction: NumberPicker
 	private lateinit var textViewGreeting: TextView
+	private lateinit var textViewPromptAction: TextView
 	private lateinit var textViewPromptGeneral: TextView
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -43,8 +46,17 @@ class GoalCreationFragment: Fragment()
 		}
 
 		/* Initialize widgets. */
-		textViewGreeting       = view.findViewById(R.id.greeting)
-		textViewPromptGeneral  = view.findViewById(R.id.promptGeneral)
+		numberPickerPickAction              = view.findViewById(R.id.pickAction)
+		linearLayoutPromptActionContainer   = view.findViewById(R.id.promptActionContainer)
+		textViewGreeting                    = view.findViewById(R.id.greeting)
+		textViewPromptAction                = view.findViewById(R.id.promptAction)
+		textViewPromptGeneral               = view.findViewById(R.id.promptGeneral)
+
+		/* Set the number picker bounds. */
+		val actions = arrayOf("walk", "run", "bike", "do something else...")
+		numberPickerPickAction.minValue = 0
+		numberPickerPickAction.maxValue = actions.size - 1
+		numberPickerPickAction.displayedValues = actions
 
 		/* UI logic. */
 
@@ -61,7 +73,7 @@ class GoalCreationFragment: Fragment()
 			duration = 500  // milliseconds
 			start()
 		}
-		ObjectAnimator.ofFloat(textViewGreeting, "translationY", screenHeight * -0.30f).apply {
+		ObjectAnimator.ofFloat(textViewGreeting, "translationY", screenHeight * 0.10f).apply {
 			duration = 1000  // milliseconds
 			start()
 		}
@@ -73,12 +85,23 @@ class GoalCreationFragment: Fragment()
 					duration = 500  // milliseconds
 					start()
 				}
-				ObjectAnimator.ofFloat(textViewPromptGeneral, "translationY", (screenHeight * -0.30f) + 10.0f).apply {
+				ObjectAnimator.ofFloat(textViewPromptGeneral, "translationY", (screenHeight * 0.10f) + 10.0f).apply {
 					duration = 1000  // milliseconds
 					start()
 				}
 			},
 			1500
+		)
+
+		/* Fade in the action prompt. */
+		Handler().postDelayed(
+			{
+				ObjectAnimator.ofFloat(linearLayoutPromptActionContainer, "alpha", 1.00f).apply {
+					duration = 500  // milliseconds
+					start()
+				}
+			},
+			3000
 		)
 	}
 

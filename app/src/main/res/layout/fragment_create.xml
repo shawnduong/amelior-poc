@@ -25,7 +25,7 @@
 			android:layout_height="wrap_content"
 			android:text=""
 			android:textAppearance="@style/TextAppearance.AppCompat.Large"
-			android:translationY="64dp"
+			android:translationY="256dp"
 			android:alpha="0.00"
 		/>
 
@@ -35,9 +35,37 @@
 			android:layout_height="wrap_content"
 			android:text="What do you want to do?"
 			android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-			android:translationY="64dp"
+			android:translationY="256dp"
 			android:alpha="0.00"
 		/>
+
+		<LinearLayout
+			android:id="@+id/promptActionContainer"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:orientation="horizontal"
+			android:gravity="center"
+			android:translationY="-128dp"
+			android:alpha="0.00"
+		>
+
+			<TextView
+				android:id="@+id/promptAction"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="I want to"
+				android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+			/>
+
+			<NumberPicker
+				android:id="@+id/pickAction"
+				android:layout_width="wrap_content"
+				android:layout_height="128dp"
+				android:layout_marginLeft="16dp"
+				android:theme="@style/Theme.Amelior.NumberPicker"
+			/>
+
+		</LinearLayout>
 
 	</LinearLayout>
 
