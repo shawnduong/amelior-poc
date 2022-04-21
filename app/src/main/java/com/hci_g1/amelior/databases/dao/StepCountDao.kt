@@ -22,5 +22,5 @@ interface StepCountDao
 
     @Transaction
     @Query("SELECT * FROM StepCount WHERE key = :key LIMIT 1")
-    fun get_step_count_now(key: String): StepCount
+    fun get_step_count_now(key: Int): StepCount
 }
