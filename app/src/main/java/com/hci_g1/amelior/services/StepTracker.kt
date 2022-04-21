@@ -35,14 +35,14 @@ class StepTracker : Service(), SensorEventListener {
     private var updateSteps : (Float) -> Unit = {}
 
     /** INTERFACE **/
-    inner class STBinding : Binder()
-    {
-        fun isOk() : Boolean { return this@StepTracker.isOk() }
-        fun injectOnStepUpdate(onStepUpdate: (Float)->Unit) : Unit { updateSteps = onStepUpdate }
-    }
+//    inner class STBinding : Binder()
+//    {
+//        fun isOk() : Boolean { return this@StepTracker.isOk() }
+//        fun injectOnStepUpdate(onStepUpdate: (Float)->Unit) : Unit { updateSteps = onStepUpdate }
+//    }
 
     // Instantiate the interface to return it to clients
-    private val binding = STBinding()
+//    private val binding = STBinding()
 
     /** LIFECYCLE CALLBACKS **/
     override fun onCreate() {
@@ -51,14 +51,14 @@ class StepTracker : Service(), SensorEventListener {
 
         // TODO(reason = Cleanup secondary permission check)
         // Runtime Permissions
-        val permission = ContextCompat.checkSelfPermission(this,
-            Manifest.permission.ACTIVITY_RECOGNITION)
-        if(permission == PackageManager.PERMISSION_DENIED) {
-            stepTrackerOk = false
-            Log.d("StepTracker", "got PERMISSION DENIED")
-        } else {
-            stepTrackerOk = true
-        }
+//        val permission = ContextCompat.checkSelfPermission(this,
+//            Manifest.permission.ACTIVITY_RECOGNITION)
+//        if(permission == PackageManager.PERMISSION_DENIED) {
+//            stepTrackerOk = false
+//            Log.d("StepTracker", "got PERMISSION DENIED")
+//        } else {
+//            stepTrackerOk = true
+//        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int
@@ -75,7 +75,7 @@ class StepTracker : Service(), SensorEventListener {
             Log.d("StepTracker", "found a Step Sensor")
             sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_FASTEST)
             sensorRunning = true
-            stepTrackerOk = stepTrackerOk && true
+            stepTrackerOk = true
         }
 
         return super.onStartCommand(intent, flags, startId)
@@ -89,7 +89,7 @@ class StepTracker : Service(), SensorEventListener {
     /** BINDING CALLBACKS **/
     override fun onBind(intent: Intent?): IBinder?
     {
-        return binding
+        return null
     }
 
     override fun onUnbind(intent: Intent?): Boolean
