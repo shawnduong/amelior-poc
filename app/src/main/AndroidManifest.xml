@@ -17,7 +17,7 @@
 		<activity
 			android:name=".SplashScreen"
 			android:exported="true"
-			android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+			android:theme="@style/Theme.Amelior.Fullscreen"
 		>
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -30,34 +30,17 @@
 		<activity
 			android:name=".FirstTimeSetup"
 			android:exported="false"
-			android:theme="@style/Theme.AppCompat.Light.NoActionBar"
 		/>
 
 		<!-- Orientation screen. -->
 		<activity
 			android:name=".FirstTimeOrientation"
 			android:exported="false"
-			android:theme="@style/Theme.AppCompat.Light.NoActionBar"
 		/>
 
 		<!-- Primary screen holding fragments and settings. -->
 		<activity
-			android:name=".MainMenuActivity"
-			android:exported="false"
-		/>
-
-		<activity
-			android:name=".MainActivity"
-			android:exported="false"
-		/>
-
-		<activity
-			android:name=".HomeActivity"
-			android:exported="false"
-		/>
-
-		<activity
-			android:name=".QuestionActivity"
+			android:name=".Dashboard"
 			android:exported="false"
 		/>
 
@@ -72,6 +55,7 @@
 		<!-- Step tracking service. -->
 		<service
 			android:name=".StepTracker"
+			android:enabled="true"
 			android:exported="false"
 		/>
 
