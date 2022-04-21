@@ -1,4 +1,4 @@
-package com.hci_g1.amelior.databases.dao
+package com.hci_g1.amelior
 
 import androidx.room.*
 import com.hci_g1.amelior.entities.StepCount
