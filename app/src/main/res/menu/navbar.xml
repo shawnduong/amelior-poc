@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android"
+>
+
+	<item
+		android:id="@+id/homeFragment"
+		android:icon="@drawable/navbar_home_icon"
+		android:title="Home"
+	/>
+
+	<item
+		android:id="@+id/goalCreationFragment"
+		android:icon="@drawable/navbar_create_icon"
+		android:title="Create"
+	/>
+
+	<item
+		android:id="@+id/settingFragment"
+		android:icon="@drawable/navbar_settings_icon"
+		android:title="Settings"
+	/>
+
+</menu>

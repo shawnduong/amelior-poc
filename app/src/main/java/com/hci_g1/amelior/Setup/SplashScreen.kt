@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
@@ -50,6 +51,12 @@ class SplashScreen: AppCompatActivity()
 		/* Wait 1000 milliseconds before moving to the next screen. */
 		Handler().postDelayed(
 			{
+				/* Force non-fullscreen to prevent activity flickering. */
+				window.setFlags(
+					WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+					WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN
+				)
+
 				if (userDao.is_setup() == false)
 				{
 					Log.d(TAG, "Moving to FirstTimeSetup.")
@@ -57,8 +64,8 @@ class SplashScreen: AppCompatActivity()
 				}
 				else
 				{
-					Log.d(TAG, "Moving to MainMenuActivity.")
-					startActivity(Intent(this, MainMenuActivity::class.java))
+					Log.d(TAG, "Moving to Dashboard.")
+					startActivity(Intent(this, Dashboard::class.java))
 				}
 
 				finish()
