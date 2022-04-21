@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/Off_White_Green"
+	android:orientation="vertical"
+	tools:context=".GoalFragment"
+>
+
+    <LinearLayout
+        android:id="@+id/goalCreationForm"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+		android:layout_centerInParent="true"
+		android:orientation="vertical"
+		android:gravity="center"
+	>
+
+		<TextView
+			android:id="@+id/greeting"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text=""
+			android:textAppearance="@style/TextAppearance.AppCompat.Large"
+			android:translationY="64dp"
+			android:alpha="0.00"
+		/>
+
+		<TextView
+			android:id="@+id/promptGeneral"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="What do you want to do?"
+			android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+			android:translationY="64dp"
+			android:alpha="0.00"
+		/>
+
+	</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

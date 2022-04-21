@@ -1,4 +1,4 @@
-package com.hci_g1.amelior.Fragment
+package com.hci_g1.amelior
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hci_g1.amelior.Model.RecycleViewAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
-import com.hci_g1.amelior.R
 
 class HomeFragment: Fragment() {
 

@@ -7,15 +7,21 @@
 >
 
 	<fragment
-		android:id="@+id/settingFragment"
-		android:name=".Fragment.SettingFragment"
-		android:label="SettingFragment"
+		android:id="@+id/homeFragment"
+		android:name=".HomeFragment"
+		android:label="HomeFragment"
 	/>
 
 	<fragment
-		android:id="@+id/homeFragment"
-		android:name=".Fragment.HomeFragment"
-		android:label="HomeFragment"
+		android:id="@+id/goalCreationFragment"
+		android:name=".GoalCreationFragment"
+		android:label="GoalCreationFragment"
+	/>
+
+	<fragment
+		android:id="@+id/settingFragment"
+		android:name=".SettingFragment"
+		android:label="SettingFragment"
 	/>
 
 </navigation>
