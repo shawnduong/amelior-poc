@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.navigation.findNavController
 import com.hci_g1.amelior.entities.Mood
 import com.hci_g1.amelior.entities.User
+import kotlinx.android.synthetic.main.fragment_setting.*
 import kotlinx.android.synthetic.main.fragment_setting.view.*
 
 class SettingFragment: Fragment() {
@@ -22,11 +23,9 @@ class SettingFragment: Fragment() {
     private lateinit var moodDao: MoodDao
 
     private lateinit var buttonSplashSubmit: Button
-    private lateinit var imageViewMoodGraphic: ImageView
-    private lateinit var linearLayoutMoodForm: LinearLayout
-    private lateinit var seekBarMoodBar: SeekBar
-    private lateinit var textViewMoodDescription: TextView
+    private lateinit var buttonSplashShowInfo: Button
 
+    private lateinit var textViewInfo: TextView
     private lateinit var editTextNameInputField: TextView
     private lateinit var textViewName: TextView
 
@@ -48,10 +47,16 @@ class SettingFragment: Fragment() {
             Log.d(SettingFragment.TAG, "Database successfully loaded.")
         }
 
+        /* Get the screen metrics. */
+        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        screenHeight = displayMetrics.heightPixels.toFloat()
+
         /* Initializing widgets. */
         textViewName                    = view.findViewById(R.id.textViewName)
         editTextNameInputField          = view.findViewById(R.id.editTextNameInputField)
         buttonSplashSubmit              = view.findViewById(R.id.splashSubmit)
+        buttonSplashShowInfo            = view.findViewById(R.id.splashInfo)
+        textViewInfo                    = view.findViewById(R.id.textViewInfo)
 
         val user = userDao.get_user_now("user")
         textViewName.text = "${user.name}"
@@ -61,6 +66,19 @@ class SettingFragment: Fragment() {
             userDao.insert_user_now(User("user", name))
             textViewName.text = "${name}"
             Log.d(TAG, "Change Name")
+        }
+
+
+        buttonSplashShowInfo.setOnClickListener {
+            if (textViewInfo.visibility == View.VISIBLE)
+            {
+                textViewInfo.visibility = View.INVISIBLE
+            }
+            else
+            {
+                textViewInfo.visibility = View.VISIBLE
+                Log.d(TAG, "Show Info")
+            }
         }
 
     }

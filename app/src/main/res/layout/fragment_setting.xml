@@ -9,6 +9,7 @@
     android:orientation="vertical"
     tools:context=".SettingFragment"
     >
+
     <RelativeLayout
         android:id="@+id/settingForm"
         android:layout_width="fill_parent"
@@ -19,7 +20,7 @@
         tools:layout_editor_absoluteX="-68dp"
         tools:layout_editor_absoluteY="38dp">
 
-        <!-- Account Information -->
+    <!-- Account Information -->
     <TextView
         android:id="@+id/accountBackground"
         android:layout_width="326dp"
@@ -27,7 +28,8 @@
         android:layout_marginLeft="46dp"
         android:layout_marginTop="52dp"
         android:background="@color/Teal_Blue"
-        />
+    />
+
         <!-- Information -->
     <TextView
         android:id="@+id/infoBackground"
@@ -36,28 +38,52 @@
         android:layout_marginLeft="46dp"
         android:layout_marginTop="188dp"
         android:background="@color/Teal_Blue"
+    />
+
+    <TextView
+        android:id="@+id/appInfo"
+        android:layout_width="318dp"
+        android:layout_height="66dp"
+        android:layout_marginLeft="46dp"
+        android:layout_marginTop="52dp"
+        android:text="      About"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:translationX="15dp"
+        android:translationY="138.5dp"
+        android:textSize="58px"
+    />
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:background="@drawable/fragment_setting_info_icon"
+            android:translationX="63dp"
+            android:translationY="198dp"
+        />
+
+        <Button
+            android:id="@+id/splashInfo"
+            android:layout_width="230px"
+            android:layout_height="100px"
+            android:text="View"
+            android:translationX="90dp"
+            android:translationY="220dp"
         />
 
         <TextView
-            android:id="@+id/appInfo"
-            android:layout_width="318dp"
-            android:layout_height="66dp"
-            android:layout_marginLeft="46dp"
-            android:layout_marginTop="52dp"
-            android:text="      App Information"
-            android:textColor="@android:color/white"
+            android:id="@+id/textViewInfo"
+            android:layout_width="269dp"
+            android:layout_height="wrap_content"
+            android:text="Amelior is a health app that processes data collected from users and communicates it back to them in such a way that they can meaningfully utilize the information to better their lifestyles. This app is actively being developed by students at the University of California, Merced, and is not ready for production use."
+            android:background="@color/light_blue"
+            android:textColor="@android:color/black"
+            android:textSize="48px"
             android:textStyle="bold"
-            android:translationX="15dp"
-            android:translationY="138.5dp"
-            android:textSize="58px"
-            />
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:background="@drawable/fragment_setting_info_icon"
-                android:translationX="63dp"
-                android:translationY="198dp" />
+            android:translationX="100dp"
+            android:translationY="275dp"
+            android:visibility="invisible"
+        />
 
     <!-- Account Information -->
     <TextView
@@ -73,6 +99,7 @@
         android:translationY="5dp"
         android:textSize="58px"
         />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -86,6 +113,7 @@
         android:translationY="37dp"
         android:textSize="48px"
         />
+
     <TextView
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
