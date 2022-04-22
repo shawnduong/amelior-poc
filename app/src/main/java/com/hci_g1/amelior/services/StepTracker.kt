@@ -15,8 +15,11 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat
+//import androidx.lifecycle.lifecycleScope	// Use livedata instead! Services dont have a views!
+import kotlinx.coroutines.launch
 
 import com.hci_g1.amelior.entities.StepCount
+import kotlinx.coroutines.coroutineScope
 
 /* NOTE: Services use the main thread by default
 *   May need to start a thread here so we don't accidentally block UI operations
@@ -144,15 +147,17 @@ class StepTracker : Service(), SensorEventListener {
     {
         if (sensorRunning)
         {
-            if (!stepBaselineEstablished)
+            if (stepBaselineEstablished)
             {
-                stepBaseline = event!!.values[0]
-                stepBaselineEstablished = true
+				totalSteps = event!!.values[0] - stepBaseline
+				//TODO: Use livedata for coroutine scope
+//				todaysStepCount = StepCount (today, (totalSteps as Int))
+//				stepCountDao.insert_step_count(todaysStepCount)
             }
             else
             {
-                totalSteps = event!!.values[0] - stepBaseline
-                //updateSteps(totalSteps)
+				stepBaseline = event!!.values[0]
+				stepBaselineEstablished = true
             }
 
             Log.d("StepTracker", "$totalSteps")
