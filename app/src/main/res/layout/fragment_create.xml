@@ -13,19 +13,20 @@
     <LinearLayout
         android:id="@+id/goalCreationForm"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-		android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
 		android:orientation="vertical"
-		android:gravity="center"
+		android:gravity="center_horizontal"
 	>
 
 		<TextView
 			android:id="@+id/greeting"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_marginTop="64dp"
 			android:text=""
 			android:textAppearance="@style/TextAppearance.AppCompat.Large"
-			android:translationY="256dp"
+			android:translationY="128dp"
 			android:alpha="0.00"
 		/>
 
@@ -33,19 +34,22 @@
 			android:id="@+id/promptGeneral"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_below="@+id/greeting"
 			android:text="What do you want to do?"
 			android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-			android:translationY="256dp"
+			android:translationY="128dp"
 			android:alpha="0.00"
 		/>
 
+		<!-- Goal action prompt. -->
 		<LinearLayout
 			android:id="@+id/promptActionContainer"
 			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/promptGeneral"
+			android:layout_marginTop="64dp"
 			android:orientation="horizontal"
 			android:gravity="center"
-			android:translationY="-128dp"
 			android:alpha="0.00"
 		>
 
@@ -66,6 +70,69 @@
 			/>
 
 		</LinearLayout>
+
+		<!-- Goal quantity prompt. -->
+		<LinearLayout
+			android:id="@+id/promptAmountContainer"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="32dp"
+			android:orientation="horizontal"
+			android:gravity="center"
+			android:translationY="2dp"
+			android:alpha="0.00"
+		>
+
+			<EditText
+				android:id="@+id/amountInputQuantity"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:ems="2"
+				android:hint="50"
+				android:inputType="number"
+			/>
+
+			<Spinner
+				android:id="@+id/amountInputUnits"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:visibility="invisible"
+				android:alpha="0.00"
+			/>
+
+			<TextView
+				android:id="@+id/amountFrequency"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="8dp"
+				android:text="every"
+				android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+				android:alpha="0.00"
+			/>
+
+			<Spinner
+				android:id="@+id/amountInputFrequency"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="8dp"
+				android:visibility="invisible"
+				android:alpha="0.00"
+			/>
+
+		</LinearLayout>
+
+		<!-- TODO: We probably want a better background color (backgroundTint). -->
+		<Button
+			android:id="@+id/continueButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:layout_marginTop="64dp"
+			android:text="Continue"
+			android:textColor="#FFFFFF"
+			android:backgroundTint="#819C81"
+			android:alpha="0.00"
+		/>
 
 	</LinearLayout>
 
