@@ -9,9 +9,9 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-//import androidx.compose.ui.platform.LocalDensity
 import androidx.fragment.app.Fragment
 
+import com.hci_g1.amelior.entities.Goal
 import com.hci_g1.amelior.entities.User
 
 class GoalCreationFragment: Fragment()
@@ -20,6 +20,7 @@ class GoalCreationFragment: Fragment()
 	private var screenHeight: Float = 0f
 	private var userActionChoice: Int = -1
 
+	private lateinit var goalDao: GoalDao
 	private lateinit var userDao: UserDao
 
 	private lateinit var buttonContinueButton: Button
@@ -49,8 +50,11 @@ class GoalCreationFragment: Fragment()
 		/* Initializing variables. */
 		if (context != null)
 		{
+			goalDao = UserDatabase.getInstance(context).goalDao
+			Log.d(TAG, "Goal database successfully loaded.")
+
 			userDao = UserDatabase.getInstance(context).userDao
-			Log.d(TAG, "Database successfully loaded.")
+			Log.d(TAG, "User database successfully loaded.")
 		}
 
 		scale = resources.displayMetrics.density 
@@ -248,7 +252,11 @@ class GoalCreationFragment: Fragment()
 					spinnerAmountInputFrequency.getSelectedItemPosition()
 			).toString()
 
-			Log.d(TAG, "${action} ${quantity} ${units} ${frequency}")
+			goalDao.insert_goal_now(Goal(goalDao.size(), action, quantity, units, frequency))
+
+			/* Test that it was inserted correctly. */
+			val goal: Goal = goalDao.get_goal_now(goalDao.size()-1)
+			Log.d(TAG, "User created goal ${goal.key} ${goal.action} ${goal.quantity} ${goal.units} ${goal.frequency}")
 		}
 	}
 
