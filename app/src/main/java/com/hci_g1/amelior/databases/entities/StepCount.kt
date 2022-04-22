@@ -7,7 +7,6 @@ import androidx.room.*
 data class StepCount
 (
     @PrimaryKey(autoGenerate=false)
-    val key: Int,
-    val timestamp: Long,
-    val steps: Int
+    val key: Int,           //  Epoch Time in Days
+    val stepTotal: Int      //  The total steps for this day
 )
