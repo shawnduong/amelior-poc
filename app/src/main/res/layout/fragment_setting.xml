@@ -1,19 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/burlyWood"
-    tools:context=".Fragment.SettingFragment">
+    android:background="@color/Teal_Blue_Lighter"
+    android:orientation="vertical"
+    tools:context=".SettingFragment"
+    >
+    <RelativeLayout
+        android:id="@+id/settingForm"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="-68dp"
+        tools:layout_editor_absoluteY="38dp">
 
+        <!-- Account Information -->
     <TextView
-		android:id="@+id/setting_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Setting"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
+        android:id="@+id/accountBackground"
+        android:layout_width="326dp"
+        android:layout_height="74dp"
+        android:layout_marginLeft="46dp"
+        android:layout_marginTop="52dp"
+        android:background="@color/Teal_Blue"
+        />
+        <!-- Information -->
+    <TextView
+        android:id="@+id/infoBackground"
+        android:layout_width="326dp"
+        android:layout_height="74dp"
+        android:layout_marginLeft="46dp"
+        android:layout_marginTop="188dp"
+        android:background="@color/Teal_Blue"
         />
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/appInfo"
+            android:layout_width="318dp"
+            android:layout_height="66dp"
+            android:layout_marginLeft="46dp"
+            android:layout_marginTop="52dp"
+            android:text="      App Information"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:translationX="15dp"
+            android:translationY="138.5dp"
+            android:textSize="58px"
+            />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/fragment_setting_info_icon"
+                android:translationX="63dp"
+                android:translationY="198dp" />
+
+    <!-- Account Information -->
+    <TextView
+        android:id="@+id/accountInfo"
+        android:layout_width="318dp"
+        android:layout_height="66dp"
+        android:layout_marginLeft="46dp"
+        android:layout_marginTop="52dp"
+        android:text="      Account Information"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:translationX="15dp"
+        android:translationY="5dp"
+        android:textSize="58px"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/accountInfoName"
+        android:layout_marginLeft="46dp"
+        android:layout_marginTop="52dp"
+        android:text="Name:"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:translationX="19dp"
+        android:translationY="37dp"
+        android:textSize="48px"
+        />
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:translationX="130dp"
+        android:translationY="89dp"
+        android:textSize="48px"
+        />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:context=".SettingFragment">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/fragment_setting_icon"
+                android:translationX="-133dp"
+                android:translationY="-258dp" />
+        </LinearLayout>
+
+        <TextView
+        android:id="@+id/changeName"
+        android:layout_width="326dp"
+        android:layout_height="37dp"
+        android:layout_marginLeft="46dp"
+        android:layout_marginTop="138dp"
+        android:background="@color/light_blue"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/changeNameText"
+        android:layout_marginLeft="46dp"
+        android:layout_marginTop="52dp"
+        android:text="Change Name:"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:translationX="19dp"
+        android:translationY="90dp"
+        android:textSize="48px"
+        />
+    <EditText
+        android:id="@+id/editTextNameInputField"
+        android:layout_width="235px"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="John Doe"
+        android:translationX="190dp"
+        android:translationY="130dp"
+        android:inputType="textPersonName|textCapWords" />
+
+        <Button
+            android:id="@+id/splashSubmit"
+            android:layout_width="230px"
+            android:layout_height="100px"
+            android:text="Confirm"
+            android:translationX="280dp"
+            android:translationY="138dp"
+            />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
