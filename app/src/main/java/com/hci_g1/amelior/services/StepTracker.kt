@@ -16,6 +16,8 @@ import android.util.Log
 import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat
 
+import com.hci_g1.amelior.entities.StepCount
+
 /* NOTE: Services use the main thread by default
 *   May need to start a thread here so we don't accidentally block UI operations
 *   See https://developer.android.com/guide/components/services#CreatingAService
@@ -32,7 +34,11 @@ class StepTracker : Service(), SensorEventListener {
     private var totalSteps: Float = 0f
     private var stepBaseline: Float = 0f
     private var stepBaselineEstablished: Boolean = false
-    private var updateSteps : (Float) -> Unit = {}
+    //private var updateSteps : (Float) -> Unit = {}
+
+    private lateinit var stepCountDao: StepCountDao
+    private lateinit var todaysStepCount: StepCount
+    private var today: Long = 0
 
     /** INTERFACE **/
 //    inner class STBinding : Binder()
@@ -44,10 +50,35 @@ class StepTracker : Service(), SensorEventListener {
     // Instantiate the interface to return it to clients
 //    private val binding = STBinding()
 
+    /** UTILITY **/
+    private fun get_epoch_day(): Long
+    {
+        val millisecPerDay: Long = 1000*60*60*24
+        return (System.currentTimeMillis()/millisecPerDay)
+    }
+
     /** LIFECYCLE CALLBACKS **/
     override fun onCreate() {
         super.onCreate()
+		
+		// Init variables
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        stepCountDao = UserDatabase.getInstance(this).stepCountDao
+		
+		today = get_epoch_day()
+		
+		// Make sure our data is initialized in the User Database
+        if(stepCountDao.step_count_exists(today))
+		{
+  			todaysStepCount = stepCountDao.get_step_count_now(today)
+			Log.d("StepTracker", "Retrieved the step count for epoch day $today.")
+		}
+		else
+		{
+			todaysStepCount = StepCount(today, 0)
+			stepCountDao.insert_step_count_now(todaysStepCount)
+			Log.d("StepTracker", "Initialized the step count for epoch day $today.")
+		}
 
         // TODO(reason = Cleanup secondary permission check)
         // Runtime Permissions
@@ -121,7 +152,7 @@ class StepTracker : Service(), SensorEventListener {
             else
             {
                 totalSteps = event!!.values[0] - stepBaseline
-                updateSteps(totalSteps)
+                //updateSteps(totalSteps)
             }
 
             Log.d("StepTracker", "$totalSteps")
