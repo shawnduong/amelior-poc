@@ -110,7 +110,7 @@ class HomeFragment: Fragment() {
 
             val mood: Int = seekBarMoodBar.getProgress()
 
-            moodDao.insert_mood_now(Mood(0, System.currentTimeMillis(), mood))
+            moodDao.insert_mood_now(Mood(moodDao.size(), System.currentTimeMillis(), mood))
 
             Log.d(HomeFragment.TAG, "Input Mood.")
         }
