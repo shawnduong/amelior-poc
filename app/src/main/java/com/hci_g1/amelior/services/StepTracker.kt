@@ -1,5 +1,6 @@
 package com.hci_g1.amelior
 
+import androidx.lifecycle.LifecycleService
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -21,7 +22,7 @@ import kotlinx.coroutines.coroutineScope
 *   See https://developer.android.com/guide/components/services#CreatingAService
 */
 
-class StepTracker : Service(), SensorEventListener {
+class StepTracker : LifecycleService(), SensorEventListener {
     /** STEP TRACKER CONTROL **/
     private var sensorManager: SensorManager? = null
     private var sensorRunning: Boolean = false
@@ -92,22 +93,6 @@ class StepTracker : Service(), SensorEventListener {
     override fun onDestroy()
     {
         super.onDestroy()
-    }
-
-    /** BINDING CALLBACKS **/
-    override fun onBind(intent: Intent?): IBinder?
-    {
-        return null
-    }
-
-    override fun onUnbind(intent: Intent?): Boolean
-    {
-        return true
-    }
-
-    override fun onRebind(intent: Intent?)
-    {
-        super.onRebind(intent)
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int)
