@@ -43,16 +43,6 @@ class StepTracker : Service(), SensorEventListener {
     private lateinit var todaysStepCount: StepCount
     private var today: Long = 0
 
-    /** INTERFACE **/
-//    inner class STBinding : Binder()
-//    {
-//        fun isOk() : Boolean { return this@StepTracker.isOk() }
-//        fun injectOnStepUpdate(onStepUpdate: (Float)->Unit) : Unit { updateSteps = onStepUpdate }
-//    }
-
-    // Instantiate the interface to return it to clients
-//    private val binding = STBinding()
-
     /** UTILITY **/
     private fun get_epoch_day(): Long
     {
@@ -82,17 +72,6 @@ class StepTracker : Service(), SensorEventListener {
 			stepCountDao.insert_step_count_now(todaysStepCount)
 			Log.d("StepTracker", "Initialized the step count for epoch day $today.")
 		}
-
-        // TODO(reason = Cleanup secondary permission check)
-        // Runtime Permissions
-//        val permission = ContextCompat.checkSelfPermission(this,
-//            Manifest.permission.ACTIVITY_RECOGNITION)
-//        if(permission == PackageManager.PERMISSION_DENIED) {
-//            stepTrackerOk = false
-//            Log.d("StepTracker", "got PERMISSION DENIED")
-//        } else {
-//            stepTrackerOk = true
-//        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int
@@ -128,8 +107,6 @@ class StepTracker : Service(), SensorEventListener {
 
     override fun onUnbind(intent: Intent?): Boolean
     {
-        //TODO(reason = Test a reset of the injected callback on unbind/rebind)
-        //updateSteps = {} // Eject the callback that was injected from calling bind().
         return true
     }
 
