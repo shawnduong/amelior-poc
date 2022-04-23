@@ -34,55 +34,57 @@
 				android:orientation="horizontal"
 			>
 
-			<TextView
-				android:id="@+id/moodLabel"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Today, I'm feeling"
-				android:textAppearance="@style/TextAppearance.AppCompat.Large"
-				android:textStyle="bold"
-				android:textSize="48px"
-			/>
+				<ImageView
+					android:id="@+id/moodGraphic"
+					android:layout_width="128dp"
+					android:layout_height="128dp"
+					android:src="@drawable/emoji_level_03"
+					android:layout_alignParentLeft="true"
+				/>
+
+				<TextView
+					android:id="@+id/moodLabel"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_toRightOf="@id/moodGraphic"
+					android:text="Today, I'm feeling"
+					android:textAppearance="@style/TextAppearance.AppCompat.Large"
+					android:textStyle="bold"
+					android:textSize="20dp"
+				/>
 
 				<TextView
 					android:id="@+id/moodDescription"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:layout_below="@id/moodLabel"
+					android:layout_alignLeft="@id/moodLabel"
 					android:text="Alright"
 					android:textStyle="bold"
-					android:textSize="48px"
-					android:layout_below="@id/moodLabel"
+					android:textSize="20dp"
 				/>
 
 				<SeekBar
 					android:id="@+id/moodBar"
 					android:layout_width="150dp"
 					android:layout_height="wrap_content"
+					android:layout_below="@id/moodDescription"
+					android:layout_alignLeft="@id/moodLabel"
 					android:orientation="horizontal"
 					android:color="@color/white"
 					android:rotation="0"
-					android:layout_below="@+id/moodDescription"
-				/>
-
-				<ImageView
-					android:id="@+id/moodGraphic"
-					android:layout_width="275px"
-					android:layout_height="275px"
-					android:src="@drawable/emoji_level_03"
-					android:layout_alignParentRight="true"
 				/>
 
 				<Button
 					android:id="@+id/splashSubmit"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_alignParentRight="false"
+					android:layout_alignLeft="@id/moodLabel"
 					android:layout_below="@+id/moodBar"
 					android:orientation="horizontal"
 					android:text="Submit"
 					android:visibility="invisible"
 				/>
-
 
 			</RelativeLayout>
 
