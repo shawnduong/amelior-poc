@@ -64,7 +64,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
 		}
 		else
 		{
-			todaysStepCount = StepCount(today, 0)
+			todaysStepCount = StepCount(today, 0f)
 			stepCountDao.insert_step_count_now(todaysStepCount)
 			Log.d("StepTracker", "Initialized the step count for epoch day $today.")
 		}
@@ -110,9 +110,9 @@ class StepTracker : LifecycleService(), SensorEventListener {
             if (stepBaselineEstablished)
             {
 				totalSteps = event!!.values[0] - stepBaseline
-				//TODO: Use lifecycleService for coroutine scope
+				
 				lifecycleScope.launch {
-					todaysStepCount = StepCount (today, (totalSteps as Int))
+					todaysStepCount = StepCount (today, totalSteps)
 					stepCountDao.insert_step_count(todaysStepCount)
 					Log.d("StepTracker", "Inserted in Database")
 				}

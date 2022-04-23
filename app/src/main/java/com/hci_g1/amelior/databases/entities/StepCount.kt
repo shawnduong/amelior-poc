@@ -8,5 +8,5 @@ data class StepCount
 (
 	@PrimaryKey(autoGenerate=false)
 	val key: Long,			//  Epoch Time in Days
-	val stepTotal: Int		//  The total steps for this day
+	val stepTotal: Float	//  The total steps for this day
 )
