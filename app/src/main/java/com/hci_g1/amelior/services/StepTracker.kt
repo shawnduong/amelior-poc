@@ -1,21 +1,16 @@
 package com.hci_g1.amelior
 
-import android.Manifest
-import android.app.Activity
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat
-//import androidx.lifecycle.lifecycleScope	// Use livedata instead! Services dont have a views!
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 
 import com.hci_g1.amelior.entities.StepCount
@@ -127,7 +122,7 @@ class StepTracker : Service(), SensorEventListener {
             if (stepBaselineEstablished)
             {
 				totalSteps = event!!.values[0] - stepBaseline
-				//TODO: Use livedata for coroutine scope
+				//TODO: Use lifecycleService for coroutine scope
 //				todaysStepCount = StepCount (today, (totalSteps as Int))
 //				stepCountDao.insert_step_count(todaysStepCount)
             }
