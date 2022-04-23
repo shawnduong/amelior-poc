@@ -25,16 +25,15 @@ class StepTracker : LifecycleService(), SensorEventListener {
 
     /** STEP SENSOR DATA VARS **/
 	private var savedSteps: Float = 0f
-    private var totalSteps: Float = 0f
     private var stepBaseline: Float = 0f
     private var stepBaselineEstablished: Boolean = false
+    private var totalSteps: Float = 0f
 	
 	/** DATABASE INTERACTION **/
     private lateinit var stepCountDao: StepCountDao
     private lateinit var todaysStepCount: StepCount
     private var today: Long = 0
-
-    /** UTILITY **/
+	
     private fun get_epoch_day(): Long
     {
         val millisecPerDay: Long = 1000*60*60*24
@@ -44,6 +43,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
     /** LIFECYCLE CALLBACKS **/
     override fun onCreate() {
         super.onCreate()
+		Log.d(TAG, "Created the Step Tracker service.")
 		
 		/* Init Objects and Variables */
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -56,27 +56,29 @@ class StepTracker : LifecycleService(), SensorEventListener {
 		{
   			todaysStepCount = stepCountDao.get_step_count_now(today)
 			savedSteps = todaysStepCount.stepTotal
-			Log.d("StepTracker", "Retrieved the step count for epoch day $today.")
+			Log.d(TAG, "Retrieved ${todaysStepCount.stepTotal} saved steps for epoch day $today.")
 		}
 		else
 		{
 			todaysStepCount = StepCount(today, 0f)
 			stepCountDao.insert_step_count_now(todaysStepCount)
-			Log.d("StepTracker", "Initialized the step count for epoch day $today.")
+			Log.d(TAG, "Initialized the step count for epoch day $today.")
 		}
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int
     {
-        // Step Tracker Listener
+		Log.d(TAG, "Starting the Step Tracker service.")
+		
+		// Step Tracker Listener
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
         if (stepSensor == null)
         {
-            Log.d("StepTracker", "could not find a Step Sensor")
+            Log.e(TAG, "Failed to find a Step Sensor.")
         }
         else
         {
-            Log.d("StepTracker", "found a Step Sensor")
+            Log.d(TAG, "Successfully found a Step Sensor.")
             sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_FASTEST)
             sensorRunning = true
         }
@@ -86,7 +88,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
 
     override fun onDestroy()
     {
-		Log.d("StepTracker", "Destroyed!")
+		Log.d(TAG, "Destroyed the Step Tracker service.")
         super.onDestroy()
     }
 
@@ -97,7 +99,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?)
     {
-		Log.d("StepTracker", "Sensor Event Seen!")
+		Log.d(TAG, "Step Sensor detected an event.")
 		
         if (sensorRunning)
         {
@@ -108,7 +110,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
 				lifecycleScope.launch {
 					todaysStepCount = StepCount (today, totalSteps)
 					stepCountDao.insert_step_count(todaysStepCount)
-					Log.d("StepTracker", "Inserted in Database")
+					Log.d(TAG, "Updated database with ${todaysStepCount.stepTotal} for epoch day $today.")
 				}
             }
             else
@@ -117,7 +119,13 @@ class StepTracker : LifecycleService(), SensorEventListener {
 				stepBaselineEstablished = true
             }
 
-            Log.d("StepTracker", "$totalSteps")
+            Log.d(TAG, "Step Tracker has detected $totalSteps for epoch day $today.")
         }
     }
+	
+	companion object
+	{
+		/* Logging tag. */
+		private const val TAG = "StepTracker"
+	}
 }
