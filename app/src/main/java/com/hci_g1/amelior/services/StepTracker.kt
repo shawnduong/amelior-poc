@@ -92,6 +92,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
 
     override fun onDestroy()
     {
+		Log.d("StepTracker", "Service Destroyed!")
         super.onDestroy()
     }
 
@@ -102,14 +103,19 @@ class StepTracker : LifecycleService(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?)
     {
+		Log.d("StepTracker", "Sensor Event Seen!")
+		
         if (sensorRunning)
         {
             if (stepBaselineEstablished)
             {
 				totalSteps = event!!.values[0] - stepBaseline
 				//TODO: Use lifecycleService for coroutine scope
-//				todaysStepCount = StepCount (today, (totalSteps as Int))
-//				stepCountDao.insert_step_count(todaysStepCount)
+				lifecycleScope.launch {
+					todaysStepCount = StepCount (today, (totalSteps as Int))
+					stepCountDao.insert_step_count(todaysStepCount)
+					Log.d("StepTracker", "Inserted in Database")
+				}
             }
             else
             {
