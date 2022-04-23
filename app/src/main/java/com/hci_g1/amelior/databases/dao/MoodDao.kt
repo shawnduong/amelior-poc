@@ -19,4 +19,8 @@ interface MoodDao
 	@Transaction
 	@Query("SELECT * FROM Mood WHERE key = :key LIMIT 1")
 	fun get_mood_now(key: Int): Mood
+
+	@Transaction
+	@Query("SELECT COUNT(*) FROM Mood")
+	fun size(): Int
 }

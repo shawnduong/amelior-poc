@@ -3,25 +3,28 @@ package com.hci_g1.amelior
 import android.content.Context
 import androidx.room.*
 
+import com.hci_g1.amelior.entities.Goal
 import com.hci_g1.amelior.entities.Mood
-import com.hci_g1.amelior.entities.User
 import com.hci_g1.amelior.entities.StepCount
+import com.hci_g1.amelior.entities.User
 
 @Database
 (
 	entities = [
+		Goal::class,
 		Mood::class,
+        StepCount::class,
 		User::class,
-        StepCount::class
 	],
 	version = 1
 )
 
 abstract class UserDatabase: RoomDatabase()
 {
+	abstract val goalDao: GoalDao
 	abstract val moodDao: MoodDao
-	abstract val userDao: UserDao
 	abstract val stepCountDao: StepCountDao
+	abstract val userDao: UserDao
 
 	companion object
 	{

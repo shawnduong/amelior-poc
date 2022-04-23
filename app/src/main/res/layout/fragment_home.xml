@@ -1,18 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@color/Teal_Blue_Lighter"
+	android:orientation="vertical"
 	tools:context=".HomeFragment"
 >
+	<LinearLayout
+		android:id="@+id/moodForm"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_margin="16dp"
+		android:orientation="vertical"
+	>
 
-	<androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/recycleView"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		tools:listitem="@layout/recycleview_model"
-	/>
+		<LinearLayout
+			android:id="@+id/moodFormInnerContainer"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:padding="16dp"
+			android:orientation="vertical"
+			android:background="@color/Off_White_Green"
+			android:layout_marginBottom="16dp"
+		>
 
-</RelativeLayout>
+			<RelativeLayout
+				android:id="@+id/moodGraphicContainer"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+			>
+
+				<ImageView
+					android:id="@+id/moodGraphic"
+					android:layout_width="128dp"
+					android:layout_height="128dp"
+					android:src="@drawable/emoji_level_03"
+					android:layout_alignParentLeft="true"
+				/>
+
+				<TextView
+					android:id="@+id/moodLabel"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_toRightOf="@id/moodGraphic"
+					android:text="Today, I'm feeling"
+					android:textAppearance="@style/TextAppearance.AppCompat.Large"
+					android:textStyle="bold"
+					android:textSize="20dp"
+				/>
+
+				<TextView
+					android:id="@+id/moodDescription"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/moodLabel"
+					android:layout_alignLeft="@id/moodLabel"
+					android:text="Alright"
+					android:textStyle="bold"
+					android:textSize="20dp"
+				/>
+
+				<SeekBar
+					android:id="@+id/moodBar"
+					android:layout_width="150dp"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/moodDescription"
+					android:layout_alignLeft="@id/moodLabel"
+					android:orientation="horizontal"
+					android:color="@color/white"
+					android:rotation="0"
+				/>
+
+				<Button
+					android:id="@+id/splashSubmit"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignLeft="@id/moodLabel"
+					android:layout_below="@+id/moodBar"
+					android:orientation="horizontal"
+					android:text="Submit"
+					android:visibility="invisible"
+				/>
+
+			</RelativeLayout>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
