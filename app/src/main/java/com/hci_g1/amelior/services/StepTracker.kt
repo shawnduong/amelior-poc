@@ -110,7 +110,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
 				lifecycleScope.launch {
 					todaysStepCount = StepCount (today, totalSteps)
 					stepCountDao.insert_step_count(todaysStepCount)
-					Log.d(TAG, "Updated database with ${todaysStepCount.stepTotal} for epoch day $today.")
+					Log.d(TAG, "Updated database with ${todaysStepCount.stepTotal} steps for epoch day $today.")
 				}
             }
             else
@@ -119,7 +119,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
 				stepBaselineEstablished = true
             }
 
-            Log.d(TAG, "Step Tracker has detected $totalSteps for epoch day $today.")
+            Log.d(TAG, "Step Tracker has detected $totalSteps steps for epoch day $today.")
         }
     }
 	
