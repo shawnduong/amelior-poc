@@ -24,6 +24,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
     private var sensorRunning: Boolean = false
 
     /** STEP SENSOR DATA VARS **/
+	private var savedSteps: Float = 0f
     private var totalSteps: Float = 0f
     private var stepBaseline: Float = 0f
     private var stepBaselineEstablished: Boolean = false
@@ -54,6 +55,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
         if(stepCountDao.step_count_exists(today))
 		{
   			todaysStepCount = stepCountDao.get_step_count_now(today)
+			savedSteps = todaysStepCount.stepTotal
 			Log.d("StepTracker", "Retrieved the step count for epoch day $today.")
 		}
 		else
@@ -101,7 +103,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
         {
             if (stepBaselineEstablished)
             {
-				totalSteps = event!!.values[0] - stepBaseline
+				totalSteps = event!!.values[0] - stepBaseline + savedSteps
 				
 				lifecycleScope.launch {
 					todaysStepCount = StepCount (today, totalSteps)
