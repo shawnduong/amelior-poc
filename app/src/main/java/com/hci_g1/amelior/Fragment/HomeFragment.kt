@@ -21,7 +21,7 @@ class HomeFragment: Fragment()
 	private val displayMetrics = DisplayMetrics()
 	private var screenHeight: Float = 0f
 
-	private val goals: MutableList<Goal> = ArrayList()
+	private lateinit var goals: MutableList<Goal>
 
 	private lateinit var goalDao: GoalDao
 	private lateinit var moodDao: MoodDao
@@ -54,6 +54,7 @@ class HomeFragment: Fragment()
 			Log.d(HomeFragment.TAG, "Mood database successfully loaded.")
 		}
 
+		goals = ArrayList()
 		for (i in 0..goalDao.size()-1)
 		{
 			Log.d(TAG, "i=$i")
@@ -70,8 +71,10 @@ class HomeFragment: Fragment()
 		textViewMoodDescription   = view.findViewById(R.id.moodDescription)
 
 		/* Create the goals recycle view. */
-		recyclerViewGoalRecycler.layoutManager = LinearLayoutManager(getContext())
-		recyclerViewGoalRecycler.adapter = GoalAdapter(goals)
+		recyclerViewGoalRecycler.apply {
+			layoutManager = LinearLayoutManager(getContext())
+			adapter = GoalAdapter(goals)
+		}
 
 		/* Default mood bar value. */
 		seekBarMoodBar.setProgress(50)
