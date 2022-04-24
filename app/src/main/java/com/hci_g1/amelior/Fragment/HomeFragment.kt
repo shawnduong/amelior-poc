@@ -9,114 +9,124 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import com.hci_g1.amelior.entities.Mood
-import com.hci_g1.amelior.entities.User
+import androidx.recyclerview.widget.*
 import kotlinx.coroutines.NonCancellable.start
 
-class HomeFragment: Fragment() {
-    private val displayMetrics = DisplayMetrics()
-    private var screenHeight: Float = 0f
+import com.hci_g1.amelior.entities.Mood
+import com.hci_g1.amelior.entities.User
 
-    private lateinit var moodDao: MoodDao
+class HomeFragment: Fragment()
+{
+	private val displayMetrics = DisplayMetrics()
+	private var screenHeight: Float = 0f
 
-    private lateinit var buttonSplashSubmit: Button
-    private lateinit var imageViewMoodGraphic: ImageView
-    private lateinit var linearLayoutMoodForm: LinearLayout
-    private lateinit var seekBarMoodBar: SeekBar
-    private lateinit var textViewMoodDescription: TextView
+	private lateinit var moodDao: MoodDao
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
-    {
-        return inflater.inflate(R.layout.fragment_home, container, false)
-    }
+	private lateinit var buttonSplashSubmit: Button
+	private lateinit var imageViewMoodGraphic: ImageView
+	private lateinit var linearLayoutMoodForm: LinearLayout
+	private lateinit var recyclerViewGoalRecycler: RecyclerView
+	private lateinit var seekBarMoodBar: SeekBar
+	private lateinit var textViewMoodDescription: TextView
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
-    {
-        super.onViewCreated(view, savedInstanceState)
-        val context = getContext()
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+	{
+		return inflater.inflate(R.layout.fragment_home, container, false)
+	}
 
-        /* Initializing variables. */
-        if (context != null)
-        {
-            moodDao = UserDatabase.getInstance(context).moodDao
-            Log.d(HomeFragment.TAG, "Database successfully loaded.")
-        }
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+	{
+		super.onViewCreated(view, savedInstanceState)
+		val context = getContext()
 
-        /* Initialize widgets. */
-        buttonSplashSubmit = view.findViewById(R.id.splashSubmit)
-        imageViewMoodGraphic = view.findViewById(R.id.moodGraphic)
-        linearLayoutMoodForm = view.findViewById(R.id.moodForm)
-        seekBarMoodBar = view.findViewById(R.id.moodBar)
-        textViewMoodDescription = view.findViewById(R.id.moodDescription)
+		/* Initializing variables. */
+		if (context != null)
+		{
+			moodDao = UserDatabase.getInstance(context).moodDao
+			Log.d(HomeFragment.TAG, "Database successfully loaded.")
+		}
 
-        /* Default mood bar value. */
-        seekBarMoodBar.setProgress(50)
+		/* Initialize widgets. */
+		buttonSplashSubmit        = view.findViewById(R.id.splashSubmit)
+		imageViewMoodGraphic      = view.findViewById(R.id.moodGraphic)
+		linearLayoutMoodForm      = view.findViewById(R.id.moodForm)
+		recyclerViewGoalRecycler  = view.findViewById(R.id.goalRecycler)
+		seekBarMoodBar            = view.findViewById(R.id.moodBar)
+		textViewMoodDescription   = view.findViewById(R.id.moodDescription)
 
-        /* Get the screen metrics. */
-        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-        screenHeight = displayMetrics.heightPixels.toFloat()
+		/* Create the goals recycle view. */
+		recyclerViewGoalRecycler.layoutManager = LinearLayoutManager(getContext())
+		recyclerViewGoalRecycler.adapter = GoalAdapter(arrayOf("test1", "test2"))
 
-        seekBarMoodBar.setOnSeekBarChangeListener(
+		/* Default mood bar value. */
+		seekBarMoodBar.setProgress(50)
 
-            object : SeekBar.OnSeekBarChangeListener
-            {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean)
-                {
-                    /* Make the submit button visible and fade it in. */
-                    if (buttonSplashSubmit.visibility == View.INVISIBLE)
-                    {
-                        buttonSplashSubmit.visibility = View.VISIBLE
+		/* Get the screen metrics. */
+		requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+		screenHeight = displayMetrics.heightPixels.toFloat()
 
-                        ObjectAnimator.ofFloat(buttonSplashSubmit, "alpha", 1.00f).apply {
-                            duration = 100  // milliseconds
-                            start()
-                        }
-                    }
+		seekBarMoodBar.setOnSeekBarChangeListener(
 
-                    if (progress < 20)
-                    {
-                        imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_01)
-                        textViewMoodDescription.text = "Not too great!"
-                    }
-                    else if (progress < 40)
-                    {
-                        imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_02)
-                        textViewMoodDescription.text = "A little down"
-                    }
-                    else if (progress < 60)
-                    {
-                        imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_03)
-                        textViewMoodDescription.text = "Alright"
-                    }
-                    else if (progress < 80)
-                    {
-                        imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_04)
-                        textViewMoodDescription.text = "Good"
-                    }
-                    else
-                    {
-                        imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_05)
-                        textViewMoodDescription.text = "Great!"
-                    }
-                }
+			object: SeekBar.OnSeekBarChangeListener
+			{
+				override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean)
+				{
+					/* Make the submit button visible and fade it in. */
+					if (buttonSplashSubmit.visibility == View.INVISIBLE)
+					{
+						buttonSplashSubmit.visibility = View.VISIBLE
 
-                override fun onStartTrackingTouch(seekBar: SeekBar) {}
-                override fun onStopTrackingTouch(seekBar: SeekBar) {}
-            }
-        )
+						ObjectAnimator.ofFloat(buttonSplashSubmit, "alpha", 1.00f).apply {
+							duration = 100	// milliseconds
+							start()
+						}
+					}
 
-        /* Upon clicking the submit button, save input to database */
-        buttonSplashSubmit.setOnClickListener {
+					if (progress < 20)
+					{
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_01)
+						textViewMoodDescription.text = "Not too great!"
+					}
+					else if (progress < 40)
+					{
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_02)
+						textViewMoodDescription.text = "A little down"
+					}
+					else if (progress < 60)
+					{
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_03)
+						textViewMoodDescription.text = "Alright"
+					}
+					else if (progress < 80)
+					{
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_04)
+						textViewMoodDescription.text = "Good"
+					}
+					else
+					{
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_05)
+						textViewMoodDescription.text = "Great!"
+					}
+				}
 
-            val mood: Int = seekBarMoodBar.getProgress()
+				override fun onStartTrackingTouch(seekBar: SeekBar) {}
+				override fun onStopTrackingTouch(seekBar: SeekBar) {}
+			}
+		)
 
-            moodDao.insert_mood_now(Mood(moodDao.size(), System.currentTimeMillis(), mood))
+		/* Upon clicking the submit button, save input to database. */
+		buttonSplashSubmit.setOnClickListener {
 
-            Log.d(HomeFragment.TAG, "Input Mood.")
-        }
-    }
+			val mood: Int = seekBarMoodBar.getProgress()
 
-    companion object {
-        private val TAG = "HomeFragment"
-    }
+			moodDao.insert_mood_now(Mood(moodDao.size(), System.currentTimeMillis(), mood))
+
+			Log.d(HomeFragment.TAG, "Input Mood.")
+		}
+	}
+
+	companion object
+	{
+		private val TAG = "HomeFragment"
+	}
 }
