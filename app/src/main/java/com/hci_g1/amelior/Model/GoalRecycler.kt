@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.hci_g1.amelior.entities.Goal
 
-class GoalAdapter(private val data: Array<String>): RecyclerView.Adapter<GoalAdapter.ViewHolder>()
+class GoalAdapter(private val data: MutableList<Goal>): RecyclerView.Adapter<GoalAdapter.ViewHolder>()
 {
 	/* Holder for a single list item. */
 	class ViewHolder(view: View): RecyclerView.ViewHolder(view)
@@ -31,7 +31,8 @@ class GoalAdapter(private val data: Array<String>): RecyclerView.Adapter<GoalAda
 	/* Define the contents of each individual card. */
 	override fun onBindViewHolder(holder: ViewHolder, index: Int)
 	{
-		holder.textViewGoalTitle.text = data[index]
+		val d: Goal = data[index]
+		holder.textViewGoalTitle.text = "GOAL: ${d.action} ${d.quantity} ${d.units} every ${d.frequency}"
 	}
 
 	override fun getItemCount() = data.size

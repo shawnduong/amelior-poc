@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.*
 import kotlinx.coroutines.NonCancellable.start
 
+import com.hci_g1.amelior.entities.Goal
 import com.hci_g1.amelior.entities.Mood
 import com.hci_g1.amelior.entities.User
 
@@ -20,6 +21,9 @@ class HomeFragment: Fragment()
 	private val displayMetrics = DisplayMetrics()
 	private var screenHeight: Float = 0f
 
+	private val goals: MutableList<Goal> = ArrayList()
+
+	private lateinit var goalDao: GoalDao
 	private lateinit var moodDao: MoodDao
 
 	private lateinit var buttonSplashSubmit: Button
@@ -40,10 +44,21 @@ class HomeFragment: Fragment()
 		val context = getContext()
 
 		/* Initializing variables. */
+
 		if (context != null)
 		{
+			goalDao = UserDatabase.getInstance(context).goalDao
+			Log.d(HomeFragment.TAG, "Goal database successfully loaded.")
+
 			moodDao = UserDatabase.getInstance(context).moodDao
-			Log.d(HomeFragment.TAG, "Database successfully loaded.")
+			Log.d(HomeFragment.TAG, "Mood database successfully loaded.")
+		}
+
+		for (i in 0..goalDao.size()-1)
+		{
+			Log.d(TAG, "i=$i")
+			goals.add(goalDao.get_goal_now(i))
+			Log.d(TAG, "x")
 		}
 
 		/* Initialize widgets. */
@@ -56,7 +71,7 @@ class HomeFragment: Fragment()
 
 		/* Create the goals recycle view. */
 		recyclerViewGoalRecycler.layoutManager = LinearLayoutManager(getContext())
-		recyclerViewGoalRecycler.adapter = GoalAdapter(arrayOf("test1", "test2"))
+		recyclerViewGoalRecycler.adapter = GoalAdapter(goals)
 
 		/* Default mood bar value. */
 		seekBarMoodBar.setProgress(50)
