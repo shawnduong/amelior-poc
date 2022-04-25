@@ -12,4 +12,5 @@ data class Goal
 	val quantity: Int,
 	val units: String,
 	val frequency: String,
+	val level: Int,
 )
