@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import android.content.Intent
+import android.location.Location
 import android.os.Looper
 import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -19,6 +20,11 @@ class Gps: LifecycleService()
 	private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 	private lateinit var locationCallback: LocationCallback
 	private lateinit var locationRequest: LocationRequest
+	private lateinit var lastSavedLocation: Location
+	
+	private var acquiredStartLocation: Boolean = false
+	private var savedDistance: Float = 0f
+	private var totalDistance: Float = 0f
 
 	/* Initialize required service objects at creation time to reduce start time. */
 	override fun onCreate()
@@ -43,6 +49,19 @@ class Gps: LifecycleService()
 				*	  */
 				var location = locationResult.lastLocation
 				Log.d(TAG, "Location acquired: " + location.toString())
+				
+				if(acquiredStartLocation)
+				{
+					totalDistance += lastSavedLocation.distanceTo(location)
+					lastSavedLocation = location
+					Log.d(TAG, "You have traveled $totalDistance meters from your starting location.")
+				}
+				else
+				{
+					lastSavedLocation = location
+					acquiredStartLocation = true
+					Log.d(TAG, "Acquired starting location.")
+				}
 			}
 		}
 
@@ -75,7 +94,7 @@ class Gps: LifecycleService()
 	}
 
 	/* Subscribe to GPS updates. */
-	fun subscribe(): Boolean
+	private fun subscribe(): Boolean
 	{
 		Log.d(TAG, "Subscribing to GPS updates...")
 
@@ -97,7 +116,7 @@ class Gps: LifecycleService()
 	}
 
 	/* Unsubscribe from GPS updates. */
-	fun unsubscribe(): Boolean
+	private fun unsubscribe(): Boolean
 	{
 		Log.d(TAG, "Unsubscribing from GPS updates...")
 

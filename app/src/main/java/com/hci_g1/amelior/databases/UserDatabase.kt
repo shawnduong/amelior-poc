@@ -5,6 +5,7 @@ import androidx.room.*
 
 import com.hci_g1.amelior.entities.Goal
 import com.hci_g1.amelior.entities.Mood
+import com.hci_g1.amelior.entities.Distance
 import com.hci_g1.amelior.entities.StepCount
 import com.hci_g1.amelior.entities.User
 
@@ -13,6 +14,7 @@ import com.hci_g1.amelior.entities.User
 	entities = [
 		Goal::class,
 		Mood::class,
+		Distance::class,
         StepCount::class,
 		User::class,
 	],
