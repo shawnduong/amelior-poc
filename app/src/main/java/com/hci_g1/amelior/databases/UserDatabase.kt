@@ -23,6 +23,7 @@ abstract class UserDatabase: RoomDatabase()
 {
 	abstract val goalDao: GoalDao
 	abstract val moodDao: MoodDao
+	abstract val distanceDao: DistanceDao
 	abstract val stepCountDao: StepCountDao
 	abstract val userDao: UserDao
 
