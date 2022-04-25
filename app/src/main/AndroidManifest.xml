@@ -44,6 +44,12 @@
 			android:exported="false"
 		/>
 
+		<!-- Goal screen (basic) template. -->
+		<activity
+			android:name=".GoalScreenBasic"
+			android:exported="false"
+		/>
+
 		<!-- GPS service. -->
 		<service
 			android:name=".Gps"

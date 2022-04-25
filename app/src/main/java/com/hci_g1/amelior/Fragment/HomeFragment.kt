@@ -9,114 +9,142 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import com.hci_g1.amelior.entities.Mood
-import com.hci_g1.amelior.entities.User
+import androidx.recyclerview.widget.*
 import kotlinx.coroutines.NonCancellable.start
 
-class HomeFragment: Fragment() {
-    private val displayMetrics = DisplayMetrics()
-    private var screenHeight: Float = 0f
+import com.hci_g1.amelior.entities.Goal
+import com.hci_g1.amelior.entities.Mood
+import com.hci_g1.amelior.entities.User
 
-    private lateinit var moodDao: MoodDao
+class HomeFragment: Fragment()
+{
+	private val displayMetrics = DisplayMetrics()
+	private var screenHeight: Float = 0f
 
-    private lateinit var buttonSplashSubmit: Button
-    private lateinit var imageViewMoodGraphic: ImageView
-    private lateinit var linearLayoutMoodForm: LinearLayout
-    private lateinit var seekBarMoodBar: SeekBar
-    private lateinit var textViewMoodDescription: TextView
+	private lateinit var goals: MutableList<Goal>
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
-    {
-        return inflater.inflate(R.layout.fragment_home, container, false)
-    }
+	private lateinit var goalDao: GoalDao
+	private lateinit var moodDao: MoodDao
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
-    {
-        super.onViewCreated(view, savedInstanceState)
-        val context = getContext()
+	private lateinit var buttonSplashSubmit: Button
+	private lateinit var imageViewMoodGraphic: ImageView
+	private lateinit var linearLayoutMoodForm: LinearLayout
+	private lateinit var recyclerViewGoalRecycler: RecyclerView
+	private lateinit var seekBarMoodBar: SeekBar
+	private lateinit var textViewMoodDescription: TextView
 
-        /* Initializing variables. */
-        if (context != null)
-        {
-            moodDao = UserDatabase.getInstance(context).moodDao
-            Log.d(HomeFragment.TAG, "Database successfully loaded.")
-        }
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+	{
+		return inflater.inflate(R.layout.fragment_home, container, false)
+	}
 
-        /* Initialize widgets. */
-        buttonSplashSubmit = view.findViewById(R.id.splashSubmit)
-        imageViewMoodGraphic = view.findViewById(R.id.moodGraphic)
-        linearLayoutMoodForm = view.findViewById(R.id.moodForm)
-        seekBarMoodBar = view.findViewById(R.id.moodBar)
-        textViewMoodDescription = view.findViewById(R.id.moodDescription)
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+	{
+		super.onViewCreated(view, savedInstanceState)
+		val context = getContext()
 
-        /* Default mood bar value. */
-        seekBarMoodBar.setProgress(50)
+		/* Initializing variables. */
 
-        /* Get the screen metrics. */
-        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-        screenHeight = displayMetrics.heightPixels.toFloat()
+		if (context != null)
+		{
+			goalDao = UserDatabase.getInstance(context).goalDao
+			Log.d(HomeFragment.TAG, "Goal database successfully loaded.")
 
-        seekBarMoodBar.setOnSeekBarChangeListener(
+			moodDao = UserDatabase.getInstance(context).moodDao
+			Log.d(HomeFragment.TAG, "Mood database successfully loaded.")
+		}
 
-            object : SeekBar.OnSeekBarChangeListener
-            {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean)
-                {
-                    /* Make the submit button visible and fade it in. */
-                    if (buttonSplashSubmit.visibility == View.INVISIBLE)
-                    {
-                        buttonSplashSubmit.visibility = View.VISIBLE
+		goals = ArrayList()
+		for (i in 0..goalDao.size()-1)
+		{
+			Log.d(TAG, "i=$i")
+			goals.add(goalDao.get_goal_now(i))
+			Log.d(TAG, "x")
+		}
 
-                        ObjectAnimator.ofFloat(buttonSplashSubmit, "alpha", 1.00f).apply {
-                            duration = 100  // milliseconds
-                            start()
-                        }
-                    }
+		/* Initialize widgets. */
+		buttonSplashSubmit        = view.findViewById(R.id.splashSubmit)
+		imageViewMoodGraphic      = view.findViewById(R.id.moodGraphic)
+		linearLayoutMoodForm      = view.findViewById(R.id.moodForm)
+		recyclerViewGoalRecycler  = view.findViewById(R.id.goalRecycler)
+		seekBarMoodBar            = view.findViewById(R.id.moodBar)
+		textViewMoodDescription   = view.findViewById(R.id.moodDescription)
 
-                    if (progress < 20)
-                    {
-                        imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_01)
-                        textViewMoodDescription.text = "Not too great!"
-                    }
-                    else if (progress < 40)
-                    {
-                        imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_02)
-                        textViewMoodDescription.text = "A little down"
-                    }
-                    else if (progress < 60)
-                    {
-                        imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_03)
-                        textViewMoodDescription.text = "Alright"
-                    }
-                    else if (progress < 80)
-                    {
-                        imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_04)
-                        textViewMoodDescription.text = "Good"
-                    }
-                    else
-                    {
-                        imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_05)
-                        textViewMoodDescription.text = "Great!"
-                    }
-                }
+		/* Create the goals recycle view. */
+		recyclerViewGoalRecycler.apply {
+			layoutManager = LinearLayoutManager(getContext())
+			adapter = GoalAdapter(goals)
+		}
 
-                override fun onStartTrackingTouch(seekBar: SeekBar) {}
-                override fun onStopTrackingTouch(seekBar: SeekBar) {}
-            }
-        )
+		/* Default mood bar value. */
+		seekBarMoodBar.setProgress(50)
 
-        /* Upon clicking the submit button, save input to database */
-        buttonSplashSubmit.setOnClickListener {
+		/* Get the screen metrics. */
+		requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+		screenHeight = displayMetrics.heightPixels.toFloat()
 
-            val mood: Int = seekBarMoodBar.getProgress()
+		seekBarMoodBar.setOnSeekBarChangeListener(
 
-            moodDao.insert_mood_now(Mood(moodDao.size(), System.currentTimeMillis(), mood))
+			object: SeekBar.OnSeekBarChangeListener
+			{
+				override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean)
+				{
+					/* Make the submit button visible and fade it in. */
+					if (buttonSplashSubmit.visibility == View.INVISIBLE)
+					{
+						buttonSplashSubmit.visibility = View.VISIBLE
 
-            Log.d(HomeFragment.TAG, "Input Mood.")
-        }
-    }
+						ObjectAnimator.ofFloat(buttonSplashSubmit, "alpha", 1.00f).apply {
+							duration = 100	// milliseconds
+							start()
+						}
+					}
 
-    companion object {
-        private val TAG = "HomeFragment"
-    }
+					if (progress < 20)
+					{
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_01)
+						textViewMoodDescription.text = "Not too great!"
+					}
+					else if (progress < 40)
+					{
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_02)
+						textViewMoodDescription.text = "A little down"
+					}
+					else if (progress < 60)
+					{
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_03)
+						textViewMoodDescription.text = "Alright"
+					}
+					else if (progress < 80)
+					{
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_04)
+						textViewMoodDescription.text = "Good"
+					}
+					else
+					{
+						imageViewMoodGraphic.setImageResource(R.drawable.emoji_level_05)
+						textViewMoodDescription.text = "Great!"
+					}
+				}
+
+				override fun onStartTrackingTouch(seekBar: SeekBar) {}
+				override fun onStopTrackingTouch(seekBar: SeekBar) {}
+			}
+		)
+
+		/* Upon clicking the submit button, save input to database. */
+		buttonSplashSubmit.setOnClickListener {
+
+			val mood: Int = seekBarMoodBar.getProgress()
+
+			moodDao.insert_mood_now(Mood(moodDao.size(), System.currentTimeMillis(), mood))
+
+			Log.d(HomeFragment.TAG, "Input Mood.")
+		}
+	}
+
+	companion object
+	{
+		private val TAG = "HomeFragment"
+	}
 }
