@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 
 import com.hci_g1.amelior.entities.Goal
 import com.hci_g1.amelior.entities.User
@@ -237,7 +238,7 @@ class GoalCreationFragment: Fragment()
 			}
 		)
 
-		/* Upon pressing the button, save the data. */
+		/* Upon pressing the button, save the data and go home. */
 		buttonContinueButton.setOnClickListener {
 
 			val action: String = actions[userActionChoice]
@@ -252,11 +253,14 @@ class GoalCreationFragment: Fragment()
 					spinnerAmountInputFrequency.getSelectedItemPosition()
 			).toString()
 
-			goalDao.insert_goal_now(Goal(goalDao.size(), action, quantity, units, frequency))
+			goalDao.insert_goal_now(Goal(goalDao.size(), action, quantity, units, frequency, 3))
 
 			/* Test that it was inserted correctly. */
 			val goal: Goal = goalDao.get_goal_now(goalDao.size()-1)
 			Log.d(TAG, "User created goal ${goal.key} ${goal.action} ${goal.quantity} ${goal.units} ${goal.frequency}")
+
+			/* Go home. */
+			view.findNavController().navigate(R.id.goHomeAction)
 		}
 	}
 
