@@ -1,9 +1,9 @@
 package com.hci_g1.amelior
 
-import android.app.Service
+import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import android.content.Intent
-import android.os.Binder
-import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -13,30 +13,17 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 
 /* GPS service writes GPS updates to database while service is bound. */
-class Gps: Service()
+class Gps: LifecycleService()
 {
 	/* Required service objects init later at creation to reduce start time. */
 	private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 	private lateinit var locationCallback: LocationCallback
 	private lateinit var locationRequest: LocationRequest
 
-	/* Service binders. */
-	private val binder = _Binder()
-	inner class _Binder: Binder()
-	{
-		fun get_service(): Gps = this@Gps
-	}
-
-	/* Get binder on bind. */
-	override fun onBind(intent: Intent): IBinder
-	{
-		Log.d(TAG, "Binding to GPS service.")
-		return binder
-	}
-
 	/* Initialize required service objects at creation time to reduce start time. */
 	override fun onCreate()
 	{
+		super.onCreate()
 		Log.d(TAG, "Initializing required service objects...")
 
 		/* Primary location provider. */
@@ -50,7 +37,10 @@ class Gps: Service()
 			{
 				super.onLocationResult(locationResult)
 
-				/* TODO: Integreate this with Crystal's DB code. */
+				/* TODO: Integreate this with Crystal's DB code.
+				*   Make entity/DAO; Break down Locations into primitive types for storage.
+				* 	 Keep a rolling total of distance per day.
+				*	  */
 				var location = locationResult.lastLocation
 				Log.d(TAG, "Location acquired: " + location.toString())
 			}
@@ -63,6 +53,24 @@ class Gps: Service()
 		}
 
 		Log.d(TAG, "Initialization complete.")
+	}
+	
+	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int
+	{
+		Log.d(TAG, "Starting the GPS service...")
+		
+		/* If we fail to subscribe, just stop running the service */
+		if(!subscribe())
+		{
+			stopSelf(startId)
+		}
+		
+		return super.onStartCommand(intent, flags, startId)
+	}
+	
+	override fun onDestroy() {
+		super.onDestroy()
+		Log.d(TAG, "Destroyed the GPS service.")
 	}
 
 	/* Subscribe to GPS updates. */
