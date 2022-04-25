@@ -41,8 +41,17 @@ class GoalScreenBasic: AppCompatActivity()
 		textViewSubtitle        = findViewById(R.id.subtitle)
 
 		/* Fill in the data. */
-		textViewTitle.text = "${goal.action.capitalize()} ${goal.quantity} ${goal.units}"
-		textViewSubtitle.text = "every ${goal.frequency}"
+		if ((goal.custom) && (goal.quantity == -1))
+		{
+			/* Non-numerical custom goal format is different due to lack of quantity and units.  */
+			textViewTitle.text = "${goal.action.capitalize()}"
+			textViewSubtitle.text = "every ${goal.frequency}"
+		}
+		else
+		{
+			textViewTitle.text = "${goal.action.capitalize()} ${goal.quantity} ${goal.units}"
+			textViewSubtitle.text = "every ${goal.frequency}"
+		}
 
 		/* Set the image based on the level. */
 		if      (goal.level == 1)  imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_01)

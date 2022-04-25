@@ -15,7 +15,8 @@ class GoalAdapter(private val data: MutableList<Goal>): RecyclerView.Adapter<Goa
 	/* Holder for a single list item. */
 	class ViewHolder(view: View): RecyclerView.ViewHolder(view)
 	{
-		var imageViewFlowerGraphic: ImageView
+		val imageViewFlowerGraphic: ImageView
+		val imageViewCheck: ImageView
 		val relativeLayoutGoalCard: RelativeLayout
 		val textViewGoalTitle: TextView
 
@@ -23,6 +24,7 @@ class GoalAdapter(private val data: MutableList<Goal>): RecyclerView.Adapter<Goa
 		init
 		{
 			imageViewFlowerGraphic  = view.findViewById(R.id.flowerGraphic)
+			imageViewCheck          = view.findViewById(R.id.check)
 			relativeLayoutGoalCard  = view.findViewById(R.id.goalCard)
 			textViewGoalTitle       = view.findViewById(R.id.goalTitle)
 		}
@@ -40,7 +42,15 @@ class GoalAdapter(private val data: MutableList<Goal>): RecyclerView.Adapter<Goa
 		val d: Goal = data[index]
 
 		/* Set the text. */
-		holder.textViewGoalTitle.text = "${d.action.capitalize()} ${d.quantity} ${d.units}/${d.frequency}"
+		if ((d.custom) && (d.quantity == -1))
+		{
+			/* Non-numerical custom goal format is different due to lack of quantity and units.  */
+			holder.textViewGoalTitle.text = "${d.action.capitalize()} every ${d.frequency}"
+		}
+		else
+		{
+			holder.textViewGoalTitle.text = "${d.action.capitalize()} ${d.quantity} ${d.units}/${d.frequency}"
+		}
 
 		/* Set the image based on the level. */
 		if (d.level == 1)       holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_01_small)
@@ -50,6 +60,20 @@ class GoalAdapter(private val data: MutableList<Goal>): RecyclerView.Adapter<Goa
 		else if (d.level == 5)  holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_05_small)
 		else                    holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03_small)
 
+		/* If the goal is custom, give it either a checkbox or a "+" UI element. */
+		if (d.custom)
+		{
+			holder.imageViewCheck.visibility = View.VISIBLE
+
+			/* If the goal is non-numerical, replace the plus icon with a checkmark. */
+			if (d.quantity == -1)
+			{
+				/* TODO: replace the icon. */
+				holder.imageViewCheck.setImageResource(R.drawable.navbar_settings_icon)
+			}
+		}
+
+		/* Upon clicking the goal, go to the screen for it. */
 		holder.relativeLayoutGoalCard.setOnClickListener { view ->
 			Log.d(TAG, "Moving to goal screen.")
 			val intent = Intent(view.context, GoalScreenBasic::class.java)

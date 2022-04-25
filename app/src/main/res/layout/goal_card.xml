@@ -15,6 +15,16 @@
 		android:padding="8dp"
 	>
 
+		<!-- TODO: replace the icon. -->
+		<ImageView
+			android:id="@+id/check"
+			android:layout_width="64dp"
+			android:layout_height="64dp"
+			android:src="@drawable/navbar_create_icon"
+			android:layout_alignParentRight="true"
+			android:visibility="invisible"
+		/>
+
 		<ImageView
 			android:id="@+id/flowerGraphic"
 			android:layout_width="64dp"
@@ -29,6 +39,7 @@
 			android:layout_height="64dp"
 			android:layout_marginLeft="24dp"
 			android:layout_toRightOf="@id/flowerGraphic"
+			android:layout_toLeftOf="@id/check"
 			android:gravity="center_vertical"
 			android:text=""
 			android:textStyle="bold"
