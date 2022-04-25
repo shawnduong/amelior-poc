@@ -9,6 +9,7 @@
 	android:orientation="vertical"
 	tools:context=".HomeFragment"
 >
+
 	<LinearLayout
 		android:id="@+id/homeCardsContainer"
 		android:layout_width="fill_parent"

@@ -1,5 +1,7 @@
 package com.hci_g1.amelior
 
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +35,19 @@ class GoalAdapter(private val data: MutableList<Goal>): RecyclerView.Adapter<Goa
 	{
 		val d: Goal = data[index]
 		holder.textViewGoalTitle.text = "GOAL: ${d.action} ${d.quantity} ${d.units} every ${d.frequency}"
+
+		holder.textViewGoalTitle.setOnClickListener { view ->
+			Log.d(TAG, "Moving to goal screen.")
+			val intent = Intent(view.context, GoalScreenBasic::class.java)
+			intent.putExtra("initIndex", index)
+			view.context.startActivity(intent)
+		}
 	}
 
 	override fun getItemCount() = data.size
+
+	companion object
+	{
+		private val TAG = "GoalRecycler"
+	}
 }
