@@ -14,7 +14,7 @@ interface StepCountDao
 
     @Transaction
     @Query("SELECT EXISTS(SELECT * FROM StepCount WHERE key = :key LIMIT 1)")
-    fun step_count_exists(key: Long): Boolean
+    fun step_count_exists_now(key: Long): Boolean
 
     @Transaction
     @Query("SELECT * FROM StepCount WHERE key = :key LIMIT 1")

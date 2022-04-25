@@ -54,11 +54,11 @@ class StepTracker : LifecycleService(), SensorEventListener {
 		today = get_epoch_day()
 		
 		// Make sure our data is initialized in the User Database
-        if(stepCountDao.step_count_exists(today))
+        if(stepCountDao.step_count_exists_now(today))
 		{
   			todaysStepCount = stepCountDao.get_step_count_now(today)
-			savedSteps = todaysStepCount.stepTotal
-			Log.d(TAG, "Retrieved ${todaysStepCount.stepTotal} saved steps for epoch day $today.")
+			savedSteps = todaysStepCount.totalSteps
+			Log.d(TAG, "Retrieved ${todaysStepCount.totalSteps} saved steps for epoch day $today.")
 		}
 		else
 		{
@@ -126,7 +126,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
 				lifecycleScope.launch {
 					todaysStepCount = StepCount (today, totalSteps)
 					stepCountDao.insert_step_count(todaysStepCount)
-					Log.d(TAG, "Updated database with ${todaysStepCount.stepTotal} steps for epoch day $today.")
+					Log.d(TAG, "Updated database with ${todaysStepCount.totalSteps} steps for epoch day $today.")
 				}
             }
             else
