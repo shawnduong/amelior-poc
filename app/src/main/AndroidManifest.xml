@@ -44,6 +44,12 @@
 			android:exported="false"
 		/>
 
+		<!-- Custom goal creation screen. -->
+		<activity
+			android:name=".GoalScreenCustomCreation"
+			android:exported="false"
+		/>
+
 		<!-- Goal screen (basic) template. -->
 		<activity
 			android:name=".GoalScreenBasic"

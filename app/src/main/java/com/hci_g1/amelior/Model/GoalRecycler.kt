@@ -43,31 +43,12 @@ class GoalAdapter(private val data: MutableList<Goal>): RecyclerView.Adapter<Goa
 		holder.textViewGoalTitle.text = "${d.action.capitalize()} ${d.quantity} ${d.units}/${d.frequency}"
 
 		/* Set the image based on the level. */
-		if (d.level == 1)
-		{
-			holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_01_small)
-		}
-		else if (d.level == 2)
-		{
-			holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_02_small)
-		}
-		else if (d.level == 3)
-		{
-			holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03_small)
-		}
-		else if (d.level == 4)
-		{
-			holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_04_small)
-		}
-		else if (d.level == 5)
-		{
-			holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_05_small)
-		}
-		/* 3 is the default level. */
-		else
-		{
-			holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03_small)
-		}
+		if (d.level == 1)       holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_01_small)
+		else if (d.level == 2)  holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_02_small)
+		else if (d.level == 3)  holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03_small)
+		else if (d.level == 4)  holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_04_small)
+		else if (d.level == 5)  holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_05_small)
+		else                    holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03_small)
 
 		holder.relativeLayoutGoalCard.setOnClickListener { view ->
 			Log.d(TAG, "Moving to goal screen.")
