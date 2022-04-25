@@ -6,12 +6,32 @@
 	android:layout_height="wrap_content"
 >
 
-	<TextView
-		android:id="@+id/goalTitle"
-		android:layout_width="wrap_content"
+	<RelativeLayout
+		android:id="@+id/goalCard"
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_alignParentLeft="true"
-		android:text="SAMPLE TEXT GOAL"
-	/>
+		android:layout_marginBottom="16dp"
+		android:background="@color/Off_White_Green"
+		android:padding="8dp"
+	>
+
+		<ImageView
+			android:id="@+id/flowerGraphic"
+			android:layout_width="32dp"
+			android:layout_height="32dp"
+			android:src="@drawable/flower_level_03_small"
+			android:layout_alignParentLeft="true"
+		/>
+
+		<TextView
+			android:id="@+id/goalTitle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="8dp"
+			android:layout_toRightOf="@id/flowerGraphic"
+			android:text="TITLE"
+		/>
+
+	</RelativeLayout>
 
 </RelativeLayout>

@@ -15,12 +15,16 @@ class GoalAdapter(private val data: MutableList<Goal>): RecyclerView.Adapter<Goa
 	/* Holder for a single list item. */
 	class ViewHolder(view: View): RecyclerView.ViewHolder(view)
 	{
+		var imageViewFlowerGraphic: ImageView
+		val relativeLayoutGoalCard: RelativeLayout
 		val textViewGoalTitle: TextView
 
 		/* Initialize widgets. */
 		init
 		{
-			textViewGoalTitle = view.findViewById(R.id.goalTitle)
+			imageViewFlowerGraphic  = view.findViewById(R.id.flowerGraphic)
+			relativeLayoutGoalCard  = view.findViewById(R.id.goalCard)
+			textViewGoalTitle       = view.findViewById(R.id.goalTitle)
 		}
 	}
 
@@ -34,9 +38,38 @@ class GoalAdapter(private val data: MutableList<Goal>): RecyclerView.Adapter<Goa
 	override fun onBindViewHolder(holder: ViewHolder, index: Int)
 	{
 		val d: Goal = data[index]
-		holder.textViewGoalTitle.text = "GOAL: ${d.action} ${d.quantity} ${d.units} every ${d.frequency}"
 
-		holder.textViewGoalTitle.setOnClickListener { view ->
+		/* Set the text. */
+		holder.textViewGoalTitle.text = "${d.action.capitalize()} ${d.quantity} ${d.units}/${d.frequency}"
+
+		/* Set the image based on the level. */
+		if (d.level == 1)
+		{
+			holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_01_small)
+		}
+		else if (d.level == 2)
+		{
+			holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_02_small)
+		}
+		else if (d.level == 3)
+		{
+			holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03_small)
+		}
+		else if (d.level == 4)
+		{
+			holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_04_small)
+		}
+		else if (d.level == 5)
+		{
+			holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_05_small)
+		}
+		/* 3 is the default level. */
+		else
+		{
+			holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03_small)
+		}
+
+		holder.relativeLayoutGoalCard.setOnClickListener { view ->
 			Log.d(TAG, "Moving to goal screen.")
 			val intent = Intent(view.context, GoalScreenBasic::class.java)
 			intent.putExtra("initIndex", index)
