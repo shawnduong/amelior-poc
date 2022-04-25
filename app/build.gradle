@@ -5,6 +5,7 @@ buildscript
 	ext.room_version = "2.5.0-alpha01"
 	ext.fragment_version = "1.4.1"
 	ext.nav_version = "2.4.2"
+    ext.lifecycle_version = "2.2.0"
 }
 
 plugins
@@ -95,4 +96,7 @@ dependencies
 	implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
 	implementation "androidx.navigation:navigation-compose:$nav_version"
 	androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+
+    // LifecycleService
+    implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
 }

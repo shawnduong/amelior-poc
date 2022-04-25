@@ -44,6 +44,7 @@ class SplashScreen: AppCompatActivity()
 	{
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.splash_screen)
+		Log.d(TAG, "Created Splashscreen.")
 
 		/* Initialize variables. */
 		userDao = UserDatabase.getInstance(this).userDao
@@ -77,6 +78,7 @@ class SplashScreen: AppCompatActivity()
 	override fun onStart()
 	{
 		super.onStart()
+		Log.d(TAG, "Started Splashscreen.")
 
 		/* TODO: Switch to starting the GPS service only, rather than binding. */
 		/* Bind to the GPS service. */

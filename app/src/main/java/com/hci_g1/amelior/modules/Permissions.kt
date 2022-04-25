@@ -34,7 +34,7 @@ object Permissions
 
 		ActivityCompat.requestPermissions(
 			activity,
-			arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+			arrayOf(permission),
 			code
 		)
 	}
