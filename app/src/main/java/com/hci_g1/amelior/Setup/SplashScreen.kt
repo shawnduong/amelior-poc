@@ -17,28 +17,28 @@ import com.hci_g1.amelior.entities.User
 class SplashScreen: AppCompatActivity()
 {
 	/* Services. */
-	private var ServiceGps: Gps? = null
-
-	private var stepTrackerRunning: Boolean = false
-
+	private var runningGps: Boolean = false
+	private var runningStepTracker: Boolean = false
+	
+	/* Database Interaction */
 	private lateinit var userDao: UserDao
 
-	/* GPS service connection. */
-	private val ConnectionGps = object: ServiceConnection
-	{
-		override fun onServiceConnected(name: ComponentName, service: IBinder)
-		{
-			val binder = service as Gps._Binder
-			ServiceGps = binder.get_service()
-			Log.d(TAG, "GPS service connected.")
-		}
-
-		override fun onServiceDisconnected(name: ComponentName)
-		{
-			ServiceGps = null
-			Log.d(TAG, "GPS service disconnected.")
-		}
-	}
+//	/* GPS service connection. */
+//	private val ConnectionGps = object: ServiceConnection
+//	{
+//		override fun onServiceConnected(name: ComponentName, service: IBinder)
+//		{
+//			val binder = service as Gps._Binder
+//			ServiceGps = binder.get_service()
+//			Log.d(TAG, "GPS service connected.")
+//		}
+//
+//		override fun onServiceDisconnected(name: ComponentName)
+//		{
+//			ServiceGps = null
+//			Log.d(TAG, "GPS service disconnected.")
+//		}
+//	}
 
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
@@ -79,20 +79,21 @@ class SplashScreen: AppCompatActivity()
 	{
 		super.onStart()
 		Log.d(TAG, "Started Splashscreen.")
-
-		/* TODO: Switch to starting the GPS service only, rather than binding. */
-		/* Bind to the GPS service. */
+		
+		/* Attempt to start the GPS service. */
 		Intent(this, Gps::class.java).also { intent ->
-			bindService(intent, ConnectionGps, Context.BIND_AUTO_CREATE)
+			runningGps = (startService(intent) != null)
+			
+			if(!runningGps)
+				Log.e(TAG, "GPS service failed to start.")
 		}
-
+		
+		/* Attempt to start the Step Tracker service. */
 		Intent(this, StepTracker::class.java).also { intent ->
-			// Try to start the Step Tracker.
-			stepTrackerRunning = (startService(intent) != null)
-
-			// Report a failure if it couldn't start.
-			if(!stepTrackerRunning)
-				Log.e(TAG, "Step Tracker service fail to start.")
+			runningStepTracker = (startService(intent) != null)
+			
+			if(!runningStepTracker)
+				Log.e(TAG, "Step Tracker service failed to start.")
 		}
 	}
 
