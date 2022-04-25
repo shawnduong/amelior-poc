@@ -16,7 +16,14 @@
 		android:id="@+id/goalCreationFragment"
 		android:name=".GoalCreationFragment"
 		android:label="GoalCreationFragment"
-	/>
+	>
+
+		<action
+			android:id="@+id/goHomeAction"
+			app:destination="@id/homeFragment"
+		/>
+
+	</fragment>
 
 	<fragment
 		android:id="@+id/settingFragment"
