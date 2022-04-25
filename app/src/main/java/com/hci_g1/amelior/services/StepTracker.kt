@@ -1,6 +1,8 @@
 package com.hci_g1.amelior
 
 import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
@@ -8,8 +10,6 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
 
 import com.hci_g1.amelior.entities.StepCount
 
@@ -74,11 +74,11 @@ class StepTracker : LifecycleService(), SensorEventListener {
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
         if (stepSensor == null)
         {
-            Log.e(TAG, "Failed to find a Step Sensor.")
+            Log.e(TAG, "Failed to find a Step Sensor on this device.")
         }
         else
         {
-            Log.d(TAG, "Successfully found a Step Sensor.")
+            Log.d(TAG, "Successfully found a Step Sensor on this device.")
             sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_FASTEST)
             sensorRunning = true
         }
