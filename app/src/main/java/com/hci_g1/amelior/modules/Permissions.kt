@@ -36,7 +36,7 @@ object Permissions
 			activity,
 			// FIXME: Hardcoded ACTIVITY_RECOGNITION permission request to test StepTracker.kt
 			arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
-			code
+			ACTIVITY_RECOGNITION_REQUEST_CODE
 			
 			// FIXME: Misses some permissions,
 			//  triggers "multiple permissions can't be requested at once" warning.
