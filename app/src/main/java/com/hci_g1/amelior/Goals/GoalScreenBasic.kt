@@ -1,5 +1,6 @@
 package com.hci_g1.amelior
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
@@ -11,6 +12,7 @@ class GoalScreenBasic: AppCompatActivity()
 {
 	private lateinit var goal: Goal
 
+	private lateinit var buttonClose: Button
 	private lateinit var imageViewFlowerGraphic: ImageView
 	private lateinit var textViewTitle: TextView
 	private lateinit var textViewSubtitle: TextView
@@ -33,6 +35,7 @@ class GoalScreenBasic: AppCompatActivity()
 		}
 
 		/* Initialize widgets. */
+		buttonClose             = findViewById(R.id.close)
 		imageViewFlowerGraphic  = findViewById(R.id.flowerGraphic)
 		textViewTitle           = findViewById(R.id.title)
 		textViewSubtitle        = findViewById(R.id.subtitle)
@@ -42,30 +45,21 @@ class GoalScreenBasic: AppCompatActivity()
 		textViewSubtitle.text = "every ${goal.frequency}"
 
 		/* Set the image based on the level. */
-		if (goal.level == 1)
-		{
-			imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_01)
-		}
-		else if (goal.level == 2)
-		{
-			imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_02)
-		}
-		else if (goal.level == 3)
-		{
-			imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03)
-		}
-		else if (goal.level == 4)
-		{
-			imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_04)
-		}
-		else if (goal.level == 5)
-		{
-			imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_05)
-		}
+		if      (goal.level == 1)  imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_01)
+		else if (goal.level == 2)  imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_02)
+		else if (goal.level == 3)  imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03)
+		else if (goal.level == 4)  imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_04)
+		else if (goal.level == 5)  imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_05)
 		/* 3 is the default level. */
-		else
-		{
-			imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03)
+		else                       imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03)
+
+		/* UI logic. */
+
+		/* Upon clicking the "GO BACK" button, go back to the main page. */
+		buttonClose.setOnClickListener {
+			Log.d(TAG, "Moving to Dashboard.")
+			startActivity(Intent(this, Dashboard::class.java))
+			finish()
 		}
 	}
 
