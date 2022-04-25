@@ -8,6 +8,7 @@ data class Goal
 (
 	@PrimaryKey(autoGenerate=false)
 	val key: Int,
+	val custom: Boolean,
 	val action: String,
 	val quantity: Int,
 	val units: String,

@@ -293,7 +293,17 @@ class GoalCreationFragment: Fragment()
 					spinnerAmountInputFrequency.getSelectedItemPosition()
 				).toString()
 
-				goalDao.insert_goal_now(Goal(goalDao.size(), action, quantity, units, frequency, 3))
+				goalDao.insert_goal_now(
+					Goal(
+						goalDao.size(),  // key
+						false,           // custom
+						action,          // action
+						quantity,        // quantity
+						units,           // units
+						frequency,       // frequency
+						3                // level
+					)
+				)
 
 				/* Test that it was inserted correctly. */
 				val goal: Goal = goalDao.get_goal_now(goalDao.size()-1)

@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="128dp"
 		android:orientation="vertical"
+		android:gravity="center_horizontal"
 	>
 
 		<TextView
@@ -149,7 +150,6 @@
 					android:id="@+id/numericalGoalInputField"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginLeft="2dp"
 					android:layout_toRightOf="@id/numericalGoalInputQuantity"
 					android:ems="8"
 					android:hint="push-ups"
@@ -186,6 +186,17 @@
 			/>
 
 		</LinearLayout>
+
+		<Button
+			android:id="@+id/createButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:layout_marginTop="64dp"
+			android:text="Create"
+			android:textColor="#FFFFFF"
+			android:backgroundTint="#819C81"
+		/>
 
 	</LinearLayout>
 
