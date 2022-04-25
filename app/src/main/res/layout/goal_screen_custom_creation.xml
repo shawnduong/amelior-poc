@@ -83,25 +83,80 @@
 			android:orientation="horizontal"
 		>
 
-			<TextView
-				android:id="@+id/goalPrompt"
-				android:layout_width="wrap_content"
+			<!-- These are for non-numerical goals. -->
+			<RelativeLayout
+				android:id="@+id/basicGoalContainer"
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:layout_centerInParent="true"
-				android:text="I want to"
-				android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-			/>
+				android:gravity="center"
+				android:orientation="horizontal"
+			>
 
-			<EditText
-				android:id="@+id/goalInputField"
-				android:layout_width="wrap_content"
+				<TextView
+					android:id="@+id/goalPrompt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerInParent="true"
+					android:text="I want to"
+					android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+				/>
+
+				<EditText
+					android:id="@+id/goalInputField"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:layout_toRightOf="@id/goalPrompt"
+					android:ems="8"
+					android:hint="stop smoking"
+					android:inputType="text"
+				/>
+
+			</RelativeLayout>
+
+			<!-- These are for numerical goals. -->
+			<RelativeLayout
+				android:id="@+id/numericalGoalContainer"
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="8dp"
-				android:layout_toRightOf="@id/goalPrompt"
-				android:ems="8"
-				android:hint="stop smoking"
-				android:inputType="text"
-			/>
+				android:gravity="center"
+				android:orientation="horizontal"
+				android:visibility="invisible"
+				android:alpha="0.00"
+			>
+
+				<TextView
+					android:id="@+id/numericalGoalPrompt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerInParent="true"
+					android:text="I want to do"
+					android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+				/>
+
+				<EditText
+					android:id="@+id/numericalGoalInputQuantity"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:layout_toRightOf="@id/numericalGoalPrompt"
+					android:ems="2"
+					android:hint="50"
+					android:inputType="number"
+				/>
+
+				<EditText
+					android:id="@+id/numericalGoalInputField"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="2dp"
+					android:layout_toRightOf="@id/numericalGoalInputQuantity"
+					android:ems="8"
+					android:hint="push-ups"
+					android:inputType="text"
+				/>
+
+			</RelativeLayout>
 
 		</RelativeLayout>
 
