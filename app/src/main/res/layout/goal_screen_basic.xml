@@ -55,14 +55,21 @@
 
 		</LinearLayout>
 
+		<com.github.mikephil.charting.charts.LineChart
+			android:id="@+id/lineChart"
+			android:layout_width="fill_parent"
+			android:layout_height="150dp"
+			android:layout_below="@id/titleContainer"
+		/>
+
 		<Button
 			android:id="@+id/close"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="32dp"
 			android:layout_alignParentBottom="true"
-			android:text="Go Back"
 			android:layout_centerHorizontal="true"
+			android:text="Go Back"
 		/>
 
 	</RelativeLayout>

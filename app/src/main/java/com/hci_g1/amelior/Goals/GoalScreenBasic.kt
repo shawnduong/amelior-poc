@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.github.mikephil.charting.*
+import com.github.mikephil.charting.charts.*
+import com.github.mikephil.charting.data.*
 
 import com.hci_g1.amelior.entities.Goal
 
@@ -61,6 +64,38 @@ class GoalScreenBasic: AppCompatActivity()
 			startActivity(Intent(this, Dashboard::class.java))
 			finish()
 		}
+
+		/* Graph TESTING TODO */
+
+		/* Check this out: https://weeklycoding.com/mpandroidchart-documentation/getting-started/ */
+
+		/* Find the chart in the XML and get the axes. X depends on Y. */
+		val graph: LineChart = findViewById(R.id.lineChart)
+		val axisY = graph.getAxisLeft()
+		val axisX = graph.getAxis(axisY.axisDependency)
+
+		/* Aesthetic dashed lines on both axes. */
+		axisX.enableGridDashedLine(10f, 10f, 0f)
+		axisY.enableGridDashedLine(10f, 10f, 0f)
+
+		/* Create the input dataset. */
+		val entries: MutableList<Entry> = ArrayList()
+		entries.add(Entry(0.0f, 0.0f))
+		entries.add(Entry(1.0f, 1.0f))
+		entries.add(Entry(2.0f, 4.0f))
+		entries.add(Entry(3.0f, 9.0f))
+		entries.add(Entry(4.0f, 16.0f))
+		entries.add(Entry(5.0f, 25.0f))
+
+		/* Create the LineDataSet object used by the chart. */
+		val dataset = LineDataSet(entries, "sample data")
+
+		/* A LineDataSet is not the same as LineData. The chart needs LineData.
+		   We pass LineDataSet through LineData() and pass it into the setData
+		   method to actually plot the data on the graph. */
+		graph.setData(LineData(dataset))
+
+		/* I hope this helped. -Shawn */
 	}
 
 	companion object
