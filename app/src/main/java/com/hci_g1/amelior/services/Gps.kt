@@ -1,9 +1,10 @@
 package com.hci_g1.amelior
 
-import android.app.Service
+import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import android.content.Intent
-import android.os.Binder
-import android.os.IBinder
+import android.location.Location
 import android.os.Looper
 import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -11,36 +12,43 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.hci_g1.amelior.entities.Distance
 
 /* GPS service writes GPS updates to database while service is bound. */
-class Gps: Service()
+class Gps: LifecycleService()
 {
 	/* Required service objects init later at creation to reduce start time. */
 	private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 	private lateinit var locationCallback: LocationCallback
 	private lateinit var locationRequest: LocationRequest
-
-	/* Service binders. */
-	private val binder = _Binder()
-	inner class _Binder: Binder()
+	
+	/* Vars to track a rolling distance total from GPS samples. */
+	private lateinit var lastSavedLocation: Location
+	private var acquiredStartLocation: Boolean = false
+	private var totalDistance: Float = 0f
+	
+	/* Objects and values for database interaction. */
+	private lateinit var distanceDao: DistanceDao
+	private lateinit var todaysDistance: Distance
+	private var today: Long = 0
+	
+	private fun get_epoch_day(): Long
 	{
-		fun get_service(): Gps = this@Gps
-	}
-
-	/* Get binder on bind. */
-	override fun onBind(intent: Intent): IBinder
-	{
-		Log.d(TAG, "Binding to GPS service.")
-		return binder
+		val millisecPerDay: Long = 1000*60*60*24
+		return (System.currentTimeMillis()/millisecPerDay)
 	}
 
 	/* Initialize required service objects at creation time to reduce start time. */
 	override fun onCreate()
 	{
+		super.onCreate()
 		Log.d(TAG, "Initializing required service objects...")
 
 		/* Primary location provider. */
 		fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+		
+		/* Init database objects and variables */
+		initTodaysDistance()
 
 		/* Callback function definitions. */
 		locationCallback = object: LocationCallback()
@@ -49,10 +57,30 @@ class Gps: Service()
 			override fun onLocationResult(locationResult: LocationResult)
 			{
 				super.onLocationResult(locationResult)
-
-				/* TODO: Integreate this with Crystal's DB code. */
+				
+				/* TODO: Integreate this with Crystal's DB code.
+				*	  */
 				var location = locationResult.lastLocation
 				Log.d(TAG, "Location acquired: " + location.toString())
+				
+				if(acquiredStartLocation)
+				{
+					totalDistance += lastSavedLocation.distanceTo(location)
+					lastSavedLocation = location
+					Log.d(TAG, "You have traveled $totalDistance meters from your starting location.")
+					
+					lifecycleScope.launch {
+						todaysDistance = Distance(today, totalDistance)
+						distanceDao.insert_distance(todaysDistance)
+						Log.d(TAG, "Updated database with ${todaysDistance.totalDistance} meters traveled on epoch day $today.")
+					}
+				}
+				else
+				{
+					lastSavedLocation = location
+					acquiredStartLocation = true
+					Log.d(TAG, "Acquired starting location.")
+				}
 			}
 		}
 
@@ -64,9 +92,49 @@ class Gps: Service()
 
 		Log.d(TAG, "Initialization complete.")
 	}
+	
+	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int
+	{
+		Log.d(TAG, "Starting the GPS service...")
+		
+		/* If we fail to subscribe, just stop running the service */
+		if(!subscribe())
+		{
+			stopSelf(startId)
+		}
+		
+		Log.d(TAG, "Startup complete.")
+		return super.onStartCommand(intent, flags, startId)
+	}
+	
+	override fun onDestroy() {
+		super.onDestroy()
+		Log.d(TAG, "Destroyed the GPS service.")
+	}
+	
+	/* Initialize the database entry for the daily distance. */
+	private fun initTodaysDistance()
+	{
+		distanceDao = UserDatabase.getInstance(this).distanceDao
+		today = get_epoch_day()
+		
+		/* Make sure our data is initialized in the database. */
+		if(distanceDao.distance_exists_now(today))
+		{
+			todaysDistance = distanceDao.get_distance_now(today)
+			totalDistance = todaysDistance.totalDistance
+			Log.d(TAG, "Initialized with $totalDistance saved meters traveled for epoch day $today.")
+		}
+		else
+		{
+			todaysDistance = Distance(today, 0f)
+			distanceDao.insert_distance_now(todaysDistance)
+			Log.d(TAG, "Initialized the distance traveled for epoch day $today.")
+		}
+	}
 
 	/* Subscribe to GPS updates. */
-	fun subscribe(): Boolean
+	private fun subscribe(): Boolean
 	{
 		Log.d(TAG, "Subscribing to GPS updates...")
 
@@ -88,7 +156,7 @@ class Gps: Service()
 	}
 
 	/* Unsubscribe from GPS updates. */
-	fun unsubscribe(): Boolean
+	private fun unsubscribe(): Boolean
 	{
 		Log.d(TAG, "Unsubscribing from GPS updates...")
 

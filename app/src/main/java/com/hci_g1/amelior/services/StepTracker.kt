@@ -1,6 +1,8 @@
 package com.hci_g1.amelior
 
 import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
@@ -8,8 +10,6 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
 
 import com.hci_g1.amelior.entities.StepCount
 
@@ -18,10 +18,12 @@ import com.hci_g1.amelior.entities.StepCount
 *   See https://developer.android.com/guide/components/services#CreatingAService
 */
 
+// TODO: Add stopSelf() calls when we fail to acquire the step sensor
 class StepTracker : LifecycleService(), SensorEventListener {
     /** STEP TRACKER CONTROL **/
     private var sensorManager: SensorManager? = null
-    private var sensorRunning: Boolean = false
+	private var stepSensorIsRegistered: Boolean = false
+    private var stepTrackerIsRunning: Boolean = false
 
     /** STEP SENSOR DATA VARS **/
 	private var savedSteps: Float = 0f
@@ -74,13 +76,27 @@ class StepTracker : LifecycleService(), SensorEventListener {
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
         if (stepSensor == null)
         {
-            Log.e(TAG, "Failed to find a Step Sensor.")
+            Log.e(TAG, "Failed to find a Step Sensor on this device.")
         }
         else
         {
-            Log.d(TAG, "Successfully found a Step Sensor.")
-            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_FASTEST)
-            sensorRunning = true
+            Log.d(TAG, "Successfully found a Step Sensor on this device.")
+			
+            stepSensorIsRegistered = sensorManager!!.registerListener(
+				this,
+				stepSensor,
+				SensorManager.SENSOR_DELAY_FASTEST
+			)
+			
+			if(stepSensorIsRegistered)
+			{
+				Log.d(TAG, "Step Sensor successfully registered as an event listener.")
+            	stepTrackerIsRunning = true
+			}
+			else
+			{
+				Log.e(TAG, "Step Sensor failed to register as an event listener.")
+			}
         }
 
         return super.onStartCommand(intent, flags, startId)
@@ -101,7 +117,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
     {
 		Log.d(TAG, "Step Sensor detected an event.")
 		
-        if (sensorRunning)
+        if (stepTrackerIsRunning)
         {
             if (stepBaselineEstablished)
             {
@@ -110,7 +126,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
 				lifecycleScope.launch {
 					todaysStepCount = StepCount (today, totalSteps)
 					stepCountDao.insert_step_count(todaysStepCount)
-					Log.d(TAG, "Updated database with ${todaysStepCount.stepTotal} for epoch day $today.")
+					Log.d(TAG, "Updated database with ${todaysStepCount.stepTotal} steps for epoch day $today.")
 				}
             }
             else
@@ -119,7 +135,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
 				stepBaselineEstablished = true
             }
 
-            Log.d(TAG, "Step Tracker has detected $totalSteps for epoch day $today.")
+            Log.d(TAG, "Step Tracker has detected $totalSteps steps for epoch day $today.")
         }
     }
 	
