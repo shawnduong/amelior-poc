@@ -21,7 +21,8 @@ import com.hci_g1.amelior.entities.StepCount
 class StepTracker : LifecycleService(), SensorEventListener {
     /** STEP TRACKER CONTROL **/
     private var sensorManager: SensorManager? = null
-    private var sensorRunning: Boolean = false
+	private var stepSensorIsRegistered: Boolean = false
+    private var stepTrackerIsRunning: Boolean = false
 
     /** STEP SENSOR DATA VARS **/
 	private var savedSteps: Float = 0f
@@ -79,8 +80,22 @@ class StepTracker : LifecycleService(), SensorEventListener {
         else
         {
             Log.d(TAG, "Successfully found a Step Sensor on this device.")
-            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_FASTEST)
-            sensorRunning = true
+			
+            stepSensorIsRegistered = sensorManager!!.registerListener(
+				this,
+				stepSensor,
+				SensorManager.SENSOR_DELAY_FASTEST
+			)
+			
+			if(stepSensorIsRegistered)
+			{
+				Log.d(TAG, "Step Sensor successfully registered as an event listener.")
+            	stepTrackerIsRunning = true
+			}
+			else
+			{
+				Log.e(TAG, "Step Sensor failed to register as an event listener.")
+			}
         }
 
         return super.onStartCommand(intent, flags, startId)
@@ -101,7 +116,7 @@ class StepTracker : LifecycleService(), SensorEventListener {
     {
 		Log.d(TAG, "Step Sensor detected an event.")
 		
-        if (sensorRunning)
+        if (stepTrackerIsRunning)
         {
             if (stepBaselineEstablished)
             {
