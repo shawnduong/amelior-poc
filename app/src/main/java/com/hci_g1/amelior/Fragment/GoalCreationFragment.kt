@@ -137,9 +137,13 @@ class GoalCreationFragment: Fragment()
 		/* Lambda for the action picker updates the selected value upon change. */
 		numberPickerPickAction.setOnValueChangedListener { _, _, selection ->
 
-			/* Make the next input UI elements appear, but only do it once. */
-			if (userActionChoice == -1)
+			/* Make the next input UI elements appear, but only do it once or upon change. */
+			if ((userActionChoice == -1) || (userActionChoice == 2))
 			{
+				ObjectAnimator.ofFloat(editTextAmountInputQuantity, "alpha", 1.00f).apply {
+					duration = 500  // milliseconds
+					start()
+				}
 				ObjectAnimator.ofFloat(linearLayoutPromptAmountContainer, "alpha", 1.00f).apply {
 					duration = 500  // milliseconds
 					start()
@@ -180,31 +184,51 @@ class GoalCreationFragment: Fragment()
 			userActionChoice = selection
 			Log.d(TAG, "User chose ${actions[userActionChoice]}.")
 
+			/* If "do something else..." fade out the elements and show the "Create" button. */
+			if (userActionChoice == 2)
+			{
+				ObjectAnimator.ofFloat(spinnerAmountInputUnits, "alpha", 0.00f).apply {
+					duration = 500  // milliseconds
+					start()
+				}
+				ObjectAnimator.ofFloat(spinnerAmountInputFrequency, "alpha", 0.00f).apply {
+					duration = 500  // milliseconds
+					start()
+				}
+				ObjectAnimator.ofFloat(editTextAmountInputQuantity, "alpha", 0.00f).apply {
+					duration = 500  // milliseconds
+					start()
+				}
+				ObjectAnimator.ofFloat(textViewAmountFrequency, "alpha", 0.00f).apply {
+					duration = 500  // milliseconds
+					start()
+				}
+
+				/* This prevents the bottom right UI triangle from showing. */
+				Handler().postDelayed(
+					{
+						spinnerAmountInputUnits.visibility = View.INVISIBLE
+						spinnerAmountInputFrequency.visibility = View.INVISIBLE
+					},
+					500
+				)
+			}
+
 			if (context != null)
 			{
 				var units: Int = 0
 
 				/* "run" */
-				if (userActionChoice == 1)
-				{
-					units = R.array.units_array_run
-				}
+				if      (userActionChoice == 1)  units = R.array.units_array_run
+
 				/* "do something else..." */
-				else if (userActionChoice == 2)
-				{
-					/* TODO: handle this. */
-					units = R.array.units_array_run
-				}
+				else if (userActionChoice == 2)  units = R.array.units_array_run  /* TODO */
+
 				/* "bike" */
-				else if (userActionChoice == 3)
-				{
-					units = R.array.units_array_bike
-				}
+				else if (userActionChoice == 3)  units = R.array.units_array_bike
+
 				/* Default is walk. */
-				else
-				{
-					units = R.array.units_array_walk
-				}
+				else                             units = R.array.units_array_walk
 
 				/* Set the spinner units based on the selection. */
 				ArrayAdapter.createFromResource(
@@ -217,7 +241,7 @@ class GoalCreationFragment: Fragment()
 			}
 		}
 
-		/* Upon finishing typing in the name, clear the focus. */
+		/* Upon finishing typing in the quantity, clear the focus. */
 		editTextAmountInputQuantity.setOnKeyListener(
 
 			View.OnKeyListener { _, key, event ->
@@ -238,7 +262,7 @@ class GoalCreationFragment: Fragment()
 			}
 		)
 
-		/* Upon pressing the button, save the data and go home. */
+		/* Upon pressing the continue button, save the data and go home. */
 		buttonContinueButton.setOnClickListener {
 
 			val action: String = actions[userActionChoice]
