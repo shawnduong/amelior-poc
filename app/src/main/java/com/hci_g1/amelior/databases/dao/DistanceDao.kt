@@ -14,7 +14,7 @@ interface DistanceDao
 	
 	@Transaction
 	@Query("SELECT EXISTS(SELECT * FROM Distance WHERE key = :key LIMIT 1)")
-	fun distance_exists(key: Long): Boolean
+	fun distance_exists_now(key: Long): Boolean
 	
 	@Transaction
 	@Query("SELECT * FROM Distance WHERE key = :key LIMIT 1")

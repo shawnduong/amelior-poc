@@ -12,6 +12,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.hci_g1.amelior.entities.Distance
 
 /* GPS service writes GPS updates to database while service is bound. */
 class Gps: LifecycleService()
@@ -20,11 +21,22 @@ class Gps: LifecycleService()
 	private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 	private lateinit var locationCallback: LocationCallback
 	private lateinit var locationRequest: LocationRequest
-	private lateinit var lastSavedLocation: Location
 	
+	/* Vars to track a rolling distance total from GPS samples. */
+	private lateinit var lastSavedLocation: Location
 	private var acquiredStartLocation: Boolean = false
-	private var savedDistance: Float = 0f
 	private var totalDistance: Float = 0f
+	
+	/* Objects and values for database interaction. */
+	private lateinit var distanceDao: DistanceDao
+	private lateinit var todaysDistance: Distance
+	private var today: Long = 0
+	
+	private fun get_epoch_day(): Long
+	{
+		val millisecPerDay: Long = 1000*60*60*24
+		return (System.currentTimeMillis()/millisecPerDay)
+	}
 
 	/* Initialize required service objects at creation time to reduce start time. */
 	override fun onCreate()
@@ -34,6 +46,9 @@ class Gps: LifecycleService()
 
 		/* Primary location provider. */
 		fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+		
+		/* Init database objects and variables */
+		initTodaysDistance()
 
 		/* Callback function definitions. */
 		locationCallback = object: LocationCallback()
@@ -42,10 +57,8 @@ class Gps: LifecycleService()
 			override fun onLocationResult(locationResult: LocationResult)
 			{
 				super.onLocationResult(locationResult)
-
+				
 				/* TODO: Integreate this with Crystal's DB code.
-				*   Make entity/DAO; Break down Locations into primitive types for storage.
-				* 	 Keep a rolling total of distance per day.
 				*	  */
 				var location = locationResult.lastLocation
 				Log.d(TAG, "Location acquired: " + location.toString())
@@ -55,6 +68,12 @@ class Gps: LifecycleService()
 					totalDistance += lastSavedLocation.distanceTo(location)
 					lastSavedLocation = location
 					Log.d(TAG, "You have traveled $totalDistance meters from your starting location.")
+					
+					lifecycleScope.launch {
+						todaysDistance = Distance(today, totalDistance)
+						distanceDao.insert_distance(todaysDistance)
+						Log.d(TAG, "Updated database with ${todaysDistance.totalDistance} meters traveled on epoch day $today.")
+					}
 				}
 				else
 				{
@@ -91,6 +110,27 @@ class Gps: LifecycleService()
 	override fun onDestroy() {
 		super.onDestroy()
 		Log.d(TAG, "Destroyed the GPS service.")
+	}
+	
+	/* Initialize the database entry for the daily distance. */
+	private fun initTodaysDistance()
+	{
+		distanceDao = UserDatabase.getInstance(this).distanceDao
+		today = get_epoch_day()
+		
+		/* Make sure our data is initialized in the database. */
+		if(distanceDao.distance_exists_now(today))
+		{
+			todaysDistance = distanceDao.get_distance_now(today)
+			totalDistance = todaysDistance.totalDistance
+			Log.d(TAG, "Initialized with $totalDistance saved meters traveled for epoch day $today.")
+		}
+		else
+		{
+			todaysDistance = Distance(today, 0f)
+			distanceDao.insert_distance_now(todaysDistance)
+			Log.d(TAG, "Initialized the distance traveled for epoch day $today.")
+		}
 	}
 
 	/* Subscribe to GPS updates. */
