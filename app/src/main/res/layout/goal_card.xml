@@ -29,7 +29,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="8dp"
 			android:layout_toRightOf="@id/flowerGraphic"
-			android:text="TITLE"
+			android:text=""
 		/>
 
 	</RelativeLayout>
