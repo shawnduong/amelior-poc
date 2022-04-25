@@ -65,6 +65,7 @@ class Gps: LifecycleService()
 			stopSelf(startId)
 		}
 		
+		Log.d(TAG, "Startup complete.")
 		return super.onStartCommand(intent, flags, startId)
 	}
 	

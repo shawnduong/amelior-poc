@@ -35,8 +35,12 @@ object Permissions
 		ActivityCompat.requestPermissions(
 			activity,
 			// FIXME: Hardcoded ACTIVITY_RECOGNITION permission request to test StepTracker.kt
-			arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
-			ACTIVITY_RECOGNITION_REQUEST_CODE
+//			arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
+//			ACTIVITY_RECOGNITION_REQUEST_CODE
+			
+			// FIXME: Hardcoded ACCESS_FINE_LOCATION permission request to test Gps.kt
+			arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+			LOCATION_REQUEST_CODE
 			
 			// FIXME: Misses some permissions,
 			//  triggers "multiple permissions can't be requested at once" warning.

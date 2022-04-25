@@ -18,6 +18,7 @@ import com.hci_g1.amelior.entities.StepCount
 *   See https://developer.android.com/guide/components/services#CreatingAService
 */
 
+// TODO: Add stopSelf() calls when we fail to acquire the step sensor
 class StepTracker : LifecycleService(), SensorEventListener {
     /** STEP TRACKER CONTROL **/
     private var sensorManager: SensorManager? = null
