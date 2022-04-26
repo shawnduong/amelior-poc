@@ -128,6 +128,20 @@ class GoalAdapter(
 				holder.imageViewCheck.setImageResource(R.drawable.tick_checked)
 			}
 		}
+		/* If the goal is not custom, we need to check if it can level up since it doesn't have the UI
+		   UI element (and therefore, no listener). Limit once a day, though. */
+		else if ((d.localProgress >= d.quantity) && (get_epoch_day(d.lastCompleted) != get_epoch_day()))
+		{
+			d.lastCompleted = System.currentTimeMillis()
+
+			/* Level up, if possible. */
+			if (d.level < 6)
+			{
+				Log.d(TAG, "Level up! ${d.action} every ${d.frequency} (lvl ${d.level}-> lvl ${d.level+1})")
+				d.level += 1
+				update_image(holder, d)
+			}
+		}
 
 		/* Upon clicking the goal, go to the screen for it. */
 		holder.relativeLayoutGoalCard.setOnClickListener { view ->
