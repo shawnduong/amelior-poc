@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.*
 import com.github.mikephil.charting.charts.*
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.*
+import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.components.Legend.*
 import com.github.mikephil.charting.components.XAxis.*
 
@@ -88,23 +90,52 @@ class GoalScreenBasic: AppCompatActivity()
 		val axisY = graph.getAxisLeft()
 		val axisX = graph.getXAxis()
 
+		val days = arrayOf(
+			"S", "M", "T", "W", "R", "F", "S",
+			"S", "M", "T", "W", "R", "F", "S",
+		)
+
+		/* Set the X axis labels to the days of the week. */
+		axisX.setValueFormatter(
+
+			object: ValueFormatter()
+			{
+				override fun getAxisLabel(value: Float, axis: AxisBase): String
+				{
+					/* I'm not proud of this but we need to get the MVP. Epoch
+					 * day 19106 was a Sunday and is used as a reference. This
+					 * technique should never be used, ever.
+					 */
+					Log.d(TAG, "${get_epoch_day().toString()}")
+
+					return days[((get_epoch_day().toInt()-19106) % 7) + (value.toInt()+7)]
+				}
+			}
+		)
+
 		/* Disable the right Y axis. */
 		graph.getAxisRight().setEnabled(false)
+
+		/* The Y axis must start at 0. */
+		axisY.setAxisMinValue(0.0f)
+
+		/* Because the time scale is only weekly, X e [-7, 1]. There is a day
+		   of extra padding in both directions for aesthetics. */
+		axisX.setAxisMinValue(-7.0f)
+		axisX.setAxisMaxValue(1.0f)
 
 		/* Set the description text. */
 		graph.getDescription().setText("")
 
 		/* Aesthetic dashed lines on both axes. */
-		axisX.enableGridDashedLine(10f, 10f, 0f)
-		axisY.enableGridDashedLine(10f, 10f, 0f)
+		axisX.enableGridDashedLine(10.0f, 10.0f, 0.0f)
+		axisY.enableGridDashedLine(10.0f, 10.0f, 0.0f)
 
 		/* Position the X axis on the bottom. */
 		axisX.setPosition(XAxisPosition.BOTTOM)
 
-		/* Legend */
-		val legend = graph.getLegend()
-		legend.setEnabled(true)
-		legend.setFormSize(10f)
+		/* Disable the legend */
+		graph.getLegend().setEnabled(false)
 
 		/* Entries populated by iterating through the past week of data. */
 		val entries: MutableList<Entry> = ArrayList()
