@@ -157,8 +157,8 @@ class GoalAdapter(
 		/* Upon clicking the check mark, handle goal completion or progress. */
 		holder.imageViewCheck.setOnClickListener {
 
-			/* If the goal was done in the past day, it's already done. */
-			if (get_epoch_day(d.lastCompleted) == get_epoch_day())
+			/* If the goal is non-numerical and was done in the past day, it's done. */
+			if ((d.quantity == -1) && (get_epoch_day(d.lastCompleted) == get_epoch_day()))
 			{
 				Log.d(TAG, "Already completed goal: ${d.action} every ${d.frequency}")
 			}
@@ -170,7 +170,7 @@ class GoalAdapter(
 				holder.textViewProgressText.text = "${d.localProgress.toInt()}/${d.quantity}"
 				holder.progressBarNumericalProgress.setProgress(d.localProgress.toInt())
 
-				if (d.localProgress >= d.quantity)
+				if ((d.localProgress >= d.quantity) && (get_epoch_day(d.lastCompleted) != get_epoch_day()))
 				{
 					d.lastCompleted = System.currentTimeMillis()
 
