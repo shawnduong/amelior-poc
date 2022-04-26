@@ -5,18 +5,18 @@
 
 	<!-- Creation action selection strings for walking. -->
 	<string-array name="units_array_walk">
-		<item>miles</item>
+		<item>m</item>
 		<item>steps</item>
 	</string-array>
 
 	<!-- Creation action selection strings for running. -->
 	<string-array name="units_array_run">
-		<item>miles</item>
+		<item>m</item>
 	</string-array>
 
 	<!-- Creation action selection strings for bicycling. -->
 	<string-array name="units_array_bike">
-		<item>miles</item>
+		<item>m</item>
 	</string-array>
 
 	<!-- Frequency units. -->

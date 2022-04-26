@@ -76,9 +76,9 @@ class GoalAdapter(
 				goalDao.insert_goal_now(d)
 			}
 			/* Load running/walking distance, if appropriate, and save the data read from the distance DB. */
-			else if ((d.units == "miles") && (distanceDao.distance_exists_now(get_epoch_day()) == true))
+			else if ((d.units == "m") && (distanceDao.distance_exists_now(get_epoch_day()) == true))
 			{
-				/* Get the number of steps. */
+				/* Get the distance. */
 				d.localProgress = distanceDao.get_distance_now(get_epoch_day()).totalDistance.toLong()
 
 				/* Save the new data to the database. */
