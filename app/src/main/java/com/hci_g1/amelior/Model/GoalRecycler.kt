@@ -164,6 +164,7 @@ class GoalAdapter(
 			{
 				d.localProgress++
 				Log.d(TAG, "Incremented goal: ${d.action} every ${d.frequency} ${d.localProgress}/${d.quantity})")
+				holder.textViewProgressText.text = "${d.localProgress.toInt()}/${d.quantity}"
 				holder.progressBarNumericalProgress.setProgress(d.localProgress.toInt())
 
 				if (d.localProgress >= d.quantity)
