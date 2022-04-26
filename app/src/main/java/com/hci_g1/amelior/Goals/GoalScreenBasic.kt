@@ -55,7 +55,7 @@ class GoalScreenBasic: AppCompatActivity()
 		textViewTitle           = findViewById(R.id.title)
 		textViewSubtitle        = findViewById(R.id.subtitle)
 
-		/* Fill in the data. */
+		/* Fill in the headers. */
 		if ((goal.custom) && (goal.quantity == -1))
 		{
 			/* Non-numerical custom goal format is different due to lack of quantity and units.  */
@@ -167,6 +167,18 @@ class GoalScreenBasic: AppCompatActivity()
 					entries.add(Entry((today-day).toFloat(), stepCountDao.get_step_count_now(day).totalSteps.toFloat()))
 				}
 			}
+		}
+		/* Actual spaghetti. */
+		else
+		{
+			/* Fill in the last 5 days of data. */
+			entries.add(Entry(-6.0f, goal.hist6.toFloat()))
+			entries.add(Entry(-5.0f, goal.hist5.toFloat()))
+			entries.add(Entry(-4.0f, goal.hist4.toFloat()))
+			entries.add(Entry(-3.0f, goal.hist3.toFloat()))
+			entries.add(Entry(-2.0f, goal.hist2.toFloat()))
+			entries.add(Entry(-1.0f, goal.hist1.toFloat()))
+			entries.add(Entry( 0.0f, goal.hist0.toFloat()))
 		}
 
 		/* Create the LineDataSet object used by the chart. */

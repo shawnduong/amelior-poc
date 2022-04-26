@@ -128,6 +128,23 @@ class GoalAdapter(
 				holder.imageViewCheck.setImageResource(R.drawable.tick_checked)
 			}
 		}
+		/* If the goal is not custom, we need to check if it can level up since it doesn't have the UI
+		   UI element (and therefore, no listener). Limit once a day, though. */
+		else if ((d.localProgress >= d.quantity) && (get_epoch_day(d.lastCompleted) != get_epoch_day()))
+		{
+			d.lastCompleted = System.currentTimeMillis()
+
+			/* Level up, if possible. */
+			if (d.level < 6)
+			{
+				Log.d(TAG, "Level up! ${d.action} every ${d.frequency} (lvl ${d.level} -> lvl ${d.level+1})")
+				d.level += 1
+				update_image(holder, d)
+			}
+
+			/* Save the new data to the database. */
+			goalDao.insert_goal_now(d)
+		}
 
 		/* Upon clicking the goal, go to the screen for it. */
 		holder.relativeLayoutGoalCard.setOnClickListener { view ->
@@ -140,8 +157,8 @@ class GoalAdapter(
 		/* Upon clicking the check mark, handle goal completion or progress. */
 		holder.imageViewCheck.setOnClickListener {
 
-			/* If the goal was done in the past day, it's already done. */
-			if (get_epoch_day(d.lastCompleted) == get_epoch_day())
+			/* If the goal is non-numerical and was done in the past day, it's done. */
+			if ((d.quantity == -1) && (get_epoch_day(d.lastCompleted) == get_epoch_day()))
 			{
 				Log.d(TAG, "Already completed goal: ${d.action} every ${d.frequency}")
 			}
@@ -149,17 +166,19 @@ class GoalAdapter(
 			else if (d.quantity != -1)
 			{
 				d.localProgress++
+				d.hist0 = d.localProgress
 				Log.d(TAG, "Incremented goal: ${d.action} every ${d.frequency} ${d.localProgress}/${d.quantity})")
+				holder.textViewProgressText.text = "${d.localProgress.toInt()}/${d.quantity}"
 				holder.progressBarNumericalProgress.setProgress(d.localProgress.toInt())
 
-				if (d.localProgress >= d.quantity)
+				if ((d.localProgress >= d.quantity) && (get_epoch_day(d.lastCompleted) != get_epoch_day()))
 				{
 					d.lastCompleted = System.currentTimeMillis()
 
 					/* Level up, if possible. */
 					if (d.level < 6)
 					{
-						Log.d(TAG, "Level up! ${d.action} every ${d.frequency} (lvl ${d.level}-> lvl ${d.level+1})")
+						Log.d(TAG, "Level up! ${d.action} every ${d.frequency} (lvl ${d.level} -> lvl ${d.level+1})")
 						d.level += 1
 						update_image(holder, d)
 					}
@@ -173,11 +192,12 @@ class GoalAdapter(
 			{
 				Log.d(TAG, "Completed goal: ${d.action} every ${d.frequency}")
 				d.lastCompleted = System.currentTimeMillis()
+				d.hist0 = 1
 
 				/* Level up, if possible. */
 				if (d.level < 6)
 				{
-					Log.d(TAG, "Level up! ${d.action} every ${d.frequency} (lvl ${d.level}-> lvl ${d.level+1})")
+					Log.d(TAG, "Level up! ${d.action} every ${d.frequency} (lvl ${d.level} -> lvl ${d.level+1})")
 					d.level += 1
 					update_image(holder, d)
 				}

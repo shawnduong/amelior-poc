@@ -143,7 +143,8 @@ class GoalScreenCustomCreation: AppCompatActivity()
 					frequency,       // frequency
 					3,               // level
 					0,               // local progress
-					-1               // last completed
+					-1,              // last completed
+					0,0,0,0,0,0,0    // last 7 days history
 				)
 			)
 
