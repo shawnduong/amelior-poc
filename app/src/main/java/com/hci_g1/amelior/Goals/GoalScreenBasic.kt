@@ -132,12 +132,12 @@ class GoalScreenBasic: AppCompatActivity()
 		for(i in 4 downTo 0)
 		{
 			//Log.d(TAG, "test 4 ${distanceDao.distance_exists_now(today-i)}")
-			if(distanceDao.distance_exists_now(today-i))
+			if (distanceDao.distance_exists_now(today-i))
 			{
 				timelist.add(today-i)
 				distancelist.add(distanceDao.get_distance_now(today-i))
 			}
-			if(stepCountDao.step_count_exists(today-i))
+			if (stepCountDao.step_count_exists_now(today-i))
 			{
 				if(timelist.size < 1)
 				{
@@ -146,7 +146,7 @@ class GoalScreenBasic: AppCompatActivity()
 				stepcountlist.add(stepCountDao.get_step_count_now((today-i)))
 			}
 		}
-		Log.d(TAG, "time ${timelist[0]} distance  ${distancelist[0].totalDistance} steps  ${stepcountlist[0].stepTotal}")
+		Log.d(TAG, "time ${timelist[0]} distance  ${distancelist[0].totalDistance} steps  ${stepcountlist[0].totalSteps}")
 
 		/* Create the input dataset. */
 		val entries: MutableList<Entry> = ArrayList()
