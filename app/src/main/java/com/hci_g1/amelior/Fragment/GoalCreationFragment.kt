@@ -302,6 +302,7 @@ class GoalCreationFragment: Fragment()
 						units,           // units
 						frequency,       // frequency
 						3,               // level
+						0,               // local progress
 						-1               // last completed
 					)
 				)

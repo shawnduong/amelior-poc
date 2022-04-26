@@ -17,6 +17,7 @@ class GoalAdapter(private val dao: GoalDao, private val data: MutableList<Goal>)
 	{
 		val imageViewFlowerGraphic: ImageView
 		val imageViewCheck: ImageView
+		val progressBarNumericalProgress: ProgressBar
 		val relativeLayoutGoalCard: RelativeLayout
 		val relativeLayoutBasicContainer: RelativeLayout
 		val relativeLayoutNumericalContainer: RelativeLayout
@@ -28,6 +29,7 @@ class GoalAdapter(private val dao: GoalDao, private val data: MutableList<Goal>)
 		{
 			imageViewFlowerGraphic            = view.findViewById(R.id.flowerGraphic)
 			imageViewCheck                    = view.findViewById(R.id.check)
+			progressBarNumericalProgress      = view.findViewById(R.id.numericalProgress)
 			relativeLayoutGoalCard            = view.findViewById(R.id.goalCard)
 			relativeLayoutBasicContainer      = view.findViewById(R.id.basicContainer)
 			relativeLayoutNumericalContainer  = view.findViewById(R.id.numericalContainer)
@@ -52,7 +54,13 @@ class GoalAdapter(private val dao: GoalDao, private val data: MutableList<Goal>)
 		{
 			holder.relativeLayoutBasicContainer.visibility = View.INVISIBLE
 			holder.relativeLayoutNumericalContainer.visibility = View.VISIBLE
+
+			/* Set the text. */
 			holder.textViewNumericalGoalTitle.text = "${d.action.capitalize()} ${d.quantity} ${d.units}/${d.frequency}"
+
+			/* Set the progress bar. */
+			holder.progressBarNumericalProgress.setMax(d.quantity)
+			holder.progressBarNumericalProgress.setProgress(d.localProgress.toInt())
 		}
 		else
 		{
@@ -101,13 +109,36 @@ class GoalAdapter(private val dao: GoalDao, private val data: MutableList<Goal>)
 		/* Upon clicking the check mark, handle goal completion or progress. */
 		holder.imageViewCheck.setOnClickListener {
 
-			/* If the goal is non-numerical, and it was done in the past day, it's already checked. */
+			/* If the goal was done in the past day, it's already done. */
 			if (get_epoch_day(d.lastCompleted) == get_epoch_day())
 			{
 				Log.d(TAG, "Already completed goal: ${d.action} every ${d.frequency}")
 			}
+			/* If the goal is numerical, increment the local progress. */
+			else if (d.quantity != -1)
+			{
+				d.localProgress++
+				Log.d(TAG, "Incremented goal: ${d.action} every ${d.frequency} ${d.localProgress}/${d.quantity})")
+				holder.progressBarNumericalProgress.setProgress(d.localProgress.toInt())
+
+				if (d.localProgress >= d.quantity)
+				{
+					d.lastCompleted = System.currentTimeMillis()
+
+					/* Level up, if possible. */
+					if (d.level < 6)
+					{
+						Log.d(TAG, "Level up! ${d.action} every ${d.frequency} (lvl ${d.level}-> lvl ${d.level+1})")
+						d.level += 1
+						update_image(holder, d)
+					}
+				}
+
+				/* Save the new data to the database. */
+				dao.insert_goal_now(d)
+			}
 			/* If the goal is non-numerical, it's done. */
-			else if (d.quantity == -1)
+			else
 			{
 				Log.d(TAG, "Completed goal: ${d.action} every ${d.frequency}")
 				d.lastCompleted = System.currentTimeMillis()

@@ -14,5 +14,6 @@ data class Goal
 	val units: String,
 	val frequency: String,
 	var level: Int,
+	var localProgress: Long,
 	var lastCompleted: Long,
 )
