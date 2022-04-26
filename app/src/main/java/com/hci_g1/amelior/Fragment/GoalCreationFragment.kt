@@ -1,6 +1,7 @@
 package com.hci_g1.amelior
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -140,6 +141,10 @@ class GoalCreationFragment: Fragment()
 			/* Make the next input UI elements appear, but only do it once or upon change. */
 			if ((userActionChoice == -1) || (userActionChoice == 2))
 			{
+				ObjectAnimator.ofFloat(buttonContinueButton, "alpha", 0.00f).apply {
+					duration = 500  // milliseconds
+					start()
+				}
 				ObjectAnimator.ofFloat(editTextAmountInputQuantity, "alpha", 1.00f).apply {
 					duration = 500  // milliseconds
 					start()
@@ -212,6 +217,13 @@ class GoalCreationFragment: Fragment()
 					},
 					500
 				)
+
+				/* Make the continue button appear. */
+				buttonContinueButton.text = "Continue"
+				ObjectAnimator.ofFloat(buttonContinueButton, "alpha", 1.00f).apply {
+					duration = 500  // milliseconds
+					start()
+				}
 			}
 
 			if (context != null)
@@ -220,9 +232,6 @@ class GoalCreationFragment: Fragment()
 
 				/* "run" */
 				if      (userActionChoice == 1)  units = R.array.units_array_run
-
-				/* "do something else..." */
-				else if (userActionChoice == 2)  units = R.array.units_array_run  /* TODO */
 
 				/* "bike" */
 				else if (userActionChoice == 3)  units = R.array.units_array_bike
@@ -241,7 +250,7 @@ class GoalCreationFragment: Fragment()
 			}
 		}
 
-		/* Upon finishing typing in the quantity, clear the focus. */
+		/* Upon finishing typing in the quantity, clear the focus and show the continue button. */
 		editTextAmountInputQuantity.setOnKeyListener(
 
 			View.OnKeyListener { _, key, event ->
@@ -252,6 +261,7 @@ class GoalCreationFragment: Fragment()
 					editTextAmountInputQuantity.clearFocus()
 
 					/* Make the continue button appear. */
+					buttonContinueButton.text = "Create"
 					ObjectAnimator.ofFloat(buttonContinueButton, "alpha", 1.00f).apply {
 						duration = 500  // milliseconds
 						start()
@@ -265,26 +275,45 @@ class GoalCreationFragment: Fragment()
 		/* Upon pressing the continue button, save the data and go home. */
 		buttonContinueButton.setOnClickListener {
 
-			val action: String = actions[userActionChoice]
-
-			val quantity: Int = editTextAmountInputQuantity.text.toString().toInt()
-
-			val units: String = spinnerAmountInputUnits.getItemAtPosition(
+			/* The "do something else..." option goes to a custom creation page. */
+			if (userActionChoice == 2)
+			{
+				Log.d(TAG, "Moving to custom goal creation page.")
+				view.context.startActivity(Intent(view.context, GoalScreenCustomCreation::class.java))
+			}
+			/* Save the data and go home. */
+			else
+			{
+				val action: String = actions[userActionChoice]
+				val quantity: Int = editTextAmountInputQuantity.text.toString().toInt()
+				val units: String = spinnerAmountInputUnits.getItemAtPosition(
 					spinnerAmountInputUnits.getSelectedItemPosition()
-			).toString()
-
-			val frequency: String = spinnerAmountInputFrequency.getItemAtPosition(
+				).toString()
+				val frequency: String = spinnerAmountInputFrequency.getItemAtPosition(
 					spinnerAmountInputFrequency.getSelectedItemPosition()
-			).toString()
+				).toString()
 
-			goalDao.insert_goal_now(Goal(goalDao.size(), action, quantity, units, frequency, 3))
+				goalDao.insert_goal_now(
+					Goal(
+						goalDao.size(),  // key
+						false,           // custom
+						action,          // action
+						quantity,        // quantity
+						units,           // units
+						frequency,       // frequency
+						3,               // level
+						0,               // local progress
+						-1               // last completed
+					)
+				)
 
-			/* Test that it was inserted correctly. */
-			val goal: Goal = goalDao.get_goal_now(goalDao.size()-1)
-			Log.d(TAG, "User created goal ${goal.key} ${goal.action} ${goal.quantity} ${goal.units} ${goal.frequency}")
+				/* Test that it was inserted correctly. */
+				val goal: Goal = goalDao.get_goal_now(goalDao.size()-1)
+				Log.d(TAG, "User created goal ${goal.key} ${goal.action} ${goal.quantity} ${goal.units} ${goal.frequency}")
 
-			/* Go home. */
-			view.findNavController().navigate(R.id.goHomeAction)
+				/* Go home. */
+				view.findNavController().navigate(R.id.goHomeAction)
+			}
 		}
 	}
 

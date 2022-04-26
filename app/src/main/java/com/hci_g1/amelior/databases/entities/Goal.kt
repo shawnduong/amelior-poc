@@ -8,9 +8,12 @@ data class Goal
 (
 	@PrimaryKey(autoGenerate=false)
 	val key: Int,
+	val custom: Boolean,
 	val action: String,
 	val quantity: Int,
 	val units: String,
 	val frequency: String,
-	val level: Int,
+	var level: Int,
+	var localProgress: Long,
+	var lastCompleted: Long,
 )
