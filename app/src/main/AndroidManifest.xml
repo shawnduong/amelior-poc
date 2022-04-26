@@ -56,6 +56,12 @@
 			android:exported="false"
 		/>
 
+		<!-- Mood screen template. -->
+		<activity
+			android:name=".GoalScreenMood"
+			android:exported="false"
+		/>
+
 		<!-- GPS service. -->
 		<service
 			android:name=".Gps"
