@@ -9,30 +9,85 @@
 	<RelativeLayout
 		android:id="@+id/goalCard"
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="80dp"
 		android:layout_marginBottom="16dp"
 		android:background="@drawable/rounded_corners"
 		android:padding="8dp"
 	>
 
+		<!-- This ImageView only shows for custom goals. -->
+		<ImageView
+			android:id="@+id/check"
+			android:layout_width="48dp"
+			android:layout_height="48dp"
+			android:layout_alignParentRight="true"
+			android:layout_marginTop="8dp"
+			android:layout_marginRight="8dp"
+			android:src="@drawable/tick_unchecked"
+			android:visibility="invisible"
+		/>
+
 		<ImageView
 			android:id="@+id/flowerGraphic"
 			android:layout_width="64dp"
 			android:layout_height="64dp"
-			android:src="@drawable/flower_level_03_small"
 			android:layout_alignParentLeft="true"
+			android:src="@drawable/flower_level_03_small"
 		/>
 
-		<TextView
-			android:id="@+id/goalTitle"
+		<!-- This TextView only shows for non-numerical goals. -->
+		<RelativeLayout
+			android:id="@+id/basicContainer"
 			android:layout_width="wrap_content"
 			android:layout_height="64dp"
 			android:layout_marginLeft="24dp"
 			android:layout_toRightOf="@id/flowerGraphic"
+			android:layout_toLeftOf="@id/check"
 			android:gravity="center_vertical"
-			android:text=""
-			android:textStyle="bold"
-		/>
+		>
+
+			<TextView
+				android:id="@+id/goalTitle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				android:text=""
+				android:textStyle="bold"
+			/>
+
+		</RelativeLayout>
+
+		<!-- This set of TextView and ProgressBar only shows for numerical goals. -->
+		<RelativeLayout
+			android:id="@+id/numericalContainer"
+			android:layout_width="wrap_content"
+			android:layout_height="64dp"
+			android:layout_marginLeft="24dp"
+			android:layout_toRightOf="@id/flowerGraphic"
+			android:layout_toLeftOf="@id/check"
+			android:visibility="invisible"
+			android:gravity="center_vertical"
+		>
+
+			<TextView
+				android:id="@+id/numericalGoalTitle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text=""
+				android:textStyle="bold"
+			/>
+
+			<ProgressBar
+				style="@android:style/Widget.ProgressBar.Horizontal"
+				android:id="@+id/numericalProgress"
+				android:layout_width="match_parent"
+				android:layout_height="4dp"
+				android:layout_below="@id/numericalGoalTitle"
+				android:layout_marginTop="8dp"
+				android:layout_marginRight="8dp"
+			/>
+
+		</RelativeLayout>
 
 	</RelativeLayout>
 

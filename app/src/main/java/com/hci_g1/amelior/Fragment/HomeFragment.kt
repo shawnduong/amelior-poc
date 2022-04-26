@@ -57,9 +57,7 @@ class HomeFragment: Fragment()
 		goals = ArrayList()
 		for (i in 0..goalDao.size()-1)
 		{
-			Log.d(TAG, "i=$i")
 			goals.add(goalDao.get_goal_now(i))
-			Log.d(TAG, "x")
 		}
 
 		/* Initialize widgets. */
@@ -73,7 +71,7 @@ class HomeFragment: Fragment()
 		/* Create the goals recycle view. */
 		recyclerViewGoalRecycler.apply {
 			layoutManager = LinearLayoutManager(getContext())
-			adapter = GoalAdapter(goals)
+			adapter = GoalAdapter(goalDao, goals)
 		}
 
 		/* Default mood bar value. */
@@ -134,12 +132,8 @@ class HomeFragment: Fragment()
 
 		/* Upon clicking the submit button, save input to database. */
 		buttonSplashSubmit.setOnClickListener {
-
 			val mood: Int = seekBarMoodBar.getProgress()
-
 			moodDao.insert_mood_now(Mood(moodDao.size(), System.currentTimeMillis(), mood))
-
-			Log.d(HomeFragment.TAG, "Input Mood.")
 		}
 	}
 
