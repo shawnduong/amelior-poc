@@ -141,7 +141,8 @@ class GoalScreenCustomCreation: AppCompatActivity()
 					quantity,        // quantity
 					units,           // units
 					frequency,       // frequency
-					3                // level
+					3,               // level
+					-1               // last completed
 				)
 			)
 
