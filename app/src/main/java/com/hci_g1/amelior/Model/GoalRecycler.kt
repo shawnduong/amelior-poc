@@ -65,11 +65,10 @@ class GoalAdapter(private val data: MutableList<Goal>): RecyclerView.Adapter<Goa
 		{
 			holder.imageViewCheck.visibility = View.VISIBLE
 
-			/* If the goal is non-numerical, replace the plus icon with a checkmark. */
-			if (d.quantity == -1)
+			/* If the goal is numerical, replace the checkmark with a plus. */
+			if (d.quantity != -1)
 			{
-				/* TODO: replace the icon. */
-				holder.imageViewCheck.setImageResource(R.drawable.navbar_settings_icon)
+				holder.imageViewCheck.setImageResource(R.drawable.plus)
 			}
 		}
 
