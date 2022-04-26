@@ -9,34 +9,23 @@ import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.*
 import com.github.mikephil.charting.charts.*
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.components.XAxis.*
 import com.github.mikephil.charting.components.Legend.*
+import com.github.mikephil.charting.components.XAxis.*
 
 import com.hci_g1.amelior.entities.Goal
-import com.hci_g1.amelior.entities.StepCount
 import com.hci_g1.amelior.entities.Distance
+import com.hci_g1.amelior.entities.StepCount
 
 class GoalScreenBasic: AppCompatActivity()
 {
+	private var today: Long = 0
+
 	private lateinit var goal: Goal
 
 	private lateinit var buttonClose: Button
 	private lateinit var imageViewFlowerGraphic: ImageView
 	private lateinit var textViewTitle: TextView
 	private lateinit var textViewSubtitle: TextView
-
-	/*Database Variables*/
-	private lateinit var steps : StepCount
-	private lateinit var distance : Distance
-
-	/*Epoch Day*/
-	private fun get_epoch_day(): Long
-	{
-		val millisecPerDay: Long = 1000*60*60*24
-		return (System.currentTimeMillis()/millisecPerDay)
-	}
-	private var today: Long = 0
-
 
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
@@ -47,21 +36,16 @@ class GoalScreenBasic: AppCompatActivity()
 		val initCode: Int? = getIntent().getIntExtra("initIndex", 0)
 		Log.d(TAG, "Loaded with initCode=${initCode}.")
 
-		/*DataBase Initalization*/
-
-		val distanceDao = UserDatabase.getInstance(this).distanceDao
-		distance = distanceDao.get_distance_now(19108)
-
-		val stepCountDao = UserDatabase.getInstance(this).stepCountDao
-		steps = stepCountDao.get_step_count_now(19108)
-
 		/* Initialize variables. */
+
 		if (initCode != null)
 		{
 			val goalDao = UserDatabase.getInstance(this).goalDao
 			goal = goalDao.get_goal_now(initCode)
 			Log.d(TAG, "Goal successfully loaded.")
 		}
+
+		today = get_epoch_day()
 
 		/* Initialize widgets. */
 		buttonClose             = findViewById(R.id.close)
@@ -99,82 +83,79 @@ class GoalScreenBasic: AppCompatActivity()
 			finish()
 		}
 
-		/* Graph TESTING TODO */
-		/* Check this out: https://weeklycoding.com/mpandroidchart-documentation/getting-started/ */
-
-		/* Find the chart in the XML and get the axes. X depends on Y. */
+		/* Find the chart in the XML and get the axes. */
 		val graph: LineChart = findViewById(R.id.lineChart)
 		val axisY = graph.getAxisLeft()
 		val axisX = graph.getXAxis()
 
-		val axisYRight = graph.getAxisRight()
-		axisYRight.setEnabled(false)
-		val description = graph.getDescription()
-		val timelist: MutableList<Long> = ArrayList()
-		val distancelist : MutableList<Distance> = ArrayList()
-		val stepcountlist : MutableList<StepCount> = ArrayList()
-		val Legendobj = graph.getLegend()
+		/* Disable the right Y axis. */
+		graph.getAxisRight().setEnabled(false)
+
+		/* Set the description text. */
+		graph.getDescription().setText("")
+
 		/* Aesthetic dashed lines on both axes. */
 		axisX.enableGridDashedLine(10f, 10f, 0f)
 		axisY.enableGridDashedLine(10f, 10f, 0f)
+
+		/* Position the X axis on the bottom. */
 		axisX.setPosition(XAxisPosition.BOTTOM)
-		description.setText("")
 
-		/*Legend*/
-		Legendobj.setEnabled(true)
-		Legendobj.setFormSize(10f)
+		/* Legend */
+		val legend = graph.getLegend()
+		legend.setEnabled(true)
+		legend.setFormSize(10f)
 
-		//Legendobj.setPosition(Legend.Position.BELOW_CHART_LEFT)
-		/*Epoch Generation*/
-		today = get_epoch_day()
-
-		/*checks to see if there is a record for the last 5 days*/
-		for(i in 4 downTo 0)
-		{
-			//Log.d(TAG, "test 4 ${distanceDao.distance_exists_now(today-i)}")
-			if (distanceDao.distance_exists_now(today-i))
-			{
-				timelist.add(today-i)
-				distancelist.add(distanceDao.get_distance_now(today-i))
-			}
-			if (stepCountDao.step_count_exists_now(today-i))
-			{
-				if(timelist.size < 1)
-				{
-					timelist.add(today-i)
-				}
-				stepcountlist.add(stepCountDao.get_step_count_now((today-i)))
-			}
-		}
-		Log.d(TAG, "time ${timelist[0]} distance  ${distancelist[0].totalDistance} steps  ${stepcountlist[0].totalSteps}")
-
-		/* Create the input dataset. */
+		/* Entries populated by iterating through the past week of data. */
 		val entries: MutableList<Entry> = ArrayList()
-		for(i in timelist.indices)
+		var dataType: String = ""
+
+		/* Iterate different DAOs based on the type of goal. */
+		if (goal.units == "m")
 		{
-			entries.add(Entry(i+1.toFloat(), distancelist[i].totalDistance))
-			//entries.add(Entry(timelist[i].toFloat(), distancelist[i].totalDistance))
-			//entries.add(Entry(timelist[i].toFloat(), stepcountlist[i].stepTotal))
+			val distanceDao: DistanceDao = UserDatabase.getInstance(this).distanceDao
+			dataType = "Distance"
+
+			for (day in (today-6)..(today))
+			{
+				if (distanceDao.distance_exists_now(day))
+				{
+					entries.add(Entry((today-day).toFloat(), distanceDao.get_distance_now(day).totalDistance.toFloat()))
+				}
+			}
+		}
+		else if (goal.units == "steps")
+		{
+			val stepCountDao: StepCountDao = UserDatabase.getInstance(this).stepCountDao
+			dataType = "Steps"
+
+			for (day in (today-6)..(today))
+			{
+				if (stepCountDao.step_count_exists_now(day))
+				{
+					entries.add(Entry((today-day).toFloat(), stepCountDao.get_step_count_now(day).totalSteps.toFloat()))
+				}
+			}
 		}
 
-
-		//entries.add(Entry(1.0f, 1.0f))
-		/*
-		entries.add(Entry(2.0f, 4.0f))
-		entries.add(Entry(3.0f, 9.0f))
-		entries.add(Entry(4.0f, 16.0f))
-		entries.add(Entry(5.0f, 25.0f))
-		*/
 		/* Create the LineDataSet object used by the chart. */
-		val dataset = LineDataSet(entries, "Distance")
+		val dataset = LineDataSet(entries, dataType)
 		dataset.setColors(Color.BLACK)
 
-		/* A LineDataSet is not the same as LineData. The chart needs LineData.
-		   We pass LineDataSet through LineData() and pass it into the setData
-		   method to actually plot the data on the graph. */
+		/* Plot the data on the graph. */
 		graph.setData(LineData(dataset))
+	}
 
-		/* I hope this helped. -Shawn */
+	/* Get the current epoch day. */
+	private fun get_epoch_day(): Long
+	{
+		return System.currentTimeMillis()/(1000*60*60*24)
+	}
+
+	/* Get the current epoch day given an epoch time (ms). */
+	private fun get_epoch_day(time: Long): Long
+	{
+		return time/(1000*60*60*24)
 	}
 
 	companion object
