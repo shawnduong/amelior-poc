@@ -59,8 +59,7 @@ class GoalScreenBasic: AppCompatActivity()
 		else if (goal.level == 3)  imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03)
 		else if (goal.level == 4)  imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_04)
 		else if (goal.level == 5)  imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_05)
-		/* 3 is the default level. */
-		else                       imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03)
+		else                       imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_05)
 
 		/* UI logic. */
 

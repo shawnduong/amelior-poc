@@ -97,7 +97,7 @@ class GoalAdapter(private val dao: GoalDao, private val data: MutableList<Goal>)
 				d.lastCompleted = System.currentTimeMillis()
 
 				/* Level up, if possible. */
-				if (d.level < 5)
+				if (d.level < 6)
 				{
 					Log.d(TAG, "Level up! ${d.action} every ${d.frequency} (lvl ${d.level}-> lvl ${d.level+1})")
 					d.level += 1
@@ -122,7 +122,7 @@ class GoalAdapter(private val dao: GoalDao, private val data: MutableList<Goal>)
 		else if (d.level == 3)  holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03_small)
 		else if (d.level == 4)  holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_04_small)
 		else if (d.level == 5)  holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_05_small)
-		else                    holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_03_small)
+		else                    holder.imageViewFlowerGraphic.setImageResource(R.drawable.flower_level_05_small)
 	}
 
 	/* Get the current epoch day. */
