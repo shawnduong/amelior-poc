@@ -18,15 +18,21 @@ class GoalAdapter(private val dao: GoalDao, private val data: MutableList<Goal>)
 		val imageViewFlowerGraphic: ImageView
 		val imageViewCheck: ImageView
 		val relativeLayoutGoalCard: RelativeLayout
+		val relativeLayoutBasicContainer: RelativeLayout
+		val relativeLayoutNumericalContainer: RelativeLayout
 		val textViewGoalTitle: TextView
+		val textViewNumericalGoalTitle: TextView
 
 		/* Initialize widgets. */
 		init
 		{
-			imageViewFlowerGraphic  = view.findViewById(R.id.flowerGraphic)
-			imageViewCheck          = view.findViewById(R.id.check)
-			relativeLayoutGoalCard  = view.findViewById(R.id.goalCard)
-			textViewGoalTitle       = view.findViewById(R.id.goalTitle)
+			imageViewFlowerGraphic            = view.findViewById(R.id.flowerGraphic)
+			imageViewCheck                    = view.findViewById(R.id.check)
+			relativeLayoutGoalCard            = view.findViewById(R.id.goalCard)
+			relativeLayoutBasicContainer      = view.findViewById(R.id.basicContainer)
+			relativeLayoutNumericalContainer  = view.findViewById(R.id.numericalContainer)
+			textViewGoalTitle                 = view.findViewById(R.id.goalTitle)
+			textViewNumericalGoalTitle        = view.findViewById(R.id.numericalGoalTitle)
 		}
 	}
 
@@ -41,19 +47,29 @@ class GoalAdapter(private val dao: GoalDao, private val data: MutableList<Goal>)
 	{
 		val d: Goal = data[index]
 
-		/* TODO: calculate epoch time day delta since last completion, then
-		   lose levels based on that. */
-
-		/* Set the text. */
-		if ((d.custom) && (d.quantity == -1))
+		/* Numerical types of data have their own TextView and ProgressBar UI. */
+		if (d.quantity != -1)
 		{
-			/* Non-numerical custom goal format is different due to lack of quantity and units.  */
-			holder.textViewGoalTitle.text = "${d.action.capitalize()} every ${d.frequency}"
+			holder.relativeLayoutBasicContainer.visibility = View.INVISIBLE
+			holder.relativeLayoutNumericalContainer.visibility = View.VISIBLE
+			holder.textViewNumericalGoalTitle.text = "${d.action.capitalize()} ${d.quantity} ${d.units}/${d.frequency}"
 		}
 		else
 		{
-			holder.textViewGoalTitle.text = "${d.action.capitalize()} ${d.quantity} ${d.units}/${d.frequency}"
+			/* Set the text. */
+			if ((d.custom) && (d.quantity == -1))
+			{
+				/* Non-numerical custom goal format is different due to lack of quantity and units.  */
+				holder.textViewGoalTitle.text = "${d.action.capitalize()} every ${d.frequency}"
+			}
+			else
+			{
+				holder.textViewGoalTitle.text = "${d.action.capitalize()} ${d.quantity} ${d.units}/${d.frequency}"
+			}
 		}
+
+		/* TODO: calculate epoch time day delta since last completion, then
+		   lose levels based on that. */
 
 		update_image(holder, d)
 
