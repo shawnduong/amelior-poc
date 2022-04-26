@@ -137,10 +137,13 @@ class GoalAdapter(
 			/* Level up, if possible. */
 			if (d.level < 6)
 			{
-				Log.d(TAG, "Level up! ${d.action} every ${d.frequency} (lvl ${d.level}-> lvl ${d.level+1})")
+				Log.d(TAG, "Level up! ${d.action} every ${d.frequency} (lvl ${d.level} -> lvl ${d.level+1})")
 				d.level += 1
 				update_image(holder, d)
 			}
+
+			/* Save the new data to the database. */
+			goalDao.insert_goal_now(d)
 		}
 
 		/* Upon clicking the goal, go to the screen for it. */
@@ -174,7 +177,7 @@ class GoalAdapter(
 					/* Level up, if possible. */
 					if (d.level < 6)
 					{
-						Log.d(TAG, "Level up! ${d.action} every ${d.frequency} (lvl ${d.level}-> lvl ${d.level+1})")
+						Log.d(TAG, "Level up! ${d.action} every ${d.frequency} (lvl ${d.level} -> lvl ${d.level+1})")
 						d.level += 1
 						update_image(holder, d)
 					}
@@ -192,7 +195,7 @@ class GoalAdapter(
 				/* Level up, if possible. */
 				if (d.level < 6)
 				{
-					Log.d(TAG, "Level up! ${d.action} every ${d.frequency} (lvl ${d.level}-> lvl ${d.level+1})")
+					Log.d(TAG, "Level up! ${d.action} every ${d.frequency} (lvl ${d.level} -> lvl ${d.level+1})")
 					d.level += 1
 					update_image(holder, d)
 				}
