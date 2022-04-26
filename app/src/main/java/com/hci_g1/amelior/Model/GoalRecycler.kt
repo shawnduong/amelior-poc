@@ -10,7 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.hci_g1.amelior.entities.Goal
 
-class GoalAdapter(private val dao: GoalDao, private val data: MutableList<Goal>): RecyclerView.Adapter<GoalAdapter.ViewHolder>()
+class GoalAdapter(
+	private val goalDao: GoalDao,
+	private val distanceDao: DistanceDao,
+	private val stepCountDao: StepCountDao,
+	private val data: MutableList<Goal>
+): RecyclerView.Adapter<GoalAdapter.ViewHolder>()
 {
 	/* Holder for a single list item. */
 	class ViewHolder(view: View): RecyclerView.ViewHolder(view)
@@ -57,6 +62,28 @@ class GoalAdapter(private val dao: GoalDao, private val data: MutableList<Goal>)
 
 			/* Set the text. */
 			holder.textViewNumericalGoalTitle.text = "${d.action.capitalize()} ${d.quantity} ${d.units}/${d.frequency}"
+
+			/* Load walking steps, if appropriate, and save the data read from the steps DB. */
+			if ((d.action == "walk")
+				&& (d.units == "steps")
+				&& (stepCountDao.step_count_exists_now(get_epoch_day()) == true)
+			)
+			{
+				/* Get the number of steps. */
+				d.localProgress = stepCountDao.get_step_count_now(get_epoch_day()).totalSteps.toLong()
+
+				/* Save the new data to the database. */
+				goalDao.insert_goal_now(d)
+			}
+			/* Load running/walking distance, if appropriate, and save the data read from the distance DB. */
+			else if ((d.units == "m") && (distanceDao.distance_exists_now(get_epoch_day()) == true))
+			{
+				/* Get the distance. */
+				d.localProgress = distanceDao.get_distance_now(get_epoch_day()).totalDistance.toLong()
+
+				/* Save the new data to the database. */
+				goalDao.insert_goal_now(d)
+			}
 
 			/* Set the progress bar. */
 			holder.progressBarNumericalProgress.setMax(d.quantity)
@@ -135,7 +162,7 @@ class GoalAdapter(private val dao: GoalDao, private val data: MutableList<Goal>)
 				}
 
 				/* Save the new data to the database. */
-				dao.insert_goal_now(d)
+				goalDao.insert_goal_now(d)
 			}
 			/* If the goal is non-numerical, it's done. */
 			else
@@ -154,7 +181,7 @@ class GoalAdapter(private val dao: GoalDao, private val data: MutableList<Goal>)
 				holder.imageViewCheck.setImageResource(R.drawable.tick_checked)
 
 				/* Save the new data to the database. */
-				dao.insert_goal_now(d)
+				goalDao.insert_goal_now(d)
 			}
 		}
 	}
