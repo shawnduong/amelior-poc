@@ -56,6 +56,28 @@
 			android:layout_below="@id/titleContainer"
 		/>
 
+		<TextView
+			android:id="@+id/suggestionTitle"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/lineChart"
+			android:layout_marginTop="48dp"
+			android:gravity="center"
+			android:text="Maybe we should work on..."
+			android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+		/>
+
+		<TextView
+			android:id="@+id/suggestion"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/suggestionTitle"
+			android:layout_marginTop="16dp"
+			android:gravity="center"
+			android:text="GOAL HERE"
+			android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+		/>
+
 		<Button
 			android:id="@+id/close"
 			android:layout_width="wrap_content"
