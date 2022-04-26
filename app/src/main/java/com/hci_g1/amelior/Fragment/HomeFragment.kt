@@ -25,6 +25,8 @@ class HomeFragment: Fragment()
 
 	private lateinit var goalDao: GoalDao
 	private lateinit var moodDao: MoodDao
+	private lateinit var distanceDao: DistanceDao
+	private lateinit var stepCountDao: StepCountDao
 
 	private lateinit var buttonSplashSubmit: Button
 	private lateinit var imageViewMoodGraphic: ImageView
@@ -48,10 +50,16 @@ class HomeFragment: Fragment()
 		if (context != null)
 		{
 			goalDao = UserDatabase.getInstance(context).goalDao
-			Log.d(HomeFragment.TAG, "Goal database successfully loaded.")
+			Log.d(TAG, "Goal database successfully loaded.")
 
 			moodDao = UserDatabase.getInstance(context).moodDao
-			Log.d(HomeFragment.TAG, "Mood database successfully loaded.")
+			Log.d(TAG, "Mood database successfully loaded.")
+
+			distanceDao = UserDatabase.getInstance(context).distanceDao
+			Log.d(TAG, "Distance database successfully loaded.")
+
+			stepCountDao = UserDatabase.getInstance(context).stepCountDao
+			Log.d(TAG, "Step count database successfully loaded.")
 		}
 
 		goals = ArrayList()
@@ -71,7 +79,7 @@ class HomeFragment: Fragment()
 		/* Create the goals recycle view. */
 		recyclerViewGoalRecycler.apply {
 			layoutManager = LinearLayoutManager(getContext())
-			adapter = GoalAdapter(goalDao, goals)
+			adapter = GoalAdapter(goalDao, distanceDao, stepCountDao, goals)
 		}
 
 		/* Default mood bar value. */
