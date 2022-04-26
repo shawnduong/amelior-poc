@@ -87,6 +87,16 @@
 				android:layout_marginRight="8dp"
 			/>
 
+			<TextView
+				android:id="@+id/progressText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/numericalProgress"
+				android:layout_alignRight="@id/numericalProgress"
+				android:text=""
+				android:textSize="11dp"
+			/>
+
 		</RelativeLayout>
 
 	</RelativeLayout>

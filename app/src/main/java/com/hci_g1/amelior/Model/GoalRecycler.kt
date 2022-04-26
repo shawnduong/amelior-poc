@@ -28,6 +28,7 @@ class GoalAdapter(
 		val relativeLayoutNumericalContainer: RelativeLayout
 		val textViewGoalTitle: TextView
 		val textViewNumericalGoalTitle: TextView
+		val textViewProgressText: TextView
 
 		/* Initialize widgets. */
 		init
@@ -40,6 +41,7 @@ class GoalAdapter(
 			relativeLayoutNumericalContainer  = view.findViewById(R.id.numericalContainer)
 			textViewGoalTitle                 = view.findViewById(R.id.goalTitle)
 			textViewNumericalGoalTitle        = view.findViewById(R.id.numericalGoalTitle)
+			textViewProgressText              = view.findViewById(R.id.progressText)
 		}
 	}
 
@@ -88,6 +90,8 @@ class GoalAdapter(
 			/* Set the progress bar. */
 			holder.progressBarNumericalProgress.setMax(d.quantity)
 			holder.progressBarNumericalProgress.setProgress(d.localProgress.toInt())
+
+			holder.textViewProgressText.text = "${d.localProgress.toInt()}/${d.quantity}"
 		}
 		else
 		{
