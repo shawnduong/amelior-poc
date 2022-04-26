@@ -16,4 +16,14 @@ data class Goal
 	var level: Int,
 	var localProgress: Long,
 	var lastCompleted: Long,
+
+	/* This is terrible, but we have an MVP to meet. This is very untested over
+	   longer time scales. Never write the code I've written below. -Shawn */
+	var hist0: Long,
+	var hist1: Long,
+	var hist2: Long,
+	var hist3: Long,
+	var hist4: Long,
+	var hist5: Long,
+	var hist6: Long,
 )

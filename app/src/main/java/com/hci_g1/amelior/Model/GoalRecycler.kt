@@ -166,6 +166,7 @@ class GoalAdapter(
 			else if (d.quantity != -1)
 			{
 				d.localProgress++
+				d.hist0 = d.localProgress
 				Log.d(TAG, "Incremented goal: ${d.action} every ${d.frequency} ${d.localProgress}/${d.quantity})")
 				holder.textViewProgressText.text = "${d.localProgress.toInt()}/${d.quantity}"
 				holder.progressBarNumericalProgress.setProgress(d.localProgress.toInt())
@@ -191,6 +192,7 @@ class GoalAdapter(
 			{
 				Log.d(TAG, "Completed goal: ${d.action} every ${d.frequency}")
 				d.lastCompleted = System.currentTimeMillis()
+				d.hist0 = 1
 
 				/* Level up, if possible. */
 				if (d.level < 6)
