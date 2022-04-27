@@ -1,6 +1,7 @@
 package com.hci_g1.amelior
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -142,6 +143,11 @@ class HomeFragment: Fragment()
 		buttonSplashSubmit.setOnClickListener {
 			val mood: Int = seekBarMoodBar.getProgress()
 			moodDao.insert_mood_now(Mood(moodDao.size(), System.currentTimeMillis(), mood))
+		}
+
+		/* Upon clicking the mood graphic, go to the mood page. */
+		imageViewMoodGraphic.setOnClickListener {
+			view.context.startActivity(Intent(view.context, GoalScreenMood::class.java))
 		}
 	}
 

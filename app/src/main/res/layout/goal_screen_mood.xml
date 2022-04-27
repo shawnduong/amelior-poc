@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This is a goal screen for moods. -->
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/Off_White_Green"
+	android:orientation="vertical"
+	tools:context=".GoalScreenMood"
+>
+
+	<RelativeLayout
+		android:id="@+id/goalContainer"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+	>
+
+		<LinearLayout
+			android:id="@+id/titleContainer"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+		>
+
+			<TextView
+				android:id="@+id/title"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="32dp"
+				android:text="Mood"
+				android:textAppearance="@style/TextAppearance.AppCompat.Large"
+				android:gravity="center"
+			/>
+
+			<TextView
+				android:id="@+id/subtitle"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="Understand your emotions over time"
+				android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+				android:gravity="center"
+			/>
+
+		</LinearLayout>
+
+		<com.github.mikephil.charting.charts.LineChart
+			android:id="@+id/lineChart"
+			android:layout_width="fill_parent"
+			android:layout_height="192dp"
+			android:layout_marginTop="48dp"
+			android:layout_marginLeft="32dp"
+			android:layout_marginRight="32dp"
+			android:layout_below="@id/titleContainer"
+		/>
+
+		<TextView
+			android:id="@+id/suggestionTitle"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/lineChart"
+			android:layout_marginTop="48dp"
+			android:gravity="center"
+			android:text="Maybe we should work on..."
+			android:textAppearance="@style/TextAppearance.AppCompat.Large"
+		/>
+
+		<TextView
+			android:id="@+id/suggestion"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/suggestionTitle"
+			android:layout_marginTop="16dp"
+			android:gravity="center"
+			android:text="Keep up the great work!"
+			android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+		/>
+
+		<Button
+			android:id="@+id/close"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="32dp"
+			android:layout_alignParentBottom="true"
+			android:layout_centerHorizontal="true"
+			android:text="Go Back"
+		/>
+
+	</RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
