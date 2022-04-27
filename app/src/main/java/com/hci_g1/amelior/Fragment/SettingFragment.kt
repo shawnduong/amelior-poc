@@ -258,9 +258,9 @@ class SettingFragment: Fragment() {
             Log.d(TAG, "Button D")
 
             goalDao.insert_goal_now(Goal(0, true, "meditate", -1, "N/A", "day", 3, 1, -1, 1,1,1,1,1,1,1))
-            goalDao.insert_goal_now(Goal(0, true, "do", 20, "pushup", "day", 3, 1, -1, 3,6,15,11,18,21, 23))
-            goalDao.insert_goal_now(Goal(0, true, "do", 40, "situp", "day", 3, 1, -1, 5,1,7,11,11,21, 18))
-            goalDao.insert_goal_now(Goal(0, true, "stop smoking", -1, "N/A", "day", 3, 1, -1, 1,1,0,0,1,0, 1))
+            goalDao.insert_goal_now(Goal(1, true, "do", 20, "pushup", "day", 3, 1, -1, 3,6,15,11,18,21, 23))
+            goalDao.insert_goal_now(Goal(2, true, "do", 40, "situp", "day", 3, 1, -1, 5,1,7,11,11,21, 18))
+            goalDao.insert_goal_now(Goal(3, true, "stop smoking", -1, "N/A", "day", 3, 1, -1, 1,1,0,0,1,0, 1))
         }
 
     }
