@@ -151,7 +151,7 @@ class GoalScreenBasic: AppCompatActivity()
 			{
 				if (distanceDao.distance_exists_now(day))
 				{
-					entries.add(Entry((today-day).toFloat(), distanceDao.get_distance_now(day).totalDistance.toFloat()))
+					entries.add(Entry((today-day).toFloat() * -1.0f, distanceDao.get_distance_now(day).totalDistance.toFloat()))
 				}
 			}
 		}
@@ -164,7 +164,7 @@ class GoalScreenBasic: AppCompatActivity()
 			{
 				if (stepCountDao.step_count_exists_now(day))
 				{
-					entries.add(Entry((today-day).toFloat(), stepCountDao.get_step_count_now(day).totalSteps.toFloat()))
+					entries.add(Entry((today-day).toFloat() * -1.0f, stepCountDao.get_step_count_now(day).totalSteps.toFloat()))
 				}
 			}
 		}

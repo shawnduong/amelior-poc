@@ -148,24 +148,24 @@ class SettingFragment: Fragment() {
             }
 
             Log.d(TAG, "Button B")
-            /*
+            /* 4/21/2022 */
+            stepCountDao.insert_step_count_now(StepCount(19103, 100f))
             /* 4/22/2022 */
-            stepCountDao.insert_step_count_now(StepCount(1650655800000, 100f))
+            stepCountDao.insert_step_count_now(StepCount(19104, 100f))
             /* 4/23/2022 */
-            stepCountDao.insert_step_count_now(StepCount(1650742200000, 150f))
+            stepCountDao.insert_step_count_now(StepCount(19105, 150f))
             /* 4/24/2022 */
-            stepCountDao.insert_step_count_now(StepCount(1650828600000, 200f))
+            stepCountDao.insert_step_count_now(StepCount(19106, 200f))
             /* 4/25/2022 */
-            stepCountDao.insert_step_count_now(StepCount(1650915000000, 250f))
+            stepCountDao.insert_step_count_now(StepCount(19107, 250f))
             /* 4/26/2022 */
-            stepCountDao.insert_step_count_now(StepCount(1651001400000, 300f))
+            stepCountDao.insert_step_count_now(StepCount(19108, 300f))
             /* 4/27/2022 */
-            stepCountDao.insert_step_count_now(StepCount(1651087800000, 350f))
+            stepCountDao.insert_step_count_now(StepCount(19109, 350f))
             /* 4/28/2022 */
-            stepCountDao.insert_step_count_now(StepCount(1651174200000, 400f))
+            stepCountDao.insert_step_count_now(StepCount(19110, 400f))
             /* 4/29/2022 */
-            stepCountDao.insert_step_count_now(StepCount(1651260600000, 450f))
-             */
+            stepCountDao.insert_step_count_now(StepCount(19111, 450f))
 
             /* 4/22/2022 */
             moodDao.insert_mood_now(Mood(0, 1650655800000, 30))
