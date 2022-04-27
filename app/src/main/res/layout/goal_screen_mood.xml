@@ -64,7 +64,7 @@
 			android:layout_marginTop="48dp"
 			android:gravity="center"
 			android:text="Maybe we should work on..."
-			android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+			android:textAppearance="@style/TextAppearance.AppCompat.Large"
 		/>
 
 		<TextView
@@ -74,7 +74,7 @@
 			android:layout_below="@id/suggestionTitle"
 			android:layout_marginTop="16dp"
 			android:gravity="center"
-			android:text="GOAL HERE"
+			android:text="Keep up the great work!"
 			android:textAppearance="@style/TextAppearance.AppCompat.Medium"
 		/>
 

@@ -14,15 +14,18 @@ import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.components.Legend.*
 import com.github.mikephil.charting.components.XAxis.*
 
+import com.hci_g1.amelior.entities.Goal
 import com.hci_g1.amelior.entities.Mood
 
 class GoalScreenMood: AppCompatActivity()
 {
 	private var today: Long = 0
 
+	private lateinit var goalDao: GoalDao
 	private lateinit var moodDao: MoodDao
 
 	private lateinit var buttonClose: Button
+	private lateinit var textViewSuggestion: TextView
 
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
@@ -30,13 +33,36 @@ class GoalScreenMood: AppCompatActivity()
 		setContentView(R.layout.goal_screen_mood)
 
 		/* Initialize the mood database DAO. */
+		goalDao = UserDatabase.getInstance(this).goalDao
 		moodDao = UserDatabase.getInstance(this).moodDao
 
 		/* Initialize variables. */
 		today = get_epoch_day()
 
 		/* Initialize widgets. */
-		buttonClose = findViewById(R.id.close)
+		buttonClose         = findViewById(R.id.close)
+		textViewSuggestion  = findViewById(R.id.suggestion)
+
+		/* Change the suggestion text based on any bad goals the user might have. */
+		for (i in 0..(goalDao.size()-1))
+		{
+			val g: Goal = goalDao.get_goal_now(i)
+
+			/* Suggest a goal if it's less than or equal to level 3. */
+			if (g.level <= 3)
+			{
+				if (g.quantity == -1)
+				{
+					textViewSuggestion.text = "Goal: ${g.action.capitalize()} every ${g.frequency}"
+				}
+				else
+				{
+					textViewSuggestion.text = "Goal: ${g.action.capitalize()} ${g.quantity} ${g.units}/${g.frequency}"
+				}
+
+				break
+			}
+		}
 
 		/* UI logic. */
 
