@@ -9,10 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.navigation.findNavController
-import com.hci_g1.amelior.entities.Distance
-import com.hci_g1.amelior.entities.Mood
-import com.hci_g1.amelior.entities.StepCount
-import com.hci_g1.amelior.entities.User
+import com.hci_g1.amelior.entities.*
 import kotlinx.android.synthetic.main.fragment_setting.*
 import kotlinx.android.synthetic.main.fragment_setting.view.*
 
@@ -25,6 +22,7 @@ class SettingFragment: Fragment() {
     private lateinit var moodDao: MoodDao
     private lateinit var stepCountDao: StepCountDao
     private lateinit var distanceDao: DistanceDao
+    private lateinit var goalDao: GoalDao
 
     private lateinit var buttonSplashSubmit: Button
     private lateinit var buttonSplashShowInfo: Button
@@ -116,22 +114,24 @@ class SettingFragment: Fragment() {
 
 			Log.d(TAG, "Button A")
 
+            /* 4/21/2022 */
+            moodDao.insert_mood_now(Mood(0, 1650569400000, 10))
             /* 4/22/2022 */
-            moodDao.insert_mood_now(Mood(0, 1650655800000, 10))
+            moodDao.insert_mood_now(Mood(1, 1650655800000, 20))
             /* 4/23/2022 */
-            moodDao.insert_mood_now(Mood(1, 1650742200000, 10))
+            moodDao.insert_mood_now(Mood(2, 1650742200000, 10))
             /* 4/24/2022 */
-            moodDao.insert_mood_now(Mood(2, 1650828600000, 20))
+            moodDao.insert_mood_now(Mood(3, 1650828600000, 20))
             /* 4/25/2022 */
-            moodDao.insert_mood_now(Mood(3, 1650915000000, 40))
+            moodDao.insert_mood_now(Mood(4, 1650915000000, 40))
             /* 4/26/2022 */
-            moodDao.insert_mood_now(Mood(4, 1651001400000, 50))
+            moodDao.insert_mood_now(Mood(5, 1651001400000, 50))
             /* 4/27/2022 */
-            moodDao.insert_mood_now(Mood(5, 1651087800000, 50))
+            moodDao.insert_mood_now(Mood(6, 1651087800000, 50))
             /* 4/28/2022 */
-            moodDao.insert_mood_now(Mood(6, 1651174200000, 70))
+            moodDao.insert_mood_now(Mood(7, 1651174200000, 70))
             /* 4/29/2022 */
-            moodDao.insert_mood_now(Mood(7, 1651260600000, 90))
+            moodDao.insert_mood_now(Mood(8, 1651260600000, 90))
         }
 
         /* StepCount */
@@ -151,22 +151,23 @@ class SettingFragment: Fragment() {
             /* 4/21/2022 */
             stepCountDao.insert_step_count_now(StepCount(19103, 100f))
             /* 4/22/2022 */
-            stepCountDao.insert_step_count_now(StepCount(19104, 100f))
+            stepCountDao.insert_step_count_now(StepCount(19104, 160f))
             /* 4/23/2022 */
-            stepCountDao.insert_step_count_now(StepCount(19105, 150f))
+            stepCountDao.insert_step_count_now(StepCount(19105, 70f))
             /* 4/24/2022 */
-            stepCountDao.insert_step_count_now(StepCount(19106, 200f))
+            stepCountDao.insert_step_count_now(StepCount(19106, 140f))
             /* 4/25/2022 */
-            stepCountDao.insert_step_count_now(StepCount(19107, 250f))
+            stepCountDao.insert_step_count_now(StepCount(19107, 500f))
             /* 4/26/2022 */
-            stepCountDao.insert_step_count_now(StepCount(19108, 300f))
+            stepCountDao.insert_step_count_now(StepCount(19108, 230f))
             /* 4/27/2022 */
-            stepCountDao.insert_step_count_now(StepCount(19109, 350f))
+            stepCountDao.insert_step_count_now(StepCount(19109, 120f))
             /* 4/28/2022 */
             stepCountDao.insert_step_count_now(StepCount(19110, 400f))
             /* 4/29/2022 */
-            stepCountDao.insert_step_count_now(StepCount(19111, 450f))
+            stepCountDao.insert_step_count_now(StepCount(19111, 630f))
 
+            /*
             /* 4/22/2022 */
             moodDao.insert_mood_now(Mood(0, 1650655800000, 30))
             /* 4/23/2022 */
@@ -183,7 +184,7 @@ class SettingFragment: Fragment() {
             moodDao.insert_mood_now(Mood(6, 1651174200000, 70))
             /* 4/29/2022 */
             moodDao.insert_mood_now(Mood(7, 1651260600000, 90))
-
+            */
         }
 
 
@@ -201,24 +202,27 @@ class SettingFragment: Fragment() {
             }
 
             Log.d(TAG, "Button C")
-            /*
-            distanceDao.insert_distance_now(Distance(1650655800000, 100f))
-            /* 4/23/2022 */
-            distanceDao.insert_distance_now(Distance(1650742200000, 150f))
-            /* 4/24/2022 */
-            distanceDao.insert_distance_now(Distance(1650828600000, 200f))
-            /* 4/25/2022 */
-            distanceDao.insert_distance_now(Distance(1650915000000, 250f))
-            /* 4/26/2022 */
-            distanceDao.insert_distance_now(Distance(1651001400000, 300f))
-            /* 4/27/2022 */
-            distanceDao.insert_distance_now(Distance(1651087800000, 350f))
-            /* 4/28/2022 */
-            distanceDao.insert_distance_now(Distance(1651174200000, 400f))
-            /* 4/29/2022 */
-            distanceDao.insert_distance_now(Distance(1651260600000, 450f))
-            */
 
+            /* 4/21/2022 */
+            distanceDao.insert_distance_now(Distance(19103, 88f))
+            /* 4/22/2022 */
+            distanceDao.insert_distance_now(Distance(19104, 123f))
+            /* 4/23/2022 */
+            distanceDao.insert_distance_now(Distance(19105, 429f))
+            /* 4/24/2022 */
+            distanceDao.insert_distance_now(Distance(19106, 231f))
+            /* 4/25/2022 */
+            distanceDao.insert_distance_now(Distance(19107, 250f))
+            /* 4/26/2022 */
+            distanceDao.insert_distance_now(Distance(19108, 432f))
+            /* 4/27/2022 */
+            distanceDao.insert_distance_now(Distance(19109, 158f))
+            /* 4/28/2022 */
+            distanceDao.insert_distance_now(Distance(19110, 238f))
+            /* 4/29/2022 */
+            distanceDao.insert_distance_now(Distance(19111, 450f))
+
+            /*
             /* 4/22/2022 */
             moodDao.insert_mood_now(Mood(0, 1650655800000, 20))
             /* 4/23/2022 */
@@ -235,7 +239,7 @@ class SettingFragment: Fragment() {
             moodDao.insert_mood_now(Mood(6, 1651174200000, 70))
             /* 4/29/2022 */
             moodDao.insert_mood_now(Mood(7, 1651260600000, 90))
-
+            */
         }
 
         /* ? */
@@ -248,44 +252,15 @@ class SettingFragment: Fragment() {
             {
                 userDao = UserDatabase.getInstance(context).userDao
                 moodDao = UserDatabase.getInstance(context).moodDao
+                goalDao = UserDatabase.getInstance(context).goalDao
             }
 
             Log.d(TAG, "Button D")
-            /*
-            distanceDao.insert_distance_now(Distance(1650655800000, 100f))
-            /* 4/23/2022 */
-            distanceDao.insert_distance_now(Distance(1650742200000, 150f))
-            /* 4/24/2022 */
-            distanceDao.insert_distance_now(Distance(1650828600000, 200f))
-            /* 4/25/2022 */
-            distanceDao.insert_distance_now(Distance(1650915000000, 250f))
-            /* 4/26/2022 */
-            distanceDao.insert_distance_now(Distance(1651001400000, 300f))
-            /* 4/27/2022 */
-            distanceDao.insert_distance_now(Distance(1651087800000, 350f))
-            /* 4/28/2022 */
-            distanceDao.insert_distance_now(Distance(1651174200000, 400f))
-            /* 4/29/2022 */
-            distanceDao.insert_distance_now(Distance(1651260600000, 450f))
-            */
 
-            /* 4/22/2022 */
-            moodDao.insert_mood_now(Mood(0, 1650655800000, 10))
-            /* 4/23/2022 */
-            moodDao.insert_mood_now(Mood(1, 1650742200000, 10))
-            /* 4/24/2022 */
-            moodDao.insert_mood_now(Mood(2, 1650828600000, 40))
-            /* 4/25/2022 */
-            moodDao.insert_mood_now(Mood(3, 1650915000000, 50))
-            /* 4/26/2022 */
-            moodDao.insert_mood_now(Mood(4, 1651001400000, 70))
-            /* 4/27/2022 */
-            moodDao.insert_mood_now(Mood(5, 1651087800000, 80))
-            /* 4/28/2022 */
-            moodDao.insert_mood_now(Mood(6, 1651174200000, 90))
-            /* 4/29/2022 */
-            moodDao.insert_mood_now(Mood(7, 1651260600000, 90))
-
+            goalDao.insert_goal_now(Goal(0, true, "meditate", -1, "N/A", "day", 3, 1, -1, 1,1,1,1,1,1,1))
+            goalDao.insert_goal_now(Goal(0, true, "do", 20, "pushup", "day", 3, 1, -1, 3,6,15,11,18,21, 23))
+            goalDao.insert_goal_now(Goal(0, true, "do", 40, "situp", "day", 3, 1, -1, 5,1,7,11,11,21, 18))
+            goalDao.insert_goal_now(Goal(0, true, "stop smoking", -1, "N/A", "day", 3, 1, -1, 1,1,0,0,1,0, 1))
         }
 
     }
