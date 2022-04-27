@@ -25,6 +25,16 @@ class SettingFragment: Fragment() {
     private lateinit var buttonSplashSubmit: Button
     private lateinit var buttonSplashShowInfo: Button
 
+	/* Debugging buttons. */
+	private lateinit var buttonSampleA: Button
+	private lateinit var buttonSampleB: Button
+	private lateinit var buttonSampleC: Button
+	private lateinit var buttonSampleD: Button
+
+	/* Debugging other DAOs. */
+//	private lateinit var userDao: UserDao
+//	private lateinit var moodDao: MoodDao
+
     private lateinit var textViewInfo: TextView
     private lateinit var editTextNameInputField: TextView
     private lateinit var textViewName: TextView
@@ -58,6 +68,12 @@ class SettingFragment: Fragment() {
         buttonSplashShowInfo            = view.findViewById(R.id.splashInfo)
         textViewInfo                    = view.findViewById(R.id.textViewInfo)
 
+		/* Debugging widgets. */
+        buttonSampleA = view.findViewById(R.id.sampleA)
+        buttonSampleB = view.findViewById(R.id.sampleB)
+        buttonSampleC = view.findViewById(R.id.sampleC)
+        buttonSampleD = view.findViewById(R.id.sampleD)
+
         val user = userDao.get_user_now("user")
         textViewName.text = "${user.name}"
 
@@ -81,6 +97,22 @@ class SettingFragment: Fragment() {
             }
         }
 
+		/* Debugging buttons. */
+		buttonSampleA.setOnClickListener {
+
+			val context = getContext()
+
+			/* Initializing variables. */
+			if (context != null)
+			{
+				userDao = UserDatabase.getInstance(context).userDao
+				moodDao = UserDatabase.getInstance(context).moodDao
+			}
+
+			Log.d(TAG, "aidjwoiajdoiwajda")
+
+			moodDao.insert_mood_now(Mood(0, 1651001400000, 100))
+		}
     }
 
     companion object
