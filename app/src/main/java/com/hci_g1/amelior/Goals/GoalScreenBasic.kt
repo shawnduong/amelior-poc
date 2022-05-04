@@ -17,6 +17,7 @@ import com.github.mikephil.charting.components.XAxis.*
 import com.hci_g1.amelior.entities.Goal
 import com.hci_g1.amelior.entities.Distance
 import com.hci_g1.amelior.entities.StepCount
+import kotlinx.android.synthetic.main.goal_screen_basic.*
 
 class GoalScreenBasic: AppCompatActivity()
 {
@@ -90,6 +91,8 @@ class GoalScreenBasic: AppCompatActivity()
 		val axisY = graph.getAxisLeft()
 		val axisX = graph.getXAxis()
 
+		val piechart: PieChart = findViewById(R.id.pieChart)
+
 		val days = arrayOf(
 			"S", "M", "T", "W", "R", "F", "S",
 			"S", "M", "T", "W", "R", "F", "S",
@@ -156,15 +159,36 @@ class GoalScreenBasic: AppCompatActivity()
 			)
 		}
 
+		pieChart.setUsePercentValues(true)
+		pieChart.description.text = ""
+		pieChart.isDrawHoleEnabled = false
+		pieChart.setTouchEnabled(false)
+		pieChart.setExtraOffsets(20f,0f,20f,20f)
+		pieChart.setUsePercentValues(true)
+		pieChart.isRotationEnabled = false
+		pieChart.setDrawEntryLabels(false)
+		pieChart.legend.orientation = Legend.LegendOrientation.VERTICAL
+		pieChart.legend.isWordWrapEnabled = true
+
 		/* Entries populated by iterating through the past week of data. */
 		val entries: MutableList<Entry> = ArrayList()
 		var dataType: String = ""
+
+		val pieentries: ArrayList<PieEntry> = ArrayList()
+		val colors: ArrayList<Int> = ArrayList()
 
 		/* Iterate different DAOs based on the type of goal. */
 		if (goal.units == "m")
 		{
 			val distanceDao: DistanceDao = UserDatabase.getInstance(this).distanceDao
 			dataType = "Distance"
+
+			pieentries.add(PieEntry(distanceDao.get_distance_now(today).totalDistance.toFloat()))
+			pieentries.add(PieEntry(goal.hist0.toFloat()))
+
+			// pieentries.add(PieEntry(100f))
+
+			// entries.add(Entry((today-day).toFloat() * -1.0f, distanceDao.get_distance_now(day).totalDistance.toFloat()))
 
 			for (day in (today-6)..(today))
 			{
@@ -216,8 +240,30 @@ class GoalScreenBasic: AppCompatActivity()
 		dataset.setFillDrawable(getResources().getDrawable(R.drawable.teal_blue_lighter_bg))
 		dataset.setDrawFilled(true)
 
+		val piedataset = PieDataSet(pieentries, "")
+		piechart.setDrawEntryLabels(false)
+
+		/* Disable the legend */
+		piechart.getLegend().setEnabled(false)
+
+		/* Set the description text. */
+		piechart.getDescription().setText("")
+		// piedataset.setColor(Color.LTGRAY)
+		// piedataset[0].setcolor(Color.BLACK)
+		colors.add(Color.parseColor("#4DD0E1"))
+		colors.add(Color.parseColor("#FFF176"))
+
+		piechart.data = PieData(piedataset)
+		piechart.isDrawHoleEnabled = true
+		piedataset.setValueFormatter(PercentFormatter())
+		piechart.holeRadius = 5f
+		piedataset.colors = colors
+		piedataset.sliceSpace = 3f
+		// piedataset.setColors(Color.BLACK)
+
 		/* Plot the data on the graph. */
 		graph.setData(LineData(dataset))
+		piechart.setData(PieData(piedataset))
 	}
 
 	/* Get the current epoch day. */

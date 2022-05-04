@@ -11,69 +11,82 @@
 	android:orientation="vertical"
 	tools:context=".GoalScreenBasic"
 >
-
-	<RelativeLayout
-		android:id="@+id/goalContainer"
+	<ScrollView
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-	>
-
-		<LinearLayout
-			android:id="@+id/titleContainer"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
 		>
 
-			<ImageView
-				android:id="@+id/flowerGraphic"
-				android:layout_width="192dp"
-				android:layout_height="192dp"
-				android:layout_marginTop="48dp"
-				android:layout_gravity="center_horizontal"
-				android:src="@drawable/flower_level_03"
-			/>
-
-			<TextView
-				android:id="@+id/title"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginTop="32dp"
-				android:text=""
-				android:textAppearance="@style/TextAppearance.AppCompat.Large"
-				android:gravity="center"
-			/>
-
-			<TextView
-				android:id="@+id/subtitle"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text=""
-				android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-				android:gravity="center"
-			/>
-
-		</LinearLayout>
-
-		<com.github.mikephil.charting.charts.LineChart
-			android:id="@+id/lineChart"
+		<RelativeLayout
+			android:id="@+id/goalContainer"
 			android:layout_width="fill_parent"
-			android:layout_height="192dp"
-			android:layout_marginRight="32dp"
-			android:layout_marginLeft="32dp"
-			android:layout_below="@id/titleContainer"
-		/>
+			android:layout_height="fill_parent"
+		>
 
-		<Button
-			android:id="@+id/close"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="32dp"
-			android:layout_alignParentBottom="true"
-			android:layout_centerHorizontal="true"
-			android:text="Go Back"
-		/>
+			<LinearLayout
+				android:id="@+id/titleContainer"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+			>
 
-	</RelativeLayout>
+				<ImageView
+					android:id="@+id/flowerGraphic"
+					android:layout_width="192dp"
+					android:layout_height="192dp"
+					android:layout_marginTop="48dp"
+					android:layout_gravity="center_horizontal"
+					android:src="@drawable/flower_level_03"
+				/>
 
+				<TextView
+					android:id="@+id/title"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="32dp"
+					android:text=""
+					android:textAppearance="@style/TextAppearance.AppCompat.Large"
+					android:gravity="center"
+				/>
+
+				<TextView
+					android:id="@+id/subtitle"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:text=""
+					android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+					android:gravity="center"
+				/>
+
+			</LinearLayout>
+
+			<com.github.mikephil.charting.charts.LineChart
+				android:id="@+id/lineChart"
+				android:layout_width="fill_parent"
+				android:layout_height="192dp"
+				android:layout_marginRight="32dp"
+				android:layout_marginLeft="32dp"
+				android:layout_below="@id/titleContainer"
+			/>
+
+			<com.github.mikephil.charting.charts.PieChart
+				android:id="@+id/pieChart"
+				android:layout_width="256dp"
+				android:layout_height="256dp"
+				android:layout_marginRight="32dp"
+				android:layout_marginLeft="32dp"
+				android:layout_below="@id/lineChart"
+				/>
+
+			<Button
+				android:id="@+id/close"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="32dp"
+				android:layout_alignParentBottom="true"
+				android:layout_centerHorizontal="true"
+				android:text="Go Back"
+			/>
+
+		</RelativeLayout>
+	</ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
