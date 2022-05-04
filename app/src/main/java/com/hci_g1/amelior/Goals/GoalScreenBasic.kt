@@ -29,6 +29,8 @@ class GoalScreenBasic: AppCompatActivity()
 	private lateinit var buttonClose: Button
 	private lateinit var imageViewFlowerGraphic: ImageView
 	private lateinit var linearLayoutPieChartContainer: LinearLayout
+	private lateinit var textViewGaugeDescriptionA: TextView
+	private lateinit var textViewGaugeDescriptionB: TextView
 	private lateinit var textViewGaugeText: TextView
 	private lateinit var textViewPieChartDescriptionB: TextView
 	private lateinit var textViewTitle: TextView
@@ -58,6 +60,8 @@ class GoalScreenBasic: AppCompatActivity()
 		buttonClose                    = findViewById(R.id.close)
 		imageViewFlowerGraphic         = findViewById(R.id.flowerGraphic)
 		linearLayoutPieChartContainer  = findViewById(R.id.pieChartContainer)
+		textViewGaugeDescriptionA      = findViewById(R.id.gaugeDescriptionA)
+		textViewGaugeDescriptionB      = findViewById(R.id.gaugeDescriptionB)
 		textViewGaugeText              = findViewById(R.id.gaugeText)
 		textViewPieChartDescriptionB   = findViewById(R.id.pieChartDescriptionB)
 		textViewTitle                  = findViewById(R.id.title)
@@ -193,8 +197,15 @@ class GoalScreenBasic: AppCompatActivity()
 			val numerator: Float = distanceDao.get_distance_now(today).totalDistance.toFloat()
 			val denominator: Float = goal.quantity.toFloat()
 
-			pieEntries.add(PieEntry(numerator))
-			pieEntries.add(PieEntry(denominator))
+			if (numerator < denominator)
+			{
+				pieEntries.add(PieEntry(numerator))
+				pieEntries.add(PieEntry(denominator-numerator))
+			}
+			else
+			{
+				pieEntries.add(PieEntry(numerator))
+			}
 
 			/* Change the percentage text. */
 			textViewPieChartDescriptionB.text = "${(numerator/denominator * 100).toInt()}%"
@@ -219,8 +230,15 @@ class GoalScreenBasic: AppCompatActivity()
 			val numerator: Float = stepCountDao.get_step_count_now(today).totalSteps.toFloat()
 			val denominator: Float = goal.quantity.toFloat()
 
-			pieEntries.add(PieEntry(numerator))
-			pieEntries.add(PieEntry(denominator))
+			if (numerator < denominator)
+			{
+				pieEntries.add(PieEntry(numerator))
+				pieEntries.add(PieEntry(denominator-numerator))
+			}
+			else
+			{
+				pieEntries.add(PieEntry(numerator))
+			}
 
 			/* Change the percentage text. */
 			textViewPieChartDescriptionB.text = "${(numerator/denominator * 100).toInt()}%"
@@ -248,8 +266,15 @@ class GoalScreenBasic: AppCompatActivity()
 				val numerator: Float = goal.hist0.toFloat()
 				val denominator: Float = goal.quantity.toFloat()
 
-				pieEntries.add(PieEntry(numerator))
-				pieEntries.add(PieEntry(denominator))
+				if (numerator < denominator)
+				{
+					pieEntries.add(PieEntry(numerator))
+					pieEntries.add(PieEntry(denominator-numerator))
+				}
+				else
+				{
+					pieEntries.add(PieEntry(numerator))
+				}
 
 				/* Change the percentage text. */
 				textViewPieChartDescriptionB.text = "${(numerator/denominator * 100).toInt()}%"
@@ -339,6 +364,9 @@ class GoalScreenBasic: AppCompatActivity()
 		{
 			pieChartGauge.setCenterText("5")
 			textViewGaugeText.text = "This goal is currently a level 5."
+
+			textViewGaugeDescriptionA.text = "Keep up the great work!"
+			textViewGaugeDescriptionB.text = ""
 		}
 
 		/* Gauge entries. */
