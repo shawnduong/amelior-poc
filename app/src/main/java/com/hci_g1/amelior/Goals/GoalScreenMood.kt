@@ -99,6 +99,23 @@ class GoalScreenMood: AppCompatActivity()
 			}
 		)
 
+		/* Set the Y axis labels to the moods. */
+		axisY.setValueFormatter(
+
+			object: ValueFormatter()
+			{
+				override fun getAxisLabel(value: Float, axis: AxisBase): String
+				{
+					if      (value <=  0)  return ""
+					else if (value <= 20)  return "Not too great!"
+					else if (value <= 40)  return "A little down"
+					else if (value <= 60)  return "Alright"
+					else if (value <= 80)  return "Good"
+					else                   return "Great!"
+				}
+			}
+		)
+
 		/* Entries populated by iterating through the past week of data. */
 		val entries: MutableList<Entry> = ArrayList()
 
@@ -138,7 +155,7 @@ class GoalScreenMood: AppCompatActivity()
 		axisY.setAxisMaxValue(100.0f)
 
 		/* There is a day of extra padding in both directions for aesthetics. */
-		axisX.setAxisMinValue(-7.0f)
+		axisX.setAxisMinValue(-6.0f)
 		axisX.setAxisMaxValue( 1.0f)
 
 		/* Set the description text. */
@@ -152,7 +169,16 @@ class GoalScreenMood: AppCompatActivity()
 
 		/* Create the LineDataSet object used by the chart. */
 		val dataset = LineDataSet(entries, "mood")
-		dataset.setColors(Color.BLACK)
+
+		/* Make the line black with size 2.0f circles. */
+		dataset.setColor(Color.BLACK)
+		dataset.setCircleColor(Color.BLACK)
+		dataset.setCircleRadius(2.0f)
+		dataset.setDrawCircleHole(false)
+
+		/* Make the graph filled. */
+		dataset.setFillDrawable(getResources().getDrawable(R.drawable.teal_blue_lighter_bg))
+		dataset.setDrawFilled(true)
 
 		/* Plot the data on the graph. */
 		graph.setData(LineData(dataset))

@@ -121,7 +121,7 @@ class GoalScreenBasic: AppCompatActivity()
 
 		/* Because the time scale is only weekly, X e [-7, 1]. There is a day
 		   of extra padding in both directions for aesthetics. */
-		axisX.setAxisMinValue(-7.0f)
+		axisX.setAxisMinValue(-6.0f)
 		axisX.setAxisMaxValue(1.0f)
 
 		/* Set the description text. */
@@ -136,6 +136,25 @@ class GoalScreenBasic: AppCompatActivity()
 
 		/* Disable the legend */
 		graph.getLegend().setEnabled(false)
+
+		/* Set the Y axis labels to "Done" or "Not Done," but only if it's non-numeric. */
+		if (goal.quantity == -1)
+		{
+			axisY.setAxisMaxValue(1.25f)
+
+			axisY.setValueFormatter(
+
+				object: ValueFormatter()
+				{
+					override fun getAxisLabel(value: Float, axis: AxisBase): String
+					{
+						if      (value == 0.0f)  return "Not Done"
+						else if (value == 1.0f)  return "Done"
+						else                     return ""
+					}
+				}
+			)
+		}
 
 		/* Entries populated by iterating through the past week of data. */
 		val entries: MutableList<Entry> = ArrayList()
@@ -183,7 +202,19 @@ class GoalScreenBasic: AppCompatActivity()
 
 		/* Create the LineDataSet object used by the chart. */
 		val dataset = LineDataSet(entries, dataType)
-		dataset.setColors(Color.BLACK)
+
+		/* If it's non-numeric, don't display values. */
+		if (goal.quantity == -1)  dataset.setDrawValues(false)
+
+		/* Make the line black with size 2.0f circles. */
+		dataset.setColor(Color.BLACK)
+		dataset.setCircleColor(Color.BLACK)
+		dataset.setCircleRadius(2.0f)
+		dataset.setDrawCircleHole(false)
+
+		/* Make the graph filled. */
+		dataset.setFillDrawable(getResources().getDrawable(R.drawable.teal_blue_lighter_bg))
+		dataset.setDrawFilled(true)
 
 		/* Plot the data on the graph. */
 		graph.setData(LineData(dataset))
