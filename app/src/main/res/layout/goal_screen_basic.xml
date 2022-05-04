@@ -122,13 +122,57 @@
 
 			</LinearLayout>
 
+			<LinearLayout
+				android:id="@+id/gaugeContainer"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/pieChartContainer"
+				android:layout_marginBottom="32dp"
+				android:orientation="vertical"
+				android:gravity="center"
+			>
+
+				<TextView
+					android:id="@+id/gaugeText"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text=""
+					android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+				/>
+
+				<com.github.mikephil.charting.charts.PieChart
+					android:id="@+id/gauge"
+					android:layout_width="192dp"
+					android:layout_height="192dp"
+					android:layout_marginTop="32dp"
+					android:layout_marginBottom="-64dp"
+				/>
+
+				<TextView
+					android:id="@+id/gaugeDescriptionA"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Continue cultivating this goal"
+					android:textAppearance="@style/TextAppearance.AppCompat.Small"
+				/>
+
+				<TextView
+					android:id="@+id/gaugeDescriptionB"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="to level up your plant!"
+					android:textAppearance="@style/TextAppearance.AppCompat.Small"
+				/>
+
+			</LinearLayout>
+
 			<Button
 				android:id="@+id/close"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginBottom="32dp"
 				android:layout_centerHorizontal="true"
-				android:layout_below="@id/pieChartContainer"
+				android:layout_below="@id/gaugeContainer"
 				android:text="Go Back"
 			/>
 

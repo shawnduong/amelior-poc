@@ -29,6 +29,7 @@ class GoalScreenBasic: AppCompatActivity()
 	private lateinit var buttonClose: Button
 	private lateinit var imageViewFlowerGraphic: ImageView
 	private lateinit var linearLayoutPieChartContainer: LinearLayout
+	private lateinit var textViewGaugeText: TextView
 	private lateinit var textViewPieChartDescriptionB: TextView
 	private lateinit var textViewTitle: TextView
 	private lateinit var textViewSubtitle: TextView
@@ -57,6 +58,7 @@ class GoalScreenBasic: AppCompatActivity()
 		buttonClose                    = findViewById(R.id.close)
 		imageViewFlowerGraphic         = findViewById(R.id.flowerGraphic)
 		linearLayoutPieChartContainer  = findViewById(R.id.pieChartContainer)
+		textViewGaugeText              = findViewById(R.id.gaugeText)
 		textViewPieChartDescriptionB   = findViewById(R.id.pieChartDescriptionB)
 		textViewTitle                  = findViewById(R.id.title)
 		textViewSubtitle               = findViewById(R.id.subtitle)
@@ -307,6 +309,57 @@ class GoalScreenBasic: AppCompatActivity()
 		/* Plot the data on the graph. */
 		graph.setData(LineData(dataset))
 		piechart.setData(PieData(piedataset))
+
+		/* Calculate and plot the gauge data. */
+
+		val pieChartGauge: PieChart = findViewById(R.id.gauge)
+
+		/* Make the hole transparent. */
+		pieChartGauge.setDrawHoleEnabled(true)
+		pieChartGauge.setHoleColor(Color.parseColor("#00000000"))
+		pieChartGauge.setTransparentCircleRadius(0.0f)
+
+		/* Make it only half a pie chart to resemble a gauge meter. */
+		pieChartGauge.setMaxAngle(180.0f)
+		pieChartGauge.setRotationAngle(180.0f)
+
+		/* Disable the description and legend. */
+		pieChartGauge.getLegend().setEnabled(false)
+		pieChartGauge.description.text = ""
+
+		/* Set the center text. */
+		pieChartGauge.setCenterTextSize(32f)
+
+		if (goal.level < 5)
+		{
+			pieChartGauge.setCenterText(goal.level.toString())
+			textViewGaugeText.text = "This goal is currently a level ${goal.level.toString()}."
+		}
+		else
+		{
+			pieChartGauge.setCenterText("5")
+			textViewGaugeText.text = "This goal is currently a level 5."
+		}
+
+		/* Gauge entries. */
+		val gaugeEntries: ArrayList<PieEntry> = ArrayList()
+		gaugeEntries.add(PieEntry(goal.level.toFloat()))
+		gaugeEntries.add(PieEntry(5.0f - goal.level.toFloat()))
+
+		val gaugeDataset = PieDataSet(gaugeEntries, "")
+
+		/* Disable the inner text. */
+		gaugeDataset.setDrawValues(false)
+
+		/* Set the colors. */
+		val gaugeColors: ArrayList<Int> = ArrayList()
+		gaugeColors.add(Color.parseColor("#FF74A57F"))
+		gaugeColors.add(Color.parseColor("#FF3A523F"))
+
+		gaugeDataset.colors = gaugeColors
+
+		/* Graph the gauge. */
+		pieChartGauge.setData(PieData(gaugeDataset))
 	}
 
 	/* Get the current epoch day. */
