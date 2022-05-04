@@ -27,6 +27,7 @@ class GoalScreenBasic: AppCompatActivity()
 
 	private lateinit var buttonClose: Button
 	private lateinit var imageViewFlowerGraphic: ImageView
+	private lateinit var textViewPieChartDescriptionB: TextView
 	private lateinit var textViewTitle: TextView
 	private lateinit var textViewSubtitle: TextView
 
@@ -51,10 +52,11 @@ class GoalScreenBasic: AppCompatActivity()
 		today = get_epoch_day()
 
 		/* Initialize widgets. */
-		buttonClose             = findViewById(R.id.close)
-		imageViewFlowerGraphic  = findViewById(R.id.flowerGraphic)
-		textViewTitle           = findViewById(R.id.title)
-		textViewSubtitle        = findViewById(R.id.subtitle)
+		buttonClose                   = findViewById(R.id.close)
+		imageViewFlowerGraphic        = findViewById(R.id.flowerGraphic)
+		textViewPieChartDescriptionB  = findViewById(R.id.pieChartDescriptionB)
+		textViewTitle                 = findViewById(R.id.title)
+		textViewSubtitle              = findViewById(R.id.subtitle)
 
 		/* Fill in the headers. */
 		if ((goal.custom) && (goal.quantity == -1))
@@ -183,8 +185,14 @@ class GoalScreenBasic: AppCompatActivity()
 			val distanceDao: DistanceDao = UserDatabase.getInstance(this).distanceDao
 			dataType = "Distance"
 
-			pieEntries.add(PieEntry(distanceDao.get_distance_now(today).totalDistance.toFloat()))
-			pieEntries.add(PieEntry(goal.quantity.toFloat()))
+			val numerator: Float = distanceDao.get_distance_now(today).totalDistance.toFloat()
+			val denominator: Float = goal.quantity.toFloat()
+
+			pieEntries.add(PieEntry(numerator))
+			pieEntries.add(PieEntry(denominator))
+
+			/* Change the percentage text. */
+			textViewPieChartDescriptionB.text = "${(numerator/denominator * 100).toInt()}%"
 
 			// pieEntries.add(PieEntry(100f))
 
