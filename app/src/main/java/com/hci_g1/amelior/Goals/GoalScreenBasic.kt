@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup.LayoutParams
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.*
@@ -27,6 +28,7 @@ class GoalScreenBasic: AppCompatActivity()
 
 	private lateinit var buttonClose: Button
 	private lateinit var imageViewFlowerGraphic: ImageView
+	private lateinit var linearLayoutPieChartContainer: LinearLayout
 	private lateinit var textViewPieChartDescriptionB: TextView
 	private lateinit var textViewTitle: TextView
 	private lateinit var textViewSubtitle: TextView
@@ -52,11 +54,12 @@ class GoalScreenBasic: AppCompatActivity()
 		today = get_epoch_day()
 
 		/* Initialize widgets. */
-		buttonClose                   = findViewById(R.id.close)
-		imageViewFlowerGraphic        = findViewById(R.id.flowerGraphic)
-		textViewPieChartDescriptionB  = findViewById(R.id.pieChartDescriptionB)
-		textViewTitle                 = findViewById(R.id.title)
-		textViewSubtitle              = findViewById(R.id.subtitle)
+		buttonClose                    = findViewById(R.id.close)
+		imageViewFlowerGraphic         = findViewById(R.id.flowerGraphic)
+		linearLayoutPieChartContainer  = findViewById(R.id.pieChartContainer)
+		textViewPieChartDescriptionB   = findViewById(R.id.pieChartDescriptionB)
+		textViewTitle                  = findViewById(R.id.title)
+		textViewSubtitle               = findViewById(R.id.subtitle)
 
 		/* Fill in the headers. */
 		if ((goal.custom) && (goal.quantity == -1))
@@ -231,6 +234,25 @@ class GoalScreenBasic: AppCompatActivity()
 		/* Actual spaghetti. */
 		else
 		{
+			/* If non-numeric, hide the pie chart. */
+			if (goal.quantity == -1)
+			{
+				val layoutParams: LayoutParams = linearLayoutPieChartContainer.getLayoutParams()
+				layoutParams.height = 0
+				linearLayoutPieChartContainer.setLayoutParams(layoutParams)
+			}
+			else
+			{
+				val numerator: Float = goal.hist0.toFloat()
+				val denominator: Float = goal.quantity.toFloat()
+
+				pieEntries.add(PieEntry(numerator))
+				pieEntries.add(PieEntry(denominator))
+
+				/* Change the percentage text. */
+				textViewPieChartDescriptionB.text = "${(numerator/denominator * 100).toInt()}%"
+			}
+
 			/* Fill in the last 5 days of data. */
 			entries.add(Entry(-6.0f, goal.hist6.toFloat()))
 			entries.add(Entry(-5.0f, goal.hist5.toFloat()))
