@@ -163,7 +163,7 @@ class GoalScreenBasic: AppCompatActivity()
 		pieChart.description.text = ""
 		pieChart.isDrawHoleEnabled = false
 		pieChart.setTouchEnabled(false)
-		pieChart.setExtraOffsets(20f,0f,20f,20f)
+//		pieChart.setExtraOffsets(20f,0f,20f,20f)
 		pieChart.setUsePercentValues(true)
 		pieChart.isRotationEnabled = false
 		pieChart.setDrawEntryLabels(false)
@@ -174,7 +174,7 @@ class GoalScreenBasic: AppCompatActivity()
 		val entries: MutableList<Entry> = ArrayList()
 		var dataType: String = ""
 
-		val pieentries: ArrayList<PieEntry> = ArrayList()
+		val pieEntries: ArrayList<PieEntry> = ArrayList()
 		val colors: ArrayList<Int> = ArrayList()
 
 		/* Iterate different DAOs based on the type of goal. */
@@ -183,10 +183,10 @@ class GoalScreenBasic: AppCompatActivity()
 			val distanceDao: DistanceDao = UserDatabase.getInstance(this).distanceDao
 			dataType = "Distance"
 
-			pieentries.add(PieEntry(distanceDao.get_distance_now(today).totalDistance.toFloat()))
-			pieentries.add(PieEntry(goal.hist0.toFloat()))
+			pieEntries.add(PieEntry(distanceDao.get_distance_now(today).totalDistance.toFloat()))
+			pieEntries.add(PieEntry(goal.quantity.toFloat()))
 
-			// pieentries.add(PieEntry(100f))
+			// pieEntries.add(PieEntry(100f))
 
 			// entries.add(Entry((today-day).toFloat() * -1.0f, distanceDao.get_distance_now(day).totalDistance.toFloat()))
 
@@ -240,23 +240,27 @@ class GoalScreenBasic: AppCompatActivity()
 		dataset.setFillDrawable(getResources().getDrawable(R.drawable.teal_blue_lighter_bg))
 		dataset.setDrawFilled(true)
 
-		val piedataset = PieDataSet(pieentries, "")
+		val piedataset = PieDataSet(pieEntries, "")
 		piechart.setDrawEntryLabels(false)
+
+		/* Disable the inner text. */
+		piedataset.setDrawValues(false)
 
 		/* Disable the legend */
 		piechart.getLegend().setEnabled(false)
 
 		/* Set the description text. */
 		piechart.getDescription().setText("")
-		// piedataset.setColor(Color.LTGRAY)
-		// piedataset[0].setcolor(Color.BLACK)
-		colors.add(Color.parseColor("#4DD0E1"))
-		colors.add(Color.parseColor("#FFF176"))
+		colors.add(Color.parseColor("#FF2993A9"))
+		colors.add(Color.parseColor("#FF077187"))
 
 		piechart.data = PieData(piedataset)
-		piechart.isDrawHoleEnabled = true
+		piechart.isDrawHoleEnabled = false
+
 		piedataset.setValueFormatter(PercentFormatter())
-		piechart.holeRadius = 5f
+
+		piechart.holeRadius = 0.0f
+
 		piedataset.colors = colors
 		piedataset.sliceSpace = 3f
 		// piedataset.setColors(Color.BLACK)
