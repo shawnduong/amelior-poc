@@ -211,6 +211,15 @@ class GoalScreenBasic: AppCompatActivity()
 			val stepCountDao: StepCountDao = UserDatabase.getInstance(this).stepCountDao
 			dataType = "Steps"
 
+			val numerator: Float = stepCountDao.get_step_count_now(today).totalSteps.toFloat()
+			val denominator: Float = goal.quantity.toFloat()
+
+			pieEntries.add(PieEntry(numerator))
+			pieEntries.add(PieEntry(denominator))
+
+			/* Change the percentage text. */
+			textViewPieChartDescriptionB.text = "${(numerator/denominator * 100).toInt()}%"
+
 			for (day in (today-6)..(today))
 			{
 				if (stepCountDao.step_count_exists_now(day))
