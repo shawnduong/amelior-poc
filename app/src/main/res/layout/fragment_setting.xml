@@ -184,6 +184,68 @@
 			android:visibility="invisible"
 		/>
 
+		<LinearLayout
+			android:id="@+id/sampleDataContainer"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:gravity="center"
+		>
+
+			<LinearLayout
+				android:id="@+id/sampleDataContainerAB"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:gravity="center"
+			>
+
+				<Button
+					android:id="@+id/sampleA"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="16dp"
+					android:text="Load Sample A"
+				/>
+
+				<Button
+					android:id="@+id/sampleB"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="16dp"
+					android:text="Load Sample B"
+				/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:id="@+id/sampleDataContainerCD"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:gravity="center"
+			>
+
+				<Button
+					android:id="@+id/sampleC"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="16dp"
+					android:text="Load Sample C"
+				/>
+
+				<Button
+					android:id="@+id/sampleD"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="16dp"
+					android:text="Load Sample D"
+				/>
+
+			</LinearLayout>
+
+		</LinearLayout>
+
 	</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

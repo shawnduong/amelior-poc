@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup.LayoutParams
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.*
@@ -17,6 +18,7 @@ import com.github.mikephil.charting.components.XAxis.*
 import com.hci_g1.amelior.entities.Goal
 import com.hci_g1.amelior.entities.Distance
 import com.hci_g1.amelior.entities.StepCount
+import kotlinx.android.synthetic.main.goal_screen_basic.*
 
 class GoalScreenBasic: AppCompatActivity()
 {
@@ -26,6 +28,8 @@ class GoalScreenBasic: AppCompatActivity()
 
 	private lateinit var buttonClose: Button
 	private lateinit var imageViewFlowerGraphic: ImageView
+	private lateinit var linearLayoutPieChartContainer: LinearLayout
+	private lateinit var textViewPieChartDescriptionB: TextView
 	private lateinit var textViewTitle: TextView
 	private lateinit var textViewSubtitle: TextView
 
@@ -50,10 +54,12 @@ class GoalScreenBasic: AppCompatActivity()
 		today = get_epoch_day()
 
 		/* Initialize widgets. */
-		buttonClose             = findViewById(R.id.close)
-		imageViewFlowerGraphic  = findViewById(R.id.flowerGraphic)
-		textViewTitle           = findViewById(R.id.title)
-		textViewSubtitle        = findViewById(R.id.subtitle)
+		buttonClose                    = findViewById(R.id.close)
+		imageViewFlowerGraphic         = findViewById(R.id.flowerGraphic)
+		linearLayoutPieChartContainer  = findViewById(R.id.pieChartContainer)
+		textViewPieChartDescriptionB   = findViewById(R.id.pieChartDescriptionB)
+		textViewTitle                  = findViewById(R.id.title)
+		textViewSubtitle               = findViewById(R.id.subtitle)
 
 		/* Fill in the headers. */
 		if ((goal.custom) && (goal.quantity == -1))
@@ -90,6 +96,8 @@ class GoalScreenBasic: AppCompatActivity()
 		val axisY = graph.getAxisLeft()
 		val axisX = graph.getXAxis()
 
+		val piechart: PieChart = findViewById(R.id.pieChart)
+
 		val days = arrayOf(
 			"S", "M", "T", "W", "R", "F", "S",
 			"S", "M", "T", "W", "R", "F", "S",
@@ -121,7 +129,7 @@ class GoalScreenBasic: AppCompatActivity()
 
 		/* Because the time scale is only weekly, X e [-7, 1]. There is a day
 		   of extra padding in both directions for aesthetics. */
-		axisX.setAxisMinValue(-7.0f)
+		axisX.setAxisMinValue(-6.0f)
 		axisX.setAxisMaxValue(1.0f)
 
 		/* Set the description text. */
@@ -137,9 +145,42 @@ class GoalScreenBasic: AppCompatActivity()
 		/* Disable the legend */
 		graph.getLegend().setEnabled(false)
 
+		/* Set the Y axis labels to "Done" or "Not Done," but only if it's non-numeric. */
+		if (goal.quantity == -1)
+		{
+			axisY.setAxisMaxValue(1.25f)
+
+			axisY.setValueFormatter(
+
+				object: ValueFormatter()
+				{
+					override fun getAxisLabel(value: Float, axis: AxisBase): String
+					{
+						if      (value == 0.0f)  return "Not Done"
+						else if (value == 1.0f)  return "Done"
+						else                     return ""
+					}
+				}
+			)
+		}
+
+		pieChart.setUsePercentValues(true)
+		pieChart.description.text = ""
+		pieChart.isDrawHoleEnabled = false
+		pieChart.setTouchEnabled(false)
+//		pieChart.setExtraOffsets(20f,0f,20f,20f)
+		pieChart.setUsePercentValues(true)
+		pieChart.isRotationEnabled = false
+		pieChart.setDrawEntryLabels(false)
+		pieChart.legend.orientation = Legend.LegendOrientation.VERTICAL
+		pieChart.legend.isWordWrapEnabled = true
+
 		/* Entries populated by iterating through the past week of data. */
 		val entries: MutableList<Entry> = ArrayList()
 		var dataType: String = ""
+
+		val pieEntries: ArrayList<PieEntry> = ArrayList()
+		val colors: ArrayList<Int> = ArrayList()
 
 		/* Iterate different DAOs based on the type of goal. */
 		if (goal.units == "m")
@@ -147,11 +188,24 @@ class GoalScreenBasic: AppCompatActivity()
 			val distanceDao: DistanceDao = UserDatabase.getInstance(this).distanceDao
 			dataType = "Distance"
 
+			val numerator: Float = distanceDao.get_distance_now(today).totalDistance.toFloat()
+			val denominator: Float = goal.quantity.toFloat()
+
+			pieEntries.add(PieEntry(numerator))
+			pieEntries.add(PieEntry(denominator))
+
+			/* Change the percentage text. */
+			textViewPieChartDescriptionB.text = "${(numerator/denominator * 100).toInt()}%"
+
+			// pieEntries.add(PieEntry(100f))
+
+			// entries.add(Entry((today-day).toFloat() * -1.0f, distanceDao.get_distance_now(day).totalDistance.toFloat()))
+
 			for (day in (today-6)..(today))
 			{
 				if (distanceDao.distance_exists_now(day))
 				{
-					entries.add(Entry((today-day).toFloat(), distanceDao.get_distance_now(day).totalDistance.toFloat()))
+					entries.add(Entry((today-day).toFloat() * -1.0f, distanceDao.get_distance_now(day).totalDistance.toFloat()))
 				}
 			}
 		}
@@ -160,17 +214,45 @@ class GoalScreenBasic: AppCompatActivity()
 			val stepCountDao: StepCountDao = UserDatabase.getInstance(this).stepCountDao
 			dataType = "Steps"
 
+			val numerator: Float = stepCountDao.get_step_count_now(today).totalSteps.toFloat()
+			val denominator: Float = goal.quantity.toFloat()
+
+			pieEntries.add(PieEntry(numerator))
+			pieEntries.add(PieEntry(denominator))
+
+			/* Change the percentage text. */
+			textViewPieChartDescriptionB.text = "${(numerator/denominator * 100).toInt()}%"
+
 			for (day in (today-6)..(today))
 			{
 				if (stepCountDao.step_count_exists_now(day))
 				{
-					entries.add(Entry((today-day).toFloat(), stepCountDao.get_step_count_now(day).totalSteps.toFloat()))
+					entries.add(Entry((today-day).toFloat() * -1.0f, stepCountDao.get_step_count_now(day).totalSteps.toFloat()))
 				}
 			}
 		}
 		/* Actual spaghetti. */
 		else
 		{
+			/* If non-numeric, hide the pie chart. */
+			if (goal.quantity == -1)
+			{
+				val layoutParams: LayoutParams = linearLayoutPieChartContainer.getLayoutParams()
+				layoutParams.height = 0
+				linearLayoutPieChartContainer.setLayoutParams(layoutParams)
+			}
+			else
+			{
+				val numerator: Float = goal.hist0.toFloat()
+				val denominator: Float = goal.quantity.toFloat()
+
+				pieEntries.add(PieEntry(numerator))
+				pieEntries.add(PieEntry(denominator))
+
+				/* Change the percentage text. */
+				textViewPieChartDescriptionB.text = "${(numerator/denominator * 100).toInt()}%"
+			}
+
 			/* Fill in the last 5 days of data. */
 			entries.add(Entry(-6.0f, goal.hist6.toFloat()))
 			entries.add(Entry(-5.0f, goal.hist5.toFloat()))
@@ -183,10 +265,48 @@ class GoalScreenBasic: AppCompatActivity()
 
 		/* Create the LineDataSet object used by the chart. */
 		val dataset = LineDataSet(entries, dataType)
-		dataset.setColors(Color.BLACK)
+
+		/* If it's non-numeric, don't display values. */
+		if (goal.quantity == -1)  dataset.setDrawValues(false)
+
+		/* Make the line black with size 2.0f circles. */
+		dataset.setColor(Color.BLACK)
+		dataset.setCircleColor(Color.BLACK)
+		dataset.setCircleRadius(2.0f)
+		dataset.setDrawCircleHole(false)
+
+		/* Make the graph filled. */
+		dataset.setFillDrawable(getResources().getDrawable(R.drawable.teal_blue_lighter_bg))
+		dataset.setDrawFilled(true)
+
+		val piedataset = PieDataSet(pieEntries, "")
+		piechart.setDrawEntryLabels(false)
+
+		/* Disable the inner text. */
+		piedataset.setDrawValues(false)
+
+		/* Disable the legend */
+		piechart.getLegend().setEnabled(false)
+
+		/* Set the description text. */
+		piechart.getDescription().setText("")
+		colors.add(Color.parseColor("#FF2993A9"))
+		colors.add(Color.parseColor("#FF077187"))
+
+		piechart.data = PieData(piedataset)
+		piechart.isDrawHoleEnabled = false
+
+		piedataset.setValueFormatter(PercentFormatter())
+
+		piechart.holeRadius = 0.0f
+
+		piedataset.colors = colors
+		piedataset.sliceSpace = 3f
+		// piedataset.setColors(Color.BLACK)
 
 		/* Plot the data on the graph. */
 		graph.setData(LineData(dataset))
+		piechart.setData(PieData(piedataset))
 	}
 
 	/* Get the current epoch day. */
